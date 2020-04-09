@@ -1,9 +1,9 @@
 git:
         submodule: false
+
 notifications:
         emails: false
 
-#before_install:
 matrix:
         include:
                 - os: linux
