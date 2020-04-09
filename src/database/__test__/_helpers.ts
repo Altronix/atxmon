@@ -2,7 +2,7 @@ import { NetworkedRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
 import { Database, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
-import utils, { MockUtils } from "./__mocks__/utils.mock";
+import utils, { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import * as fs from "fs";
 
 // Remove a database from the host file system (integration test)

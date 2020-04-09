@@ -1,5 +1,5 @@
 import mockLinq from "./__mocks__/linq-manager.mock";
-import utils, { MockUtils } from "../../database/__test__/__mocks__/utils.mock";
+import utils, { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import { Linq } from "../linq";
 
 test("Linq should send", async () => {
