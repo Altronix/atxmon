@@ -28,7 +28,7 @@ export class Linq implements Linq {
     return this;
   }
 
-  listen(port: string): Linq;
+  listen(port: number): Linq;
   listen(port: string | number): Linq {
     if (typeof port === "number") port = `tcp://*:${port}`;
     this.manager.listen(port);
