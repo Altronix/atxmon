@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/Altronix/atx-mon#readme",
   "dependencies": {
-    "@altronix/linq-network": "0.0.2-alpha.2",
+    "@altronix/linq-network": "0.0.2-alpha.3",
     "@types/bcrypt": "^3.0.0",
     "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
