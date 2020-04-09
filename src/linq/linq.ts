@@ -29,6 +29,7 @@ export class Linq implements Linq {
   }
 
   listen(port: number): Linq;
+  listen(port: string): Linq;
   listen(port: string | number): Linq {
     if (typeof port === "number") port = `tcp://*:${port}`;
     this.manager.listen(port);
@@ -36,6 +37,7 @@ export class Linq implements Linq {
   }
 
   connect(port: number): Linq;
+  connect(port: string): Linq;
   connect(port: string | number): Linq {
     if (typeof port === "number") port = `tcp://*:${port}`;
     this.manager.connect(port);
