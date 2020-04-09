@@ -11,11 +11,11 @@ import { Logger as MockLogger } from "../../../common/logger";
 jest.mock("../../../common/bcrypt");
 jest.mock("../../../common/logger");
 
-type MockedLoggerRoutines = jest.Mocked<LoggerRoutines>;
-type MockedCryptoRoutines = jest.Mocked<CryptoRoutines>;
-type MockedUtils = {
-  crypto: MockedCryptoRoutines;
-  logger: MockedLoggerRoutines;
+type MockLoggerRoutines = jest.Mocked<LoggerRoutines>;
+type MockCryptoRoutines = jest.Mocked<CryptoRoutines>;
+export type MockUtils = {
+  crypto: MockCryptoRoutines;
+  logger: MockLoggerRoutines;
 };
 
-export default new Utils(new MockLogger(), new MockBcrypt()) as MockedUtils;
+export default new Utils(new MockLogger(), new MockBcrypt()) as MockUtils;
