@@ -14,7 +14,7 @@ matrix:
                   script:
                           - npm install
                           - npm run coverage
- 		          - bash <(curl -s https://codecov.io/bash) -f ./coverage/lcov.info;
+ 		          - ./scripts/ci/codecov.sh
                 - os: windows
                   language: node_js
                   node_js: 
