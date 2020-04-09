@@ -7,8 +7,6 @@ notifications:
 matrix:
         include:
                 - os: linux
-		  env:
-                          - LINQ_NETWORK_USE_PREBUILT=TRUE
                   dist: bionic
                   language: node_js
                   node_js: 10
@@ -16,26 +14,7 @@ matrix:
                           - npm install
                           - npm run coverage
                           - ./scripts/ci/codecov.sh
-                - os: linux
-		  env:
-                          - LINQ_NETWORK_USE_PREBUILT=FALSE
-                  dist: bionic
-                  language: node_js
-                  node_js: 10
-                  script:
-                          - npm install
-                          - npm run test
                 - os: windows
-                  env:
-                          - LINQ_NETWORK_USE_PREBUILT=TRUE
-                  language: node_js
-                  node_js: 10
-                  script:
-                          - npm install
-                          - npm run test
-                - os: windows
-                  env:
-                          - LINQ_NETWORK_USE_PREBUILT=FALSE
                   language: node_js
                   node_js: 10
                   script:
