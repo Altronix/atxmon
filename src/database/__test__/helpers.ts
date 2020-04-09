@@ -23,6 +23,7 @@ export interface Harness<Model, Entry> {
   utils: MockUtils;
 }
 
+// Setup a test
 type Constructor<Model, Entry, Entity> = {
   new (u: UtilRoutines, r: Repository<Entity>): Database<Model, Entry>;
 };
@@ -45,6 +46,7 @@ export async function setup<
   return { connection, utils, database };
 }
 
+// Cleanup a test
 export async function cleanup<Model, Entity>(harness: Harness<Model, Entity>) {
   return await harness.connection.close();
 }
