@@ -13,6 +13,7 @@ matrix:
                   script:
                           - npm install
                           - npm run test
+                          - ./scripts/ci/codecov.sh
                 - os: windows
                   language: node_js
                   node_js: 10
