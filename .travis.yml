@@ -9,14 +9,16 @@ matrix:
                 - os: linux
                   dist: bionic
                   language: node_js
-                  node_js: 10
+                  node_js: 
+                          - 10
                   script:
                           - npm install
                           - npm run coverage
  		          - bash <(curl -s https://codecov.io/bash) -f ./coverage/lcov.info;
                 - os: windows
                   language: node_js
-                  node_js: 10
+                  node_js: 
+                          - 10
                   script:
                           - npm install
                           - npm run test
