@@ -1,24 +1,21 @@
 git:
         submodule: false
-
 notifications:
         emails: false
 
+#before_install:
 matrix:
         include:
                 - os: linux
                   dist: bionic
                   language: node_js
-                  node_js: 
-                          - 10
+                  node_js: 10
                   script:
                           - npm install
-                          - npm run coverage
- 		          - ./scripts/ci/codecov.sh
+                          - npm run test
                 - os: windows
                   language: node_js
-                  node_js: 
-                          - 10
+                  node_js: 10
                   script:
                           - npm install
                           - npm run test
