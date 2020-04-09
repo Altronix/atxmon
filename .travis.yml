@@ -19,7 +19,7 @@ matrix:
                   language: node_js
                   node_js: 10
                   env:
-                          - LINQ_NETWORK_USE_PREBUILD=ON
+                          - LINQ_NETWORK_USE_PREBUILT=ON
                   script:
                           - npm install
                           - npm run test
@@ -29,3 +29,11 @@ matrix:
                   script:
                           - npm install
                           - npm run test
+                - os: windows
+                  language: node_js
+                  node_js: 10
+                  env:
+                          - LINQ_NETWORK_USE_PREBUILT=ON
+                  script:
+                          - npm install
+                          - npm test
