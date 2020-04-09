@@ -4,7 +4,7 @@ import { Utils as UtilsImpl } from "../common/utils";
 import { SYMBOLS } from "./constants";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
-import { ContainerModule, AsyncContainerModule } from "inversify";
+import { ContainerModule } from "inversify";
 
 const commonBindings = new ContainerModule(bind => {
   bind<CryptoRoutines>(SYMBOLS.CRYPTO_ROUTINES)
