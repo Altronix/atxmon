@@ -21,6 +21,7 @@ export interface Harness<Model, Entry> {
   connection: Connection;
   database: Database<Model, Entry>;
   utils: MockUtils;
+  file: string;
 }
 
 // Setup a test
@@ -43,10 +44,11 @@ export async function setup<
   const repo = connection.getRepository<Entity>(e);
   let repository = new NetworkedRepository(utils, repo);
   let database = new db(utils, repository);
-  return { connection, utils, database };
+  return { file, connection, utils, database };
 }
 
 // Cleanup a test
 export async function cleanup<Model, Entity>(harness: Harness<Model, Entity>) {
+  await unlinkDatabase(harness.file);
   return await harness.connection.close();
 }

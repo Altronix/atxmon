@@ -34,4 +34,8 @@ export class Devices implements Database<DeviceModel> {
   ): Promise<number> {
     return this.repository.update(key, next);
   }
+
+  async count(key?: Criteria<DeviceModel>): Promise<number> {
+    return this.repository.count(key);
+  }
 }

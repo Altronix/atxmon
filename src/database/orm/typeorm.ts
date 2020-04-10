@@ -52,6 +52,9 @@ export class NetworkedRepository<E> implements Repository<E> {
   }
 
   async remove(key: Criteria<E>): Promise<number> {
+    // NOTE - TypeORM always returns undefined for "affected"
+    // Should open up an issue however there are 1000+ issues already
+    // If need better return value, use "remove";
     let result = await this.repository.delete(key);
     return result.affected ? result.affected : 0;
   }
@@ -60,7 +63,14 @@ export class NetworkedRepository<E> implements Repository<E> {
     key: Criteria<E>,
     next: DatabaseDeepPartialEntity<E>
   ): Promise<number> {
+    // NOTE - TypeORM always returns undefined for "affected"
+    // Should open up an issue however there are 1000+ issues already
+    // If need better return value, use "save";
     let result = await this.repository.update(key, next);
     return result.affected ? result.affected : 0;
+  }
+
+  async count(key?: Criteria<E>): Promise<number> {
+    return this.repository.count(key);
   }
 }

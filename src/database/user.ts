@@ -38,4 +38,8 @@ export class Users implements Database<UserModel, UserEntry> {
   ): Promise<number> {
     return this.repository.update(key, next);
   }
+
+  async count(key?: Criteria<UserModel>): Promise<number> {
+    return this.repository.count(key);
+  }
 }

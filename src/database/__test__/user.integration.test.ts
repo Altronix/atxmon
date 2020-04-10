@@ -14,6 +14,7 @@ test("Should add a user", async () => {
     role: 0
   });
 
+  expect(await test.database.count()).toBe(1);
   let read = await test.database.find({ name: "Thomas FOO" });
   expect(read).toBeTruthy();
   if (read) {
@@ -37,4 +38,40 @@ test("Should not find a user", async () => {
   let read = await test.database.find({ name: "NOT FOUND" });
   expect(read).toBeFalsy();
   await test.connection.close();
+});
+
+test("Should remove a user", async () => {
+  let test = await setup(UserEntity, Users, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  let user = await test.database.create({
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  });
+
+  expect(await test.database.count()).toBe(1);
+  let result = await test.database.remove({ name: "Thomas FOO" });
+  expect(await test.database.count()).toBe(0);
+
+  await test.connection.close();
+});
+
+test("Should not remove a user", async () => {
+  let test = await setup(UserEntity, Users, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  let user = await test.database.create({
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  });
+
+  expect(await test.database.count()).toBe(1);
+  let result = await test.database.remove({ name: "NOT FOUND" });
+  expect(await test.database.count()).toBe(1);
+
+  await test.connection.close();
+});
+
+test("Should update a user", async () => {
+  expect("TODO").toBe("TODO");
 });

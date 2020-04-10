@@ -7,6 +7,7 @@ export interface Repository<E> {
   find(criteria: Criteria<E>): Promise<E | undefined>;
   remove(key: Criteria<E>): Promise<number>;
   update(key: Criteria<E>, next: DatabaseDeepPartialEntity<E>): Promise<number>;
+  count(key?: Criteria<E>): Promise<number>;
 }
 
 export interface Database<Model, Entry = Model> {
@@ -17,6 +18,7 @@ export interface Database<Model, Entry = Model> {
     key: Criteria<Model>,
     next: DatabaseDeepPartialEntity<Model>
   ): Promise<number>;
+  count(key?: Criteria<Model>): Promise<number>;
 }
 
 export type Criteria<E> = FindOptionsWhere<E>;
