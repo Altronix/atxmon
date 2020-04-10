@@ -103,5 +103,51 @@ test("Should not remove a device", async () => {
 });
 
 test("Should update a device", async () => {
-  expect("TODO").toBe("TODO");
+  let test = await setup(DeviceEntity, Devices, DATABASE);
+  await test.database.create({
+    serial: "Serial ID",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+
+  // Check initial device
+  let device = await test.database.find({ serial: "Serial ID" });
+  expect(device).toBeTruthy();
+  if (device) expect(device.product).toBe("LINQ2");
+
+  // Check updated device
+  await test.database.update({ product: "LINQ2" }, { product: "Updated" });
+  device = await test.database.find({ product: "Updated" });
+  expect(device).toBeTruthy();
+  if (device) expect(device.product).toBe("Updated");
+
+  await test.connection.close();
+});
+
+test("Should update a device by ID", async () => {
+  let test = await setup(DeviceEntity, Devices, DATABASE);
+  await test.database.create({
+    serial: "Serial ID",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+
+  // Check initial device
+  let device = await test.database.find({ serial: "Serial ID" });
+  expect(device).toBeTruthy();
+  if (device) expect(device.product).toBe("LINQ2");
+
+  // Check updated device
+  await test.database.update("Serial ID", { product: "Updated" });
+  device = await test.database.find({ product: "Updated" });
+  expect(device).toBeTruthy();
+  if (device) expect(device.product).toBe("Updated");
+
+  await test.connection.close();
 });

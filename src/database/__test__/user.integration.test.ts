@@ -93,5 +93,48 @@ test("Should not remove a user", async () => {
 });
 
 test("Should update a user", async () => {
-  expect("TODO").toBe("TODO");
+  let test = await setup(UserEntity, Users, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  await test.database.create({
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  });
+
+  // Check initial user
+  let user = await test.database.find({ name: "Thomas FOO" });
+  expect(user).toBeTruthy();
+  if (user) expect(user.name).toBe("Thomas FOO");
+
+  // Check updated user
+  await test.database.update({ name: "Thomas FOO" }, { name: "Updated" });
+  user = await test.database.find({ name: "Updated" });
+  expect(user).toBeTruthy();
+  if (user) expect(user.name).toBe("Updated");
+
+  await test.connection.close();
+});
+
+test("Should update a user by ID", async () => {
+  let test = await setup(UserEntity, Users, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  await test.database.create({
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  });
+
+  // Check initial user
+  let user = await test.database.find({ name: "Thomas FOO" });
+  expect(user).toBeTruthy();
+  if (user) {
+    expect(user.name).toBe("Thomas FOO");
+    await test.database.update(user.id, { name: "Updated" });
+  }
+
+  user = await test.database.find({ name: "Updated" });
+  expect(user).toBeTruthy();
+  if (user) expect(user.name).toBe("Updated");
+
+  await test.connection.close();
 });
