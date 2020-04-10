@@ -43,6 +43,7 @@ export class NetworkedRepository<E> implements Repository<E> {
   }
 
   async find(key: Criteria<E>): Promise<E | undefined> {
+    // TODO support find many
     let ret: E | undefined = undefined;
     try {
       ret = await this.repository.findOne(key);
