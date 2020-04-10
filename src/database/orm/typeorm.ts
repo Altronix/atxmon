@@ -5,8 +5,7 @@ import {
   ConnectionOptions,
   Repository as TypeormRepository
 } from "typeorm";
-import { DatabaseDeepPartialEntity } from "../../common/utils";
-import { Repository, Criteria } from "../types";
+import { DatabaseDeepPartialEntity, Repository, Criteria } from "../types";
 import { UtilRoutines } from "../../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";

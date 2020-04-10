@@ -1,6 +1,11 @@
-import { Repository, Database, Criteria, DeviceModel } from "./types";
+import {
+  DatabaseDeepPartialEntity,
+  Repository,
+  Database,
+  Criteria,
+  DeviceModel
+} from "./types";
 import { UtilRoutines } from "../common/types";
-import { DatabaseDeepPartialEntity } from "../common/utils";
 import { SYMBOLS } from "../ioc/constants";
 import { inject, injectable } from "inversify";
 

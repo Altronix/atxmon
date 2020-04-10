@@ -1,5 +1,5 @@
-import { DatabaseDeepPartialEntity, WithOptional } from "../common/utils";
-import { FindOptionsWhere } from "typeorm";
+import { WithOptional } from "../common/utils";
+import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 export interface Repository<E> {
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
@@ -21,7 +21,9 @@ export interface Database<Model, Entry = Model> {
   count(key?: Criteria<Model>): Promise<number>;
 }
 
+// Typeorm Types are libraries in themselves. We try to decouple here
 export type Criteria<E> = FindOptionsWhere<E>;
+export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
 export interface DeviceModel {
   serial: string;

@@ -1,7 +1,13 @@
 import { WithOptional } from "../common/utils";
-import { Repository, Database, Criteria, UserModel, UserEntry } from "./types";
+import {
+  DatabaseDeepPartialEntity,
+  Repository,
+  Database,
+  Criteria,
+  UserModel,
+  UserEntry
+} from "./types";
 import { UtilRoutines } from "../common/types";
-import { DatabaseDeepPartialEntity } from "../common/utils";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants";
 

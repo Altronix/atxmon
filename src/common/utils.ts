@@ -3,7 +3,6 @@ import { CryptoRoutines, LoggerRoutines, UtilRoutines } from "./types";
 import { injectable, inject } from "inversify";
 import { SYMBOLS } from "../ioc/constants";
 
-export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 export type Constructor<T> = { new (): T };
 export type ConstructorOrFunction<T> = Constructor<T> | Function;
 export type WithOptional<T, K extends keyof T> = Omit<T, K> &
