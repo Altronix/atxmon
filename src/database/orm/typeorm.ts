@@ -5,7 +5,12 @@ import {
   ConnectionOptions,
   Repository as TypeormRepository
 } from "typeorm";
-import { DatabaseDeepPartialEntity, Repository, Criteria } from "../types";
+import {
+  DatabaseDeepPartialEntity,
+  Repository,
+  IdCriteria,
+  FindCriteria
+} from "../types";
 import { UtilRoutines } from "../../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";
@@ -42,7 +47,7 @@ export class NetworkedRepository<E> implements Repository<E> {
     }
   }
 
-  async find(key: Criteria<E>): Promise<E | undefined> {
+  async find(key: FindCriteria<E>): Promise<E | undefined> {
     // TODO support find many
     let ret: E | undefined = undefined;
     try {
@@ -51,7 +56,7 @@ export class NetworkedRepository<E> implements Repository<E> {
     return ret;
   }
 
-  async remove(key: Criteria<E>): Promise<number> {
+  async remove(key: FindCriteria<E> | IdCriteria): Promise<number> {
     // NOTE - TypeORM always returns undefined for "affected"
     // Should open up an issue however there are 1000+ issues already
     // If need better return value, use "remove";
@@ -60,7 +65,7 @@ export class NetworkedRepository<E> implements Repository<E> {
   }
 
   async update(
-    key: Criteria<E>,
+    key: FindCriteria<E> | IdCriteria,
     next: DatabaseDeepPartialEntity<E>
   ): Promise<number> {
     // NOTE - TypeORM always returns undefined for "affected"
@@ -70,7 +75,7 @@ export class NetworkedRepository<E> implements Repository<E> {
     return result.affected ? result.affected : 0;
   }
 
-  async count(key?: Criteria<E>): Promise<number> {
+  async count(key?: FindCriteria<E>): Promise<number> {
     return this.repository.count(key);
   }
 }

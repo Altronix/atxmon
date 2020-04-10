@@ -3,7 +3,7 @@ import {
   DatabaseDeepPartialEntity,
   Repository,
   Database,
-  Criteria,
+  FindCriteria,
   UserModel,
   UserEntry
 } from "./types";
@@ -30,22 +30,22 @@ export class Users implements Database<UserModel, UserEntry> {
     return this.repository.insert(user);
   }
 
-  async find(key: Criteria<UserModel>): Promise<UserModel | undefined> {
+  async find(key: FindCriteria<UserModel>): Promise<UserModel | undefined> {
     return this.repository.find(key);
   }
 
-  async remove(key: Criteria<UserModel>): Promise<number> {
+  async remove(key: FindCriteria<UserModel>): Promise<number> {
     return this.repository.remove(key);
   }
 
   async update(
-    key: Criteria<UserModel>,
+    key: FindCriteria<UserModel>,
     next: DatabaseDeepPartialEntity<UserModel>
   ): Promise<number> {
     return this.repository.update(key, next);
   }
 
-  async count(key?: Criteria<UserModel>): Promise<number> {
+  async count(key?: FindCriteria<UserModel>): Promise<number> {
     return this.repository.count(key);
   }
 }

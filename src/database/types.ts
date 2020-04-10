@@ -4,25 +4,29 @@ export interface Repository<E> {
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
   ): Promise<boolean>;
-  find(criteria: Criteria<E>): Promise<E | undefined>;
-  remove(key: Criteria<E>): Promise<number>;
-  update(key: Criteria<E>, next: DatabaseDeepPartialEntity<E>): Promise<number>;
-  count(key?: Criteria<E>): Promise<number>;
+  find(criteria: FindCriteria<E>): Promise<E | undefined>;
+  remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
+  update(
+    key: FindCriteria<E> | IdCriteria,
+    next: DatabaseDeepPartialEntity<E>
+  ): Promise<number>;
+  count(key?: FindCriteria<E>): Promise<number>;
 }
 
 export interface Database<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
-  find(key: Criteria<Model>): Promise<Model | undefined>;
-  remove(key: Criteria<Model>): Promise<number>;
+  find(key: FindCriteria<Model>): Promise<Model | undefined>;
+  remove(key: FindCriteria<Model> | IdCriteria): Promise<number>;
   update(
-    key: Criteria<Model>,
+    key: FindCriteria<Model> | IdCriteria,
     next: DatabaseDeepPartialEntity<Model>
   ): Promise<number>;
-  count(key?: Criteria<Model>): Promise<number>;
+  count(key?: FindCriteria<Model>): Promise<number>;
 }
 
 // Typeorm Types are libraries in themselves. We try to decouple here
-export type Criteria<E> = FindOptionsWhere<E>;
+export type FindCriteria<E> = FindOptionsWhere<E>;
+export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
 export interface DeviceModel {

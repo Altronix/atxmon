@@ -56,6 +56,26 @@ test("Should remove a user", async () => {
   await test.connection.close();
 });
 
+test("Should remove a user by ID", async () => {
+  let test = await setup(UserEntity, Users, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  await test.database.create({
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  });
+
+  let user = await test.database.find({ name: "Thomas FOO" });
+  expect(user).toBeTruthy();
+  if (user) {
+    expect(await test.database.count()).toBe(1);
+    let result = await test.database.remove(user.id);
+    expect(await test.database.count()).toBe(0);
+  }
+
+  await test.connection.close();
+});
+
 test("Should not remove a user", async () => {
   let test = await setup(UserEntity, Users, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");

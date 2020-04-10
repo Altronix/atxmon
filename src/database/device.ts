@@ -2,7 +2,8 @@ import {
   DatabaseDeepPartialEntity,
   Repository,
   Database,
-  Criteria,
+  FindCriteria,
+  IdCriteria,
   DeviceModel
 } from "./types";
 import { UtilRoutines } from "../common/types";
@@ -25,22 +26,22 @@ export class Devices implements Database<DeviceModel> {
     return this.repository.insert(d);
   }
 
-  async find(key: Criteria<DeviceModel>): Promise<DeviceModel | undefined> {
+  async find(key: FindCriteria<DeviceModel>): Promise<DeviceModel | undefined> {
     return this.repository.find(key);
   }
 
-  async remove(key: Criteria<DeviceModel>): Promise<number> {
+  async remove(key: FindCriteria<DeviceModel> | IdCriteria): Promise<number> {
     return this.repository.remove(key);
   }
 
   async update(
-    key: Criteria<DeviceModel>,
+    key: FindCriteria<DeviceModel> | IdCriteria,
     next: DatabaseDeepPartialEntity<DeviceModel>
   ): Promise<number> {
     return this.repository.update(key, next);
   }
 
-  async count(key?: Criteria<DeviceModel>): Promise<number> {
+  async count(key?: FindCriteria<DeviceModel>): Promise<number> {
     return this.repository.count(key);
   }
 }

@@ -64,6 +64,25 @@ test("Should remove a device", async () => {
   await test.connection.close();
 });
 
+test("Should remove a device by ID", async () => {
+  let test = await setup(DeviceEntity, Devices, DATABASE);
+
+  let device = await test.database.create({
+    serial: "Serial ID",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+
+  expect(await test.database.count()).toBe(1);
+  let result = await test.database.remove("Serial ID");
+  expect(await test.database.count()).toBe(0);
+
+  await test.connection.close();
+});
+
 test("Should not remove a device", async () => {
   let test = await setup(DeviceEntity, Devices, DATABASE);
 
