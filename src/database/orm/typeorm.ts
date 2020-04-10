@@ -50,4 +50,17 @@ export class NetworkedRepository<E> implements Repository<E> {
     } catch {}
     return ret;
   }
+
+  async remove(key: Criteria<E>): Promise<number> {
+    let result = await this.repository.delete(key);
+    return result.affected ? result.affected : 0;
+  }
+
+  async update(
+    key: Criteria<E>,
+    next: DatabaseDeepPartialEntity<E>
+  ): Promise<number> {
+    let result = await this.repository.update(key, next);
+    return result.affected ? result.affected : 0;
+  }
 }

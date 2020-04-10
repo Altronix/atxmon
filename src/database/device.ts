@@ -1,5 +1,6 @@
 import { Repository, Database, Criteria, DeviceModel } from "./types";
 import { UtilRoutines } from "../common/types";
+import { DatabaseDeepPartialEntity } from "../common/utils";
 import { SYMBOLS } from "../ioc/constants";
 import { inject, injectable } from "inversify";
 
@@ -23,6 +24,14 @@ export class Devices implements Database<DeviceModel> {
     return this.repository.find(key);
   }
 
-  // async remove(who: string): Promise<number>;
-  // async remove(who:
+  async remove(key: Criteria<DeviceModel>): Promise<number> {
+    return this.repository.remove(key);
+  }
+
+  async update(
+    key: Criteria<DeviceModel>,
+    next: DatabaseDeepPartialEntity<DeviceModel>
+  ): Promise<number> {
+    return this.repository.update(key, next);
+  }
 }

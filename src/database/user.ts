@@ -1,6 +1,7 @@
 import { WithOptional } from "../common/utils";
 import { Repository, Database, Criteria, UserModel, UserEntry } from "./types";
 import { UtilRoutines } from "../common/types";
+import { DatabaseDeepPartialEntity } from "../common/utils";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants";
 
@@ -25,5 +26,16 @@ export class Users implements Database<UserModel, UserEntry> {
 
   async find(key: Criteria<UserModel>): Promise<UserModel | undefined> {
     return this.repository.find(key);
+  }
+
+  async remove(key: Criteria<UserModel>): Promise<number> {
+    return this.repository.remove(key);
+  }
+
+  async update(
+    key: Criteria<UserModel>,
+    next: DatabaseDeepPartialEntity<UserModel>
+  ): Promise<number> {
+    return this.repository.update(key, next);
   }
 }
