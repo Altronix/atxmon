@@ -6,7 +6,7 @@ import {
   Repository as TypeormRepository
 } from "typeorm";
 import { DatabaseDeepPartialEntity } from "../../common/utils";
-import { Repository } from "../types";
+import { Repository, Criteria } from "../types";
 import { UtilRoutines } from "../../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";
@@ -43,10 +43,10 @@ export class NetworkedRepository<E> implements Repository<E> {
     }
   }
 
-  async find(key: keyof E, value: string | number): Promise<E | undefined> {
+  async find(key: Criteria<E>): Promise<E | undefined> {
     let ret: E | undefined = undefined;
     try {
-      ret = await this.repository.findOne({ [key]: value });
+      ret = await this.repository.findOne(key);
     } catch {}
     return ret;
   }

@@ -1,5 +1,5 @@
 import { WithOptional } from "../common/utils";
-import { Repository, Database, UserModel, UserEntry } from "./types";
+import { Repository, Database, Criteria, UserModel, UserEntry } from "./types";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants";
@@ -23,10 +23,7 @@ export class Users implements Database<UserModel, UserEntry> {
     return this.repository.insert(user);
   }
 
-  async find(
-    key: keyof UserModel,
-    value: string | number
-  ): Promise<UserModel | undefined> {
-    return this.repository.find(key, value);
+  async find(key: Criteria<UserModel>): Promise<UserModel | undefined> {
+    return this.repository.find(key);
   }
 }

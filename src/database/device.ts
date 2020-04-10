@@ -1,4 +1,4 @@
-import { Repository, Database, DeviceModel } from "./types";
+import { Repository, Database, Criteria, DeviceModel } from "./types";
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants";
 import { inject, injectable } from "inversify";
@@ -19,10 +19,10 @@ export class Devices implements Database<DeviceModel> {
     return this.repository.insert(d);
   }
 
-  async find(
-    key: keyof DeviceModel,
-    value: string | number
-  ): Promise<DeviceModel | undefined> {
-    return this.repository.find(key, value);
+  async find(key: Criteria<DeviceModel>): Promise<DeviceModel | undefined> {
+    return this.repository.find(key);
   }
+
+  // async remove(who: string): Promise<number>;
+  // async remove(who:
 }

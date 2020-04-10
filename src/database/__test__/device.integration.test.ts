@@ -17,7 +17,7 @@ test("Should add a device", async () => {
     mac: "00:00:00:00:00:00"
   });
 
-  let read = await test.database.find("serial", "Serial ID");
+  let read = await test.database.find({ serial: "Serial ID" });
   expect(read).toBeTruthy();
   if (read) {
     expect(read.serial).toBe("Serial ID");
@@ -42,7 +42,7 @@ test("Should not find a device", async () => {
     mac: "00:00:00:00:00:00"
   });
 
-  let read = await test.database.find("serial", "NOT FOUND");
+  let read = await test.database.find({ serial: "NOT  FOUND" });
   expect(read).toBeFalsy();
   await test.connection.close();
 });

@@ -14,7 +14,7 @@ test("Should add a user", async () => {
     role: 0
   });
 
-  let read = await test.database.find("name", "Thomas FOO");
+  let read = await test.database.find({ name: "Thomas FOO" });
   expect(read).toBeTruthy();
   if (read) {
     expect(read.hash).toBe("foo secret hash");
@@ -34,7 +34,7 @@ test("Should not find a user", async () => {
     role: 0
   });
 
-  let read = await test.database.find("name", "NOT FOUND");
+  let read = await test.database.find({ name: "NOT FOUND" });
   expect(read).toBeFalsy();
   await test.connection.close();
 });
