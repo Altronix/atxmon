@@ -10,6 +10,7 @@ import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
 
+// TODO rename to DeviceService to freeup Devices namespace
 @injectable()
 export class Devices implements Database<DeviceModel> {
   utils: UtilRoutines;

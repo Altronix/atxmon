@@ -9,16 +9,24 @@ import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 import databaseContainerModule from "../database/ioc/container";
 import commonContainerModule from "../common/ioc/container";
 import linqContainer from "../linq/ioc/container";
+import controllerContainer from "../controllers/ioc/container";
 
 // Combine containers
 export const createContainer = () => {
   const container = new Container();
+
+  // Load syncronous containers
   container.load(commonContainerModule);
   container.load(linqContainer);
+  container.load(controllerContainer);
+
+  // Load asyncronous containers
   const loading = container.loadAsync(databaseContainerModule);
   const waitForContainer = async () => await loading;
   return { container, waitForContainer, loading };
 };
+
+// TODO below here can be deprecated, just useful for testing
 
 const c = createContainer();
 

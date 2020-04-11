@@ -11,6 +11,7 @@ import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
 
+// TODO rename UsersService to free up Users Namespace
 @injectable()
 export class Users implements Database<UserModel, UserEntry> {
   utils: UtilRoutines;
