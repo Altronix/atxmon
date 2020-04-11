@@ -1,3 +1,7 @@
+// TODO try and use container
+// IE
+// @injectable
+// Class MockUtils
 import "jest";
 import {
   LoggerRoutines,
@@ -18,4 +22,4 @@ export type MockUtils = {
   logger: MockLoggerRoutines;
 };
 
-export default new Utils(new MockLogger(), new MockBcrypt()) as MockUtils;
+export default () => new Utils(new MockLogger(), new MockBcrypt()) as MockUtils;

@@ -1,6 +1,10 @@
-import mockLinq from "./__mocks__/linq-manager.mock";
-import utils, { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
+import getMockLinq from "./__mocks__/linq-manager.mock";
+import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
+import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
 import { Linq } from "../linq";
+
+let utils = getMockUtils();
+let mockLinq = getMockLinq();
 
 test("Linq should send", async () => {
   let linq = new Linq(utils, mockLinq);

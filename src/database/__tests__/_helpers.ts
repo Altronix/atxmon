@@ -2,7 +2,8 @@ import { NetworkedRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
 import { Database, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
-import utils, { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
+import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
+import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
 import * as fs from "fs";
 
 // Remove a database from the host file system (integration test)
@@ -40,6 +41,7 @@ export async function setup<
 ): Promise<Harness<Model, Entry>> {
   // All tests start with an empty database
   await unlinkDatabase(file);
+  let utils = getMockUtils();
   let connection = await getConnection({ database: file });
   const repo = connection.getRepository<Entity>(e);
   let repository = new NetworkedRepository(utils, repo);
