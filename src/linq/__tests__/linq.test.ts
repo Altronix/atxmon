@@ -1,7 +1,7 @@
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import {
-  MockLinqNetwork,
-  MockedLinqNetwork
+  MockDeviceManager,
+  MockedDeviceManager
 } from "./__mocks__/linq-manager.mock";
 import { Linq } from "../linq";
 import { LinqDeviceManager, DeviceManager } from "../types";
@@ -10,7 +10,7 @@ import { createContainer } from "../../ioc/container.root";
 import { Container } from "inversify";
 
 type LinqDeviceManagerWithMock = Omit<LinqDeviceManager, "manager"> & {
-  manager: MockedLinqNetwork;
+  manager: MockedDeviceManager;
 };
 
 let container!: Container;
@@ -20,7 +20,7 @@ beforeAll(async () => {
   container = await createContainer();
   container
     .rebind<DeviceManager>(SYMBOLS.DEVICE_MANAGER)
-    .toDynamicValue(() => new MockLinqNetwork());
+    .toDynamicValue(() => new MockDeviceManager());
 });
 
 async function setup(): Promise<LinqDeviceManagerWithMock> {
