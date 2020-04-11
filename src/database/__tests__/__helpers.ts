@@ -26,17 +26,12 @@ export interface Harness<Model, Entry> {
 }
 
 // Setup a test
-type Constructor<Model, Entry, Entity> = {
+type Constructor<Entity, Model, Entry = Model> = {
   new (u: UtilRoutines, r: Repository<Entity>): Database<Model, Entry>;
 };
-export async function setup<
-  Model,
-  Entity,
-  Entry,
-  DB extends Database<Model, Entry>
->(
+export async function setup<Entity, Model, Entry = Model>(
   e: EntityTarget<Entity>,
-  db: Constructor<Model, Entry, Entity>,
+  db: Constructor<Entity, Model, Entry>,
   file: string
 ): Promise<Harness<Model, Entry>> {
   // All tests start with an empty database
