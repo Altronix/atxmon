@@ -4,7 +4,6 @@ import { SYMBOLS as LINQ_SYMBOLS } from "../linq/ioc/constants";
 import { SYMBOLS as CONTROLLER_SYMBOLS } from "../controllers/ioc/constants";
 
 export const SYMBOLS = Object.assign(
-  {},
   DATABASE_SYMBOLS,
   UTIL_SYMBOLS,
   LINQ_SYMBOLS,

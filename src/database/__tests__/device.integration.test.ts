@@ -1,7 +1,7 @@
 import "jest";
 import { DeviceEntity } from "../orm/entities/device.entity";
 import { Devices } from "../device";
-import { setup, cleanup } from "./_helpers";
+import { setup, cleanup } from "./__helpers";
 
 const DATABASE = "device.integraton.test.db";
 

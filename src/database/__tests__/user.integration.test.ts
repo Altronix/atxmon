@@ -1,7 +1,7 @@
 import "jest";
 import { UserEntity } from "../orm/entities/user.entity";
 import { Users } from "../user";
-import { setup, cleanup } from "./_helpers";
+import { setup, cleanup } from "./__helpers";
 
 const DATABASE = "user.integraton.test.db";
 

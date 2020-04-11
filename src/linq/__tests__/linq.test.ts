@@ -1,31 +1,6 @@
-import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
-import {
-  MockDeviceManager,
-  MockedDeviceManager
-} from "./__mocks__/linq-manager.mock";
-import { Linq } from "../linq";
-import { LinqDeviceManager, DeviceManager } from "../types";
-import { SYMBOLS } from "../../ioc/constants.root";
-import { createContainer } from "../../ioc/container.root";
-import { Container } from "inversify";
+import { setup, helpersBeforeAll } from "./__helpers";
 
-type LinqDeviceManagerWithMock = Omit<LinqDeviceManager, "manager"> & {
-  manager: MockedDeviceManager;
-};
-
-let container!: Container;
-
-// Rebind our container with mock @altronx/linq-network instance for this test
-beforeAll(async () => {
-  container = await createContainer();
-  container
-    .rebind<DeviceManager>(SYMBOLS.DEVICE_MANAGER)
-    .toDynamicValue(() => new MockDeviceManager());
-});
-
-async function setup(): Promise<LinqDeviceManagerWithMock> {
-  return container.get<LinqDeviceManagerWithMock>(SYMBOLS.LINQ_DEVICE_MANAGER);
-}
+beforeAll(async () => helpersBeforeAll());
 
 test("Linq should send", async () => {
   let linq = await setup();
