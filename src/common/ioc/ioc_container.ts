@@ -1,8 +1,8 @@
-import { Bcrypt } from "../common/bcrypt";
-import { Logger as LoggerImpl } from "../common/logger";
-import { Utils as UtilsImpl } from "../common/utils";
-import { SYMBOLS } from "./constants";
-import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
+import { Bcrypt } from "../bcrypt";
+import { Logger as LoggerImpl } from "../logger";
+import { Utils as UtilsImpl } from "../utils";
+import { SYMBOLS } from "../../ioc/constants";
+import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../types";
 
 import { ContainerModule } from "inversify";
 
