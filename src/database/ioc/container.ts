@@ -14,11 +14,7 @@ import { DeviceEntity } from "../orm/entities/device.entity";
 import { UserEntity } from "../orm/entities/user.entity";
 import { Users } from "../user";
 import { Devices } from "../device";
-import { Utils } from "../../common/utils";
-import { Bcrypt } from "../../common/bcrypt";
-import { Logger } from "../../common/logger";
-
-const utils = new Utils(new Logger(), new Bcrypt());
+import { UtilRoutines } from "../../common/types";
 
 const databaseBindings = new AsyncContainerModule(async bind => {
   // helpful context - https://stackoverflow.com/questions/46867437
@@ -29,13 +25,25 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   // Create a Users Repository
   const users = await c.getRepository(UserEntity);
   bind<Repository<UserModel>>(SYMBOLS.REPOSITORY_USER)
-    .toDynamicValue(() => new NetworkedRepository<UserEntity>(utils, users))
+    .toDynamicValue(
+      ctx =>
+        new NetworkedRepository<UserEntity>(
+          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
+          users
+        )
+    )
     .inSingletonScope();
 
   // Create a Devices Repository
   const devices = await c.getRepository(DeviceEntity);
   bind<Repository<DeviceModel>>(SYMBOLS.REPOSITORY_DEVICE)
-    .toDynamicValue(() => new NetworkedRepository<DeviceEntity>(utils, devices))
+    .toDynamicValue(
+      ctx =>
+        new NetworkedRepository<DeviceEntity>(
+          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
+          devices
+        )
+    )
     .inSingletonScope();
 
   // Create a Users Database (manages repository)
