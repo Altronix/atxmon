@@ -1,5 +1,5 @@
-import { getUsers } from "./ioc/ioc_config";
-import { linq } from "./ioc/ioc_config";
+import { getUsers } from "./ioc/container.root";
+import { linq } from "./ioc/container.root";
 import log from "./common/logger";
 
 // TODO - ormconfig.js is importing typescript when running app directly

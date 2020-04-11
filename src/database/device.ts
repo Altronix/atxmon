@@ -7,7 +7,7 @@ import {
   DeviceModel
 } from "./types";
 import { UtilRoutines } from "../common/types";
-import { SYMBOLS } from "../ioc/constants";
+import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
 
 @injectable()

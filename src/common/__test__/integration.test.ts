@@ -1,5 +1,5 @@
 import "jest";
-import { utils } from "../../ioc/ioc_config";
+import { utils } from "../../ioc/container.root";
 
 test("Should validate", async () => {
   let salt = await utils.crypto.salt();

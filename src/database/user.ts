@@ -9,7 +9,7 @@ import {
 } from "./types";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
-import { SYMBOLS } from "../ioc/constants";
+import { SYMBOLS } from "../ioc/constants.root";
 
 @injectable()
 export class Users implements Database<UserModel, UserEntry> {

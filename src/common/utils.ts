@@ -1,7 +1,7 @@
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import { CryptoRoutines, LoggerRoutines, UtilRoutines } from "./types";
 import { injectable, inject } from "inversify";
-import { SYMBOLS } from "../ioc/constants";
+import { SYMBOLS } from "../ioc/constants.root";
 
 export type Constructor<T> = { new (): T };
 export type ConstructorOrFunction<T> = Constructor<T> | Function;

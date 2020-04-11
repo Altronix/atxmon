@@ -1,4 +1,4 @@
-import { SYMBOLS } from "../../ioc/constants";
+import { SYMBOLS } from "../../ioc/constants.root";
 import { AsyncContainerModule } from "inversify";
 
 // Database Imports
