@@ -1,5 +1,7 @@
 import { WithOptional } from "../common/utils";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
+
+// Repository
 export interface Repository<E> {
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
@@ -13,6 +15,7 @@ export interface Repository<E> {
   count(key?: FindCriteria<E>): Promise<number>;
 }
 
+// Database
 export interface Database<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
   find(key: FindCriteria<Model>): Promise<Model | undefined>;
@@ -29,6 +32,8 @@ export type FindCriteria<E> = FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
+// DeviceModel
+export type DeviceService = Database<DeviceModel>;
 export interface DeviceModel {
   serial: string;
   product: string;
@@ -38,6 +43,8 @@ export interface DeviceModel {
   mac: string;
 }
 
+// UserModel
+export type UserService = Database<UserModel, UserEntry>;
 export interface UserModel {
   id: number;
   name: string;
@@ -46,6 +53,7 @@ export interface UserModel {
   devices: DeviceModel[]; //?
 }
 
+// UserEntry
 export type UserEntry = WithOptional<
   Omit<UserModel, "id" | "hash">,
   "devices"
