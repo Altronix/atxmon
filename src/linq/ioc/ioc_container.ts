@@ -1,7 +1,7 @@
 import { LinqNetwork } from "@altronix/linq-network";
-import { LinqManager } from "../linq/types";
-import { Linq } from "../linq/linq";
-import { SYMBOLS } from "./constants";
+import { LinqManager } from "../types";
+import { Linq } from "../linq";
+import { SYMBOLS } from "./ioc_constants";
 import { ContainerModule } from "inversify";
 
 const bindings = new ContainerModule(bind => {

@@ -8,7 +8,7 @@ import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import databaseContainerModule from "../database/ioc/ioc_container";
 import commonContainerModule from "./common.container";
-import linqContainer from "./linq.container";
+import linqContainer from "../linq/ioc/ioc_container";
 
 // Combine containers
 export const createContainer = () => {
