@@ -1,4 +1,4 @@
-import { SYMBOLS } from "./constants";
+import { SYMBOLS } from "./ioc_constants";
 import { AsyncContainerModule } from "inversify";
 
 // Database Imports
@@ -8,15 +8,15 @@ import {
   UserModel,
   UserEntry,
   DeviceModel
-} from "../database/types";
-import { NetworkedRepository, getConnection } from "../database/orm/typeorm";
-import { DeviceEntity } from "../database/orm/entities/device.entity";
-import { UserEntity } from "../database/orm/entities/user.entity";
-import { Users } from "../database/user";
-import { Devices } from "../database/device";
-import { Utils } from "../common/utils";
-import { Bcrypt } from "../common/bcrypt";
-import { Logger } from "../common/logger";
+} from "../types";
+import { NetworkedRepository, getConnection } from "../orm/typeorm";
+import { DeviceEntity } from "../orm/entities/device.entity";
+import { UserEntity } from "../orm/entities/user.entity";
+import { Users } from "../user";
+import { Devices } from "../device";
+import { Utils } from "../../common/utils";
+import { Bcrypt } from "../../common/bcrypt";
+import { Logger } from "../../common/logger";
 
 const utils = new Utils(new Logger(), new Bcrypt());
 

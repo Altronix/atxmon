@@ -6,7 +6,7 @@ import { Linq } from "../linq/linq";
 import { Database, DeviceModel, UserModel, UserEntry } from "../database/types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
-import databaseContainerModule from "./database.container";
+import databaseContainerModule from "../database/ioc/ioc_container";
 import commonContainerModule from "./common.container";
 import linqContainer from "./linq.container";
 
