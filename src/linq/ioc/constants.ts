@@ -1,4 +1,4 @@
 export const SYMBOLS = {
-  LINQ_MANAGER: Symbol.for("LinqManager"),
-  LINQ: Symbol.for("Linq")
+  DEVICE_MANAGER: Symbol.for("DeviceManager"),
+  LINQ_DEVICE_MANAGER: Symbol.for("LinqDeviceManager")
 };

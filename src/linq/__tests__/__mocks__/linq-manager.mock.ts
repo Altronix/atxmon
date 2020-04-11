@@ -1,8 +1,10 @@
-// TODO try and rebind mocks from container
-// IE 
-// @injectable
-// Class MockLinq()...
+import { injectable } from "inversify";
 import { LinqNetwork } from "@altronix/linq-network";
 jest.mock("@altronix/linq-network");
-export type MockLinqNetwork = jest.Mocked<LinqNetwork>;
-export default () => new LinqNetwork() as MockLinqNetwork;
+
+// DeviceManager
+export type MockedLinqNetwork = jest.Mocked<LinqNetwork>;
+
+@injectable()
+export class MockLinqNetwork extends LinqNetwork {}
+//export default () => new LinqNetwork() as MockLinqNetwork;

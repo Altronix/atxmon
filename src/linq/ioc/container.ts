@@ -1,15 +1,15 @@
 import { LinqNetwork } from "@altronix/linq-network";
-import { LinqManager } from "../types";
+import { DeviceManager, LinqDeviceManager } from "../types";
 import { Linq } from "../linq";
 import { SYMBOLS } from "../../ioc/constants.root";
 import { ContainerModule } from "inversify";
 
 const bindings = new ContainerModule(bind => {
-  bind<LinqManager>(SYMBOLS.LINQ_MANAGER)
+  bind<DeviceManager>(SYMBOLS.DEVICE_MANAGER)
     .toDynamicValue(() => new LinqNetwork())
     .inSingletonScope();
-  bind<Linq>(Linq)
-    .toSelf()
+  bind<LinqDeviceManager>(SYMBOLS.LINQ_DEVICE_MANAGER)
+    .to(Linq)
     .inSingletonScope();
 });
 

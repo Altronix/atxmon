@@ -1,15 +1,15 @@
-import { LinqManager } from "./types";
+import { LinqDeviceManager, DeviceManager } from "./types";
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
 
 @injectable()
-export class Linq implements Linq {
+export class Linq implements LinqDeviceManager {
   utils: UtilRoutines;
-  manager: LinqManager;
+  manager: DeviceManager;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.LINQ_MANAGER) manager: LinqManager
+    @inject(SYMBOLS.DEVICE_MANAGER) manager: DeviceManager
   ) {
     this.utils = utils;
     this.manager = manager;

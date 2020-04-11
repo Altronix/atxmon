@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Container, AsyncContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
-import { Linq } from "../linq/linq";
+import { LinqDeviceManager } from "../linq/types";
 import { Database, DeviceModel, UserModel, UserEntry } from "../database/types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
@@ -12,7 +12,7 @@ import linqContainer from "../linq/ioc/container";
 import controllerContainer from "../controllers/ioc/container";
 
 // Combine containers
-export const createContainer = () => {
+export const createContainerContext = () => {
   const container = new Container();
 
   // Load syncronous containers
@@ -26,14 +26,22 @@ export const createContainer = () => {
   return { container, waitForContainer, loading };
 };
 
+export const createContainer = async () => {
+  const ctx = createContainerContext();
+  await ctx.loading;
+  return ctx.container;
+};
+
 // TODO below here can be deprecated, just useful for testing
 
-const c = createContainer();
+const c = createContainerContext();
 
 // Export Class instance
 export const logger = c.container.get<LoggerRoutines>(SYMBOLS.LOGGER_ROUTINES);
 export const utils = c.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);
-export const linq = c.container.get<Linq>(Linq);
+export const linq = c.container.get<LinqDeviceManager>(
+  SYMBOLS.LINQ_DEVICE_MANAGER
+);
 
 // Export Async Class instance
 export const getUsers = async () => {
@@ -46,4 +54,4 @@ export const getDevices = async () => {
   return c.container.get<Database<DeviceModel>>(SYMBOLS.DATABASE_DEVICE);
 };
 
-export default createContainer;
+export default createContainerContext;
