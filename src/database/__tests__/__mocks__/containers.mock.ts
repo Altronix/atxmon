@@ -37,9 +37,18 @@ function rebindRepository<Entity>(
 function rebindDatabase<Entity, Model, Entry = Model>(
   container: Container,
   db: DatabaseConstructor<Entity, Model, Entry>,
-  sym: symbol
+  dbSymbol: symbol,
+  repoSymbol: symbol
 ) {
-  container.rebind<Database<Model, Entry>>(sym).to(db);
+  container
+    .rebind<Database<Model, Entry>>(dbSymbol)
+    .toDynamicValue(
+      ctx =>
+        new db(
+          ctx.container.get(SYMBOLS.UTIL_ROUTINES),
+          ctx.container.get(repoSymbol)
+        )
+    );
 }
 
 export default (container: Container): Container => {
@@ -47,30 +56,22 @@ export default (container: Container): Container => {
   let users!: TypeormRepository<UserEntity>;
   let devices!: TypeormRepository<DeviceEntity>;
 
-  rebindRepository(container, users, SYMBOLS.ORM_REPOSITORY_USER);
-  rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
-
   // NOTE jest.mock("./some/file") will block injectable metadata so we
   // instantiate mock ourself
-  container
-    .rebind<Database<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
-    .toDynamicValue(
-      ctx =>
-        new Devices(
-          ctx.container.get(SYMBOLS.UTIL_ROUTINES),
-          ctx.container.get(SYMBOLS.ORM_REPOSITORY_DEVICE)
-        )
-    );
-
-  container
-    .rebind<Database<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
-    .toDynamicValue(
-      ctx =>
-        new Users(
-          ctx.container.get(SYMBOLS.UTIL_ROUTINES),
-          ctx.container.get(SYMBOLS.ORM_REPOSITORY_USER)
-        )
-    );
+  rebindRepository(container, users, SYMBOLS.ORM_REPOSITORY_USER);
+  rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
+  rebindDatabase(
+    container,
+    Devices,
+    SYMBOLS.DATABASE_DEVICE,
+    SYMBOLS.ORM_REPOSITORY_DEVICE
+  );
+  rebindDatabase(
+    container,
+    Users,
+    SYMBOLS.DATABASE_USER,
+    SYMBOLS.ORM_REPOSITORY_DEVICE
+  );
 
   return container;
 };
