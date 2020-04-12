@@ -1,5 +1,12 @@
 import "jest";
-import { utils } from "../../ioc/container.root";
+import { SYMBOLS } from "../ioc/constants";
+import { Container } from "inversify";
+import { UtilRoutines } from "../types";
+
+import containerModule from "../ioc/container";
+const container = new Container();
+container.load(containerModule);
+const utils = container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);
 
 test("Should validate", async () => {
   let salt = await utils.crypto.salt();

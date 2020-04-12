@@ -31,27 +31,3 @@ export const createContainer = async () => {
   await ctx.loading;
   return ctx.container;
 };
-
-// TODO below here can be deprecated, just useful for testing
-
-const c = createContainerContext();
-
-// Export Class instance
-export const logger = c.container.get<LoggerRoutines>(SYMBOLS.LOGGER_ROUTINES);
-export const utils = c.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);
-export const linq = c.container.get<LinqDeviceManager>(
-  SYMBOLS.LINQ_DEVICE_MANAGER
-);
-
-// Export Async Class instance
-export const getUsers = async () => {
-  await c.waitForContainer();
-  return c.container.get<Database<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER);
-};
-
-export const getDevices = async () => {
-  await c.waitForContainer();
-  return c.container.get<Database<DeviceModel>>(SYMBOLS.DATABASE_DEVICE);
-};
-
-export default createContainerContext;

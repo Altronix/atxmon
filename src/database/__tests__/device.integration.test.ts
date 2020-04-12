@@ -26,10 +26,9 @@ test("Should add a device", async () => {
     expect(read.web_version).toBe("2.2.3");
     expect(read.mac).toBe("00:00:00:00:00:00");
   }
-  await test.connection.close();
+  await cleanup(test);
 });
 
-/*
 test("Should not find a device", async () => {
   let test = await setup(DeviceEntity, Devices, DATABASE);
   let device = await test.database.create({
@@ -43,7 +42,7 @@ test("Should not find a device", async () => {
 
   let read = await test.database.find({ serial: "NOT  FOUND" });
   expect(read).toBeFalsy();
-  await test.connection.close();
+  await cleanup(test);
 });
 
 test("Should remove a device", async () => {
@@ -62,7 +61,7 @@ test("Should remove a device", async () => {
   let result = await test.database.remove({ serial: "Serial ID" });
   expect(await test.database.count()).toBe(0);
 
-  await test.connection.close();
+  await cleanup(test);
 });
 
 test("Should remove a device by ID", async () => {
@@ -81,7 +80,7 @@ test("Should remove a device by ID", async () => {
   let result = await test.database.remove("Serial ID");
   expect(await test.database.count()).toBe(0);
 
-  await test.connection.close();
+  await cleanup(test);
 });
 
 test("Should not remove a device", async () => {
@@ -100,7 +99,7 @@ test("Should not remove a device", async () => {
   let result = await test.database.remove({ serial: "NOT FOUND" });
   expect(await test.database.count()).toBe(1);
 
-  await test.connection.close();
+  await cleanup(test);
 });
 
 test("Should update a device", async () => {
@@ -125,7 +124,7 @@ test("Should update a device", async () => {
   expect(device).toBeTruthy();
   if (device) expect(device.product).toBe("Updated");
 
-  await test.connection.close();
+  await cleanup(test);
 });
 
 test("Should update a device by ID", async () => {
@@ -150,6 +149,5 @@ test("Should update a device by ID", async () => {
   expect(device).toBeTruthy();
   if (device) expect(device.product).toBe("Updated");
 
-  await test.connection.close();
+  await cleanup(test);
 });
-*/
