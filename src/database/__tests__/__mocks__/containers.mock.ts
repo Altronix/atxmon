@@ -34,6 +34,8 @@ function rebindRepository<Entity>(
   );
 }
 
+// NOTE jest.mock("./some/file") will block injectable metadata so we
+// instantiate mock ourself
 function rebindDatabase<Entity, Model, Entry = Model>(
   container: Container,
   db: DatabaseConstructor<Entity, Model, Entry>,
@@ -56,8 +58,6 @@ export default (container: Container): Container => {
   let users!: TypeormRepository<UserEntity>;
   let devices!: TypeormRepository<DeviceEntity>;
 
-  // NOTE jest.mock("./some/file") will block injectable metadata so we
-  // instantiate mock ourself
   rebindRepository(container, users, SYMBOLS.ORM_REPOSITORY_USER);
   rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
   rebindDatabase(
