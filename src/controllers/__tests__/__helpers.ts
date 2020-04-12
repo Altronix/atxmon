@@ -15,22 +15,12 @@ export type MockedDatabaseConstructor<Entity, Model, Entry = Model> = {
   >;
 };
 
-export function mocked<Entity, Model, Entry = Model>(
+// This is just for type casting a database to a mocked database
+export function Mocked<Entity, Model, Entry = Model>(
   db: DatabaseConstructor<Entity, Model, Entry>
 ): MockedDatabaseConstructor<Entity, Model, Entry> {
   return db as MockedDatabaseConstructor<Entity, Model, Entry>;
 }
-
-export type Mocked<
-  Entity,
-  Model,
-  Entry,
-  T extends DatabaseConstructor<Entity, Model, Entry>
-> = Omit<T, "new"> & {
-  new (u: UtilRoutines, r: Repository<Entity>): jest.Mocked<
-    Database<Model, Entry>
-  >;
-};
 
 // A test harness
 export interface Harness<Entity, Model, Entry = Model> {
