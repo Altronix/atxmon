@@ -6,36 +6,28 @@ import { Controller, ControllerConstructor } from "../types";
 import mockUtils, {
   MockUtils
 } from "../../common/__test__/__mocks__/utils.mock";
+import { SYMBOLS } from "../../ioc/constants.root";
+import { createContainer } from "../../ioc/container.root";
+import mockDatabaseContainers from "../../database/__tests__/__mocks__/containers.mock";
 
-export type MockedDatabase<M, E> = jest.Mocked<Database<M, E>>;
-
-export type MockedDatabaseConstructor<Entity, Model, Entry = Model> = {
-  new (u: UtilRoutines, r: Repository<Entity>): jest.Mocked<
-    Database<Model, Entry>
-  >;
-};
-
-// This is just for type casting a database to a mocked database
-export function Mocked<Entity, Model, Entry = Model>(
-  db: DatabaseConstructor<Entity, Model, Entry>
-): MockedDatabaseConstructor<Entity, Model, Entry> {
-  return db as MockedDatabaseConstructor<Entity, Model, Entry>;
-}
+export type MockedDatabase<M, E = M> = jest.Mocked<Database<M, E>>;
 
 // A test harness
-export interface Harness<Entity, Model, Entry = Model> {
+export interface Harness<Model, Entry = Model> {
   database: jest.Mocked<Database<Model, Entry>>;
   utils: MockUtils;
   controller: Controller<Model, Entry>;
 }
 
-export function setup<Entity, Model, Entry = Model>(
-  db: MockedDatabaseConstructor<Entity, Model, Entry>,
-  c: ControllerConstructor<Model, Entry>
-): Harness<Entity, Model, Entry> {
-  let utils = mockUtils();
-  let repo!: Repository<Entity>;
-  let database = (new db(utils, repo) as any) as MockedDatabase<Model, Entry>;
-  let controller = new c(utils, database);
+export async function setup<Model, Entry = Model>(
+  constructor: ControllerConstructor<Model, Entry>,
+  controllerSymbol: symbol,
+  databaseSymbol: symbol
+): Promise<Harness<Model, Entry>> {
+  let container = await createContainer();
+  mockDatabaseContainers(container);
+  let utils = container.get<MockUtils>(SYMBOLS.UTIL_ROUTINES); // TODO need mock
+  let controller = container.get<Controller<Model, Entry>>(controllerSymbol);
+  let database = container.get<MockedDatabase<Model, Entry>>(databaseSymbol);
   return { database, utils, controller };
 }

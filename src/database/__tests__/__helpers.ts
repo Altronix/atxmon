@@ -6,6 +6,7 @@ import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
 import * as fs from "fs";
 
+
 // Remove a database from the host file system (integration test)
 export async function unlinkDatabase(db: string) {
   let ret: void | null;

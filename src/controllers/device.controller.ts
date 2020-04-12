@@ -10,7 +10,7 @@ export class ControllerDevice implements Controller<DeviceModel> {
   utils: UtilRoutines;
   database: Database<DeviceModel>;
   constructor(
-    @inject(SYMBOLS.DATABASE_DEVICE) utils: UtilRoutines,
+    @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_DEVICE) database: Database<DeviceModel>
   ) {
     this.utils = utils;

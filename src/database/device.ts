@@ -9,6 +9,7 @@ import {
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
+import { DeviceEntity } from "./orm/entities/device.entity";
 
 // TODO rename to DeviceService to freeup Devices namespace
 @injectable()
@@ -17,7 +18,7 @@ export class Devices implements Database<DeviceModel> {
   repository: Repository<DeviceModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.REPOSITORY_DEVICE) repository: Repository<DeviceModel>
+    @inject(SYMBOLS.REPOSITORY_DEVICE) repository: Repository<DeviceEntity>
   ) {
     this.utils = utils;
     this.repository = repository;

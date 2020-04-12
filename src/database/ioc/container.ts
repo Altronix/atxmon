@@ -21,10 +21,11 @@ const databaseBindings = new AsyncContainerModule(async bind => {
 
   // Initialize database
   const c = await getConnection();
+  const devices = await c.getRepository(DeviceEntity);
+  const users = await c.getRepository(UserEntity);
 
   // Create a Users Repository
-  const users = await c.getRepository(UserEntity);
-  bind<Repository<UserModel>>(SYMBOLS.REPOSITORY_USER)
+  bind<Repository<UserEntity>>(SYMBOLS.REPOSITORY_USER)
     .toDynamicValue(
       ctx =>
         new NetworkedRepository<UserEntity>(
@@ -35,8 +36,7 @@ const databaseBindings = new AsyncContainerModule(async bind => {
     .inSingletonScope();
 
   // Create a Devices Repository
-  const devices = await c.getRepository(DeviceEntity);
-  bind<Repository<DeviceModel>>(SYMBOLS.REPOSITORY_DEVICE)
+  bind<Repository<DeviceEntity>>(SYMBOLS.REPOSITORY_DEVICE)
     .toDynamicValue(
       ctx =>
         new NetworkedRepository<DeviceEntity>(
