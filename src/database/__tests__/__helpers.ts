@@ -31,7 +31,7 @@ export async function setup<Entity, Model, Entry = Model>(
   file: string
 ): Promise<Harness<Model, Entry>> {
   // All tests start with an empty database
-  // TODO this isn't working, database isn't being created
+  // TODO getConnection creating 2 connections and causing SQLITE_BUSY errors
   await unlinkDatabase(file);
   let utils = getMockUtils();
   let connection = await getConnection({ database: file });

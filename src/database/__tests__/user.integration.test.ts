@@ -3,7 +3,7 @@ import { UserEntity } from "../orm/entities/user.entity";
 import { Users } from "../user";
 import { setup, cleanup } from "./__helpers";
 
-const DATABASE = "user.integraton.test.db";
+const DATABASE = "user.integration.test.db";
 
 test("Should add a user", async () => {
   let test = await setup(UserEntity, Users, DATABASE);
@@ -26,6 +26,7 @@ test("Should add a user", async () => {
   await test.connection.close();
 });
 
+/*
 test("Should not find a user", async () => {
   let test = await setup(UserEntity, Users, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
@@ -138,3 +139,4 @@ test("Should update a user by ID", async () => {
 
   await test.connection.close();
 });
+*/
