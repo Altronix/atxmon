@@ -1,4 +1,4 @@
-import { NetworkedRepository, Connection, getConnection } from "../orm/typeorm";
+import { OrmRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
 import { Database, DatabaseConstructor, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
@@ -36,7 +36,7 @@ export async function setup<Entity, Model, Entry = Model>(
   let utils = getMockUtils();
   let connection = await getConnection({ database: file });
   const repo = connection.getRepository<Entity>(e);
-  let repository = new NetworkedRepository(utils, repo);
+  let repository = new OrmRepository(utils, repo);
   let database = new db(utils, repository);
   return { file, connection, utils, database };
 }

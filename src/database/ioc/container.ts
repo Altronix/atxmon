@@ -9,7 +9,7 @@ import {
   UserEntry,
   DeviceModel
 } from "../types";
-import { NetworkedRepository, getConnection } from "../orm/typeorm";
+import { OrmRepository, getConnection } from "../orm/typeorm";
 import { DeviceEntity } from "../orm/entities/device.entity";
 import { UserEntity } from "../orm/entities/user.entity";
 import { Users } from "../user";
@@ -28,7 +28,7 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   bind<Repository<UserEntity>>(SYMBOLS.REPOSITORY_USER)
     .toDynamicValue(
       ctx =>
-        new NetworkedRepository<UserEntity>(
+        new OrmRepository<UserEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           users
         )
@@ -39,7 +39,7 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   bind<Repository<DeviceEntity>>(SYMBOLS.REPOSITORY_DEVICE)
     .toDynamicValue(
       ctx =>
-        new NetworkedRepository<DeviceEntity>(
+        new OrmRepository<DeviceEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           devices
         )

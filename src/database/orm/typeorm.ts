@@ -26,7 +26,7 @@ export async function getConnection(
 }
 
 @injectable()
-export class NetworkedRepository<E> implements Repository<E> {
+export class OrmRepository<E> implements Repository<E> {
   utils: UtilRoutines;
   repository: TypeormRepository<E>;
   constructor(utils: UtilRoutines, repository: TypeormRepository<E>) {

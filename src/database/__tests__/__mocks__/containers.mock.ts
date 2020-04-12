@@ -9,8 +9,8 @@ import {
   DeviceModel
 } from "../../../database/types";
 import { UtilRoutines } from "../../../common/types";
-import { Repository as OrmRepository } from "typeorm";
-import { NetworkedRepository } from "../../../database/orm/typeorm";
+import { Repository as TypeormRepository } from "typeorm";
+import { OrmRepository } from "../../../database/orm/typeorm";
 import { DeviceEntity } from "../../../database/orm/entities/device.entity";
 import { UserEntity } from "../../../database/orm/entities/user.entity";
 import { injectable } from "inversify";
@@ -22,12 +22,12 @@ jest.mock("../../../database/user"); // Blocking metadata
 
 function rebindRepository<Entity>(
   c: Container,
-  orm: OrmRepository<Entity>,
+  orm: TypeormRepository<Entity>,
   sym: symbol
 ): void {
   c.rebind<Repository<Entity>>(sym).toDynamicValue(
     ctx =>
-      new NetworkedRepository(
+      new OrmRepository(
         ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
         orm
       )
@@ -44,8 +44,8 @@ function rebindDatabase<Entity, Model, Entry = Model>(
 
 export default (container: Container): Container => {
   // (!) Not real, mocks don't need real repositories
-  let users!: OrmRepository<UserEntity>;
-  let devices!: OrmRepository<DeviceEntity>;
+  let users!: TypeormRepository<UserEntity>;
+  let devices!: TypeormRepository<DeviceEntity>;
 
   rebindRepository(container, users, SYMBOLS.REPOSITORY_USER);
   rebindRepository(container, devices, SYMBOLS.REPOSITORY_DEVICE);
