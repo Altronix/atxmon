@@ -4,15 +4,27 @@ import { LinqDeviceManager } from "./linq/types";
 import { Users } from "./database/user";
 import log from "./common/logger";
 
+// TODO - refactor ugly container cruft out of app.js
+import * as bodyParser from "body-parser";
+import {
+  interfaces,
+  InversifyExpressServer,
+  TYPE
+} from "inversify-express-utils";
+
 // TODO - ormconfig.js is importing typescript when running app directly
 // Need to override entities
-
-// TODO - refactor ugly container cruft out of app.js
 
 log("info", "starting app...");
 
 (async () => {
   let container = await createContainer();
+  let server = new InversifyExpressServer(container);
+  server.setConfig(app => {
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+  });
+  server.build().listen(3000);
   let linq = container.get<LinqDeviceManager>(SYMBOLS.LINQ_DEVICE_MANAGER);
   let users = container.get<Users>(SYMBOLS.DATABASE_USER);
   let user = await users.create({ name: "Thomas", pass: "Secret", role: 0 });

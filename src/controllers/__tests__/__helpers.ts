@@ -1,7 +1,6 @@
 import { UtilRoutines } from "../../common/types";
 import { Database, DatabaseConstructor } from "../../database/types";
 import { Repository } from "../../database/types";
-import { NetworkedRepository } from "../../database/orm/typeorm";
 import { Controller, ControllerConstructor } from "../types";
 import mockUtils, {
   MockUtils
