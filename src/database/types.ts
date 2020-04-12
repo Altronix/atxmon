@@ -1,4 +1,5 @@
 import { WithOptional } from "../common/utils";
+import { UtilRoutines } from "../common/types";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
 // Repository
@@ -26,6 +27,10 @@ export interface Database<Model, Entry = Model> {
   ): Promise<number>;
   count(key?: FindCriteria<Model>): Promise<number>;
 }
+
+export type DatabaseConstructor<Entity, Model, Entry = Model> = {
+  new (u: UtilRoutines, r: Repository<Entity>): Database<Model, Entry>;
+};
 
 // Typeorm Types are libraries in themselves. We try to decouple here
 export type FindCriteria<E> = FindOptionsWhere<E>;

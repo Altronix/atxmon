@@ -1,6 +1,6 @@
 import { NetworkedRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
-import { Database, Repository } from "../types";
+import { Database, DatabaseConstructor, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
@@ -25,13 +25,9 @@ export interface Harness<Model, Entry> {
   file: string;
 }
 
-// Setup a test
-type Constructor<Entity, Model, Entry = Model> = {
-  new (u: UtilRoutines, r: Repository<Entity>): Database<Model, Entry>;
-};
 export async function setup<Entity, Model, Entry = Model>(
   e: EntityTarget<Entity>,
-  db: Constructor<Entity, Model, Entry>,
+  db: DatabaseConstructor<Entity, Model, Entry>,
   file: string
 ): Promise<Harness<Model, Entry>> {
   // All tests start with an empty database
