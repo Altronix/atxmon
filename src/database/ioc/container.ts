@@ -25,7 +25,7 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   const users = await c.getRepository(UserEntity);
 
   // Create a Users Repository
-  bind<Repository<UserEntity>>(SYMBOLS.REPOSITORY_USER)
+  bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
     .toDynamicValue(
       ctx =>
         new OrmRepository<UserEntity>(
@@ -36,7 +36,7 @@ const databaseBindings = new AsyncContainerModule(async bind => {
     .inSingletonScope();
 
   // Create a Devices Repository
-  bind<Repository<DeviceEntity>>(SYMBOLS.REPOSITORY_DEVICE)
+  bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
     .toDynamicValue(
       ctx =>
         new OrmRepository<DeviceEntity>(

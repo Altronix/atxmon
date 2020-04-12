@@ -18,7 +18,7 @@ export class Devices implements Database<DeviceModel> {
   repository: Repository<DeviceModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.REPOSITORY_DEVICE) repository: Repository<DeviceEntity>
+    @inject(SYMBOLS.ORM_REPOSITORY_DEVICE) repository: Repository<DeviceEntity>
   ) {
     this.utils = utils;
     this.repository = repository;

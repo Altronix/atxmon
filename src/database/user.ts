@@ -19,7 +19,7 @@ export class Users implements Database<UserModel, UserEntry> {
   repository: Repository<UserModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.REPOSITORY_USER) repository: Repository<UserEntity>
+    @inject(SYMBOLS.ORM_REPOSITORY_USER) repository: Repository<UserEntity>
   ) {
     this.utils = utils;
     this.repository = repository;

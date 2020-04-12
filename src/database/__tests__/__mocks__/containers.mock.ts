@@ -47,8 +47,8 @@ export default (container: Container): Container => {
   let users!: TypeormRepository<UserEntity>;
   let devices!: TypeormRepository<DeviceEntity>;
 
-  rebindRepository(container, users, SYMBOLS.REPOSITORY_USER);
-  rebindRepository(container, devices, SYMBOLS.REPOSITORY_DEVICE);
+  rebindRepository(container, users, SYMBOLS.ORM_REPOSITORY_USER);
+  rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
 
   // NOTE jest.mock("./some/file") will block injectable metadata so we
   // instantiate mock ourself
@@ -58,7 +58,7 @@ export default (container: Container): Container => {
       ctx =>
         new Devices(
           ctx.container.get(SYMBOLS.UTIL_ROUTINES),
-          ctx.container.get(SYMBOLS.REPOSITORY_DEVICE)
+          ctx.container.get(SYMBOLS.ORM_REPOSITORY_DEVICE)
         )
     );
 
@@ -68,7 +68,7 @@ export default (container: Container): Container => {
       ctx =>
         new Users(
           ctx.container.get(SYMBOLS.UTIL_ROUTINES),
-          ctx.container.get(SYMBOLS.REPOSITORY_USER)
+          ctx.container.get(SYMBOLS.ORM_REPOSITORY_USER)
         )
     );
 
