@@ -12,8 +12,8 @@ import {
 } from "inversify-express-utils";
 import * as express from "express";
 
-@controller("/devices", SYMBOLS.MIDDLEWARE_LOGGER)
-export class ControllerDevice implements Controller<DeviceModel> {
+@controller("/devices")
+export class DeviceController implements Controller<DeviceModel> {
   utils: UtilRoutines;
   database: Database<DeviceModel>;
   constructor(

@@ -1,11 +1,11 @@
 import "jest";
 import { SYMBOLS } from "../../ioc/constants.root";
 import { setup } from "./__helpers";
-import { ControllerUser } from "../user.controller";
+import { UserController } from "../user.controller";
 
 test("Should construct", async () => {
   let test = await setup(
-    ControllerUser,
+    UserController,
     SYMBOLS.CONTROLLER_DEVICE,
     SYMBOLS.DATABASE_DEVICE
   );

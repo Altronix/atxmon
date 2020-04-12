@@ -13,7 +13,7 @@ import {
 import * as express from "express";
 
 @controller("/users")
-export class ControllerUser implements Controller<UserModel, UserEntry> {
+export class UserController implements Controller<UserModel, UserEntry> {
   utils: UtilRoutines;
   database: Database<UserModel, UserEntry>;
   constructor(
