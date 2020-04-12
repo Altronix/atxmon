@@ -11,6 +11,5 @@ test("Should construct", async () => {
     SYMBOLS.CONTROLLER_DEVICE,
     SYMBOLS.DATABASE_DEVICE
   );
-  console.log(test.database);
   expect(1).toBe(1);
 });
