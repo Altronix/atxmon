@@ -4,10 +4,6 @@ import { setup } from "./__helpers";
 import { UserController } from "../user.controller";
 
 test("Should construct", async () => {
-  let test = await setup(
-    UserController,
-    SYMBOLS.CONTROLLER_DEVICE,
-    SYMBOLS.DATABASE_DEVICE
-  );
-  expect(1).toBe(1);
+  let test = await setup(UserController, SYMBOLS.DATABASE_DEVICE);
+  expect(test.controller).toBeTruthy();
 });

@@ -19,14 +19,13 @@ export interface Harness<Model, Entry = Model> {
 }
 
 export async function setup<Model, Entry = Model>(
-  constructor: ControllerConstructor<Model, Entry>,
-  controllerSymbol: symbol,
+  controllerConstructor: ControllerConstructor<Model, Entry>,
   databaseSymbol: symbol
 ): Promise<Harness<Model, Entry>> {
   let container = await createContainer();
   mockDatabaseContainers(container);
   let utils = container.get<MockUtils>(SYMBOLS.UTIL_ROUTINES); // TODO need mock
-  let controller = container.get<Controller<Model, Entry>>(controllerSymbol);
   let database = container.get<MockedDatabase<Model, Entry>>(databaseSymbol);
+  let controller = new controllerConstructor(utils, database);
   return { database, utils, controller };
 }
