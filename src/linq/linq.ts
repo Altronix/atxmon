@@ -14,6 +14,7 @@ export class Linq implements LinqDeviceManager {
     this.utils = utils;
     this.manager = manager;
   }
+
   async send<T>(
     serial: string,
     meth: "GET" | "POST" | "DELETE",
