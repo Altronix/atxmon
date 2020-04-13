@@ -1,5 +1,4 @@
 import { SYMBOLS } from "../../../ioc/constants.root";
-import { Container } from "inversify";
 import {
   Database,
   Repository,
@@ -13,12 +12,17 @@ import { Repository as TypeormRepository } from "typeorm";
 import { OrmRepository } from "../../../database/orm/typeorm";
 import { DeviceEntity } from "../../../database/orm/entities/device.entity";
 import { UserEntity } from "../../../database/orm/entities/user.entity";
-import { injectable } from "inversify";
+import { Container, decorate, injectable } from "inversify";
 
 import { Devices } from "../../../database/device";
 import { Users } from "../../../database/user";
 jest.mock("../../../database/device"); // Blocking metadata
 jest.mock("../../../database/user"); // Blocking metadata
+
+// NOTE jest.mock("./some/file") will block injectable metadata so we
+// need to redecroate
+decorate(injectable(), Devices);
+decorate(injectable(), Users);
 
 function rebindRepository<Entity>(
   c: Container,
@@ -34,23 +38,12 @@ function rebindRepository<Entity>(
   );
 }
 
-// NOTE jest.mock("./some/file") will block injectable metadata so we
-// instantiate mock ourself
 function rebindDatabase<Entity, Model, Entry = Model>(
   container: Container,
   db: DatabaseConstructor<Entity, Model, Entry>,
-  dbSymbol: symbol,
-  repoSymbol: symbol
+  dbSymbol: symbol
 ) {
-  container
-    .rebind<Database<Model, Entry>>(dbSymbol)
-    .toDynamicValue(
-      ctx =>
-        new db(
-          ctx.container.get(SYMBOLS.UTIL_ROUTINES),
-          ctx.container.get(repoSymbol)
-        )
-    );
+  container.rebind<Database<Model, Entry>>(dbSymbol).to(db);
 }
 
 export default (container: Container): Container => {
@@ -60,18 +53,8 @@ export default (container: Container): Container => {
 
   rebindRepository(container, users, SYMBOLS.ORM_REPOSITORY_USER);
   rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
-  rebindDatabase(
-    container,
-    Devices,
-    SYMBOLS.DATABASE_DEVICE,
-    SYMBOLS.ORM_REPOSITORY_DEVICE
-  );
-  rebindDatabase(
-    container,
-    Users,
-    SYMBOLS.DATABASE_USER,
-    SYMBOLS.ORM_REPOSITORY_DEVICE
-  );
+  rebindDatabase(container, Devices, SYMBOLS.DATABASE_DEVICE);
+  rebindDatabase(container, Users, SYMBOLS.DATABASE_USER);
 
   return container;
 };
