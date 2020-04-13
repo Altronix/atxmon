@@ -4,5 +4,5 @@ export const SYMBOLS = {
 };
 
 export const METADATA_KEY = {
-  event: "altronix:linq:controller"
+  event: "altronix:linq:event"
 };
