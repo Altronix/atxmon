@@ -6,6 +6,7 @@ import log from "./common/logger";
 
 // TODO - refactor ugly container cruft out of app.js
 import * as bodyParser from "body-parser";
+import { inject } from "inversify";
 import {
   interfaces,
   InversifyExpressServer,

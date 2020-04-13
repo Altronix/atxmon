@@ -1,23 +1,30 @@
 import { setup, helpersBeforeAll } from "./__helpers";
 import { METADATA_KEY } from "../ioc/constants";
-import { LinqEventMetadata } from "../types";
-import { linqEvent } from "../decorators";
+import { LinqEventHandlerMetadata } from "../types";
+import { EventHandler } from "../decorators";
 
-test("LinqEvent should have metadata", () => {
-  @linqEvent("heartbeat")
-  class LinqHeartbeat {}
+test("LinqEventHandler should have metadata", () => {
+  @EventHandler()
+  class HandlerA {}
 
-  @linqEvent("alert")
-  class LinqAlert {}
+  @EventHandler()
+  class HandlerB {}
 
-  let meta: LinqEventMetadata[] = Reflect.getMetadata(
-    METADATA_KEY.event,
+  let meta: LinqEventHandlerMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.eventHandler,
     Reflect
   );
 
-  expect(meta[0].target).toBeTruthy();
-  expect(meta[0].event).toEqual("alert");
+  expect(meta[0].target.name).toBeTruthy();
+  expect(meta[0].target.name).toEqual("HandlerB");
 
-  expect(meta[1].target).toBeTruthy();
-  expect(meta[1].event).toEqual("heartbeat");
+  expect(meta[1].target.name).toBeTruthy();
+  expect(meta[1].target.name).toEqual("HandlerA");
+});
+
+test("LinqEvent should be called", () => {
+  @EventHandler()
+  class Handler {
+    onHeartbeat(serial: string) {}
+  }
 });

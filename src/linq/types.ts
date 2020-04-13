@@ -20,7 +20,26 @@ export interface LinqDeviceManager {
   run(ms: number): Promise<any>;
 }
 
-export interface LinqEventMetadata {
-  event: LINQ_EVENTS;
+export interface LinqEventHandler {
+  onHeartbeat?: (serial: string) => void;
+  onAlert?: (serial: string) => void;
+  onCtrlc?: () => void;
+  onError?: () => void;
+}
+
+export interface LinqEventHandlerMetadata {
   target: any;
 }
+
+export interface LinqEventMetadata extends LinqEventHandlerMetadata {
+  event: LINQ_EVENTS;
+}
+
+// on_error (E_LINQ_ERROR e, const char *what, const char *serial)
+// on_heart (const char *serial, device_s** d)
+// on_alert (linq_network_alert_s* alert, linq_network_email_s* email);
+// on_ctrlc ()
+
+// node_js.on_error N/A
+// node_js.on_heartbeat(serial => {});
+// node_js.on_alert(objAlertNSerial => {}); // TODO should be serial, alert
