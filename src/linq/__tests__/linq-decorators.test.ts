@@ -1,4 +1,4 @@
-import { setup, helpersBeforeAll } from "./__helpers";
+import { setup } from "./__helpers";
 import { METADATA_KEY } from "../ioc/constants";
 import { LinqEventHandlerMetadata } from "../types";
 import { EventHandler } from "../decorators";
@@ -27,4 +27,11 @@ test("LinqEvent should be called", () => {
   class Handler {
     onHeartbeat(serial: string) {}
   }
+
+  let handler = new Handler();
+  let spy = jest.spyOn(handler, "onHeartbeat");
+
+  const test = setup();
+  // TODO device manager has an "emit" interface we need to spoof
+  // test.manager.on("heartbeat", "SERIAL ID");
 });

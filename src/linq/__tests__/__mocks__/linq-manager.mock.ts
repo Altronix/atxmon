@@ -1,9 +1,12 @@
-import { injectable } from "inversify";
+import { injectable, decorate, Container } from "inversify";
+import { SYMBOLS } from "../../../ioc/constants.root";
 import { LinqNetwork as DeviceManager } from "@altronix/linq-network";
 jest.mock("@altronix/linq-network");
 
-// DeviceManager
-export type MockedDeviceManager = jest.Mocked<DeviceManager>;
+// Note jest.mock removes @injectable() decorator
+decorate(injectable(), DeviceManager);
 
-@injectable()
-export class MockDeviceManager extends DeviceManager {}
+export default (container: Container): Container => {
+  container.rebind<DeviceManager>(SYMBOLS.DEVICE_MANAGER).to(DeviceManager);
+  return container;
+};

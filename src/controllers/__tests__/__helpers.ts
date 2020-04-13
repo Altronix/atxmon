@@ -2,9 +2,7 @@ import { UtilRoutines } from "../../common/types";
 import { Database, DatabaseConstructor } from "../../database/types";
 import { Repository } from "../../database/types";
 import { Controller, ControllerConstructor } from "../types";
-import mockUtils, {
-  MockUtils
-} from "../../common/__test__/__mocks__/utils.mock";
+import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import { SYMBOLS } from "../../ioc/constants.root";
 import { createContainer } from "../../ioc/container.root";
 import mockDatabaseContainers from "../../database/__tests__/__mocks__/containers.mock";
