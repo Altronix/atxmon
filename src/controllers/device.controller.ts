@@ -4,7 +4,6 @@ import { Database, DeviceModel } from "../database/types";
 import { Controller } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";
-import * as express from "express";
 import { httpGet, httpPost, controller } from "./decorators";
 
 @controller("/devices")
@@ -20,7 +19,7 @@ export class DeviceController implements Controller<DeviceModel> {
   }
 
   @httpGet("/")
-  private async index(req: express.Request, res: express.Response) {
+  private async index(req: Request, res: Response) {
     res.send({ devices: [] });
   }
 }

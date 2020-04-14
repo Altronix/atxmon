@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { UtilRoutines } from "../common/types";
 import { Database, DeviceModel } from "../database/types";
 import { Controller } from "./types";
@@ -15,11 +15,7 @@ export class RootController {
   }
 
   @httpGet("/")
-  private async index(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
+  private async index(req: Request, res: Response, next: NextFunction) {
     res.send({ root: [] });
   }
 }
