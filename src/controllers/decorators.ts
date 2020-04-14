@@ -9,6 +9,7 @@ import { ServiceIdentifier } from "../ioc/types";
 import { injectable, decorate } from "inversify";
 import { Router } from "express";
 import { Container } from "inversify";
+import { MiddlewareHandler } from "../middleware/types";
 
 // Copied from inversify-express-utils. We like decorators for initialization
 // but not excessive use during runtime See inversify-express-utils performance
@@ -35,7 +36,7 @@ export function controller(
 
     Reflect.defineMetadata(METADATA_KEY.controller, newMetadata, Reflect);
 
-    return class extends target {
+    class C extends target {
       constructor(...args: any[]) {
         super(...args);
         let meta: ControllerMethodMetadata[] = Reflect.getMetadata(
@@ -45,7 +46,9 @@ export function controller(
         // Router seems to remove this binding, so we bind this in constructor
         meta.forEach(m => ((this as any)[m.key] as any).bind(this));
       }
-    };
+    }
+    decorate(injectable(), C);
+    return C;
   };
 }
 
@@ -137,7 +140,18 @@ export function httpMethod(
   };
 }
 
-export function createRouter(controller: any) {
+export function getControllerMiddleware(controller: any) {
+  let metaData: ControllerMetadata = Reflect.getMetadata(
+    METADATA_KEY.controller,
+    controller.constructor
+  );
+  return metaData.middleware;
+}
+
+export function createRouter(
+  controller: any,
+  ...middleware: MiddlewareHandler[]
+) {
   let metaData: ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
     controller.constructor
@@ -151,7 +165,8 @@ export function createRouter(controller: any) {
   metaMethodData.forEach(data => {
     routes[data.method](data.path, controller[data.key]);
   });
-  let ctrl = Router();
-  ctrl.use(metaData.path, routes);
-  return ctrl;
+  let root = Router();
+  middleware.forEach(m => root.use(m.handler));
+  root.use(metaData.path, routes);
+  return root;
 }

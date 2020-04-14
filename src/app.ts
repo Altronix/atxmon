@@ -21,7 +21,7 @@ log("info", "starting app...");
   let container = await createContainer();
   let server = boot({
     container,
-    controllers: [RootController, UserController, DeviceController]
+    controllers: [UserController]
   });
   server.app.use(bodyParser.urlencoded({ extended: true }));
   server.app.use(bodyParser.json());

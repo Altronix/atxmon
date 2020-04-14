@@ -1,10 +1,12 @@
 import { injectable, inject } from "inversify";
 import { UtilRoutines } from "../common/types";
+import { middleware } from "./decorators";
+import { MiddlewareHandler } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
 import * as express from "express";
 
-@injectable()
-export class LoggerMiddleware {
+@middleware()
+export class LoggerMiddleware implements MiddlewareHandler {
   _utils: UtilRoutines;
 
   constructor(@inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines) {
@@ -15,7 +17,9 @@ export class LoggerMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    this._utils.logger.info("ROUTE HIT");
+    // this._utils.logger.info("ROUTE HIT");
+    console.log("hit middleware");
+    console.log(this);
     next();
   }
 }
