@@ -17,9 +17,7 @@ export class LoggerMiddleware implements MiddlewareHandler {
     res: express.Response,
     next: express.NextFunction
   ) {
-    // this._utils.logger.info("ROUTE HIT");
-    console.log("hit middleware");
-    console.log(this);
+    this._utils.logger.info("ROUTE HIT");
     next();
   }
 }

@@ -5,7 +5,7 @@ export function middleware() {
     class C extends target {
       constructor(...args: any[]) {
         super(...args);
-        ((this as any).handler as any).bind(this);
+        (this as any).handler = ((this as any).handler as any).bind(this);
       }
     }
     decorate(injectable(), C);

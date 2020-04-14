@@ -44,7 +44,9 @@ export function controller(
           target
         );
         // Router seems to remove this binding, so we bind this in constructor
-        meta.forEach(m => ((this as any)[m.key] as any).bind(this));
+        meta.forEach(m => {
+          (this as any)[m.key] = ((this as any)[m.key] as any).bind(this);
+        });
       }
     }
     decorate(injectable(), C);
