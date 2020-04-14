@@ -18,7 +18,7 @@ export function controller(
   path: string,
   ...middleware: ServiceIdentifier<any>[]
 ) {
-  return function(target: any) {
+  return function<T extends { new (...args: any[]): {} }>(target: T) {
     let currentMetadata: ControllerMetadata = {
       middleware: middleware,
       path: path,
@@ -35,7 +35,18 @@ export function controller(
 
     Reflect.defineMetadata(METADATA_KEY.controller, newMetadata, Reflect);
 
-    console.log(Reflect.getMetadata(METADATA_KEY.controllerMethod, target));
+    // console.log(Reflect.getMetadata(METADATA_KEY.controllerMethod, target));
+    return class extends target {
+      constructor(...args: any[]) {
+        super(...args);
+        let meta: ControllerMethodMetadata[] = Reflect.getMetadata(
+          METADATA_KEY.controllerMethod,
+          target
+        );
+        // Router seems to remove this binding, so we bind this in constructor
+        meta.forEach(m => ((this as any)[m.key] as any).bind(this));
+      }
+    };
   };
 }
 

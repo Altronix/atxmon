@@ -77,9 +77,11 @@ test("Controller should add", () => {
   @controller("/users")
   class ControllerA {
     @httpGet("/")
-    index(req: Request, res: Response) {}
+    index(req: Request, res: Response) {
+      console.log(this);
+    }
   }
 
-  let c = new Container();
-  let router = createRouter(c, ControllerA);
+  let c = new ControllerA();
+  c.index(("" as any) as Request, ("" as any) as Response);
 });
