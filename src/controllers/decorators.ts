@@ -123,3 +123,21 @@ export function httpMethod(
     metadataList.push(metadata);
   };
 }
+
+export function addController(
+  router: Router,
+  controller: { new (...args: any[]): {} }
+) {
+  let metaData: ControllerMetadata = Reflect.getMetadata(
+    METADATA_KEY.controller,
+    controller
+  );
+  let metaMethodData: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    metaData.target
+  );
+
+  metaMethodData.forEach(data => {
+    router[data.method](data.path, controller.prototype[data.key]);
+  });
+}

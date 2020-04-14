@@ -1,10 +1,8 @@
-import { controller, httpGet, httpPost } from "../decorators";
+import { controller, httpGet, httpPost, addController } from "../decorators";
 import { ControllerMetadata, ControllerMethodMetadata } from "../types";
 import { METADATA_KEY } from "../ioc/constants";
 import { Request, Response, Router } from "express";
-
-jest.mock("express");
-type MockedRouter = jest.Mocked<Router>;
+import { Container } from "inversify";
 
 test("Controller should add metadata", () => {
   @controller("/users")
@@ -51,18 +49,16 @@ test("Controller should add metadata", () => {
   expect(metaMethodsA[0].method).toEqual("get");
 });
 
-/*
-test("should map controllers", () => {
+test("Controller should add", () => {
   @controller("/users")
   class ControllerA {
     @httpGet("/")
     index(req: Request, res: Response) {}
   }
 
-  @controller("/devices")
-  class ControllerB {
-    @httpGet("/")
-    index(req: Request, res: Response) {}
-  }
+  let router = Router();
+  let getSpy = jest.spyOn(router, "get");
+
+  addController(router, ControllerA);
+  expect(getSpy).toBeCalledWith("/", ControllerA.prototype.index);
 });
-*/

@@ -4,9 +4,13 @@ import { LinqDeviceManager } from "./linq/types";
 import { Users } from "./database/user";
 import log from "./common/logger";
 
+import { UserController } from "./controllers/user.controller";
+import { RootController } from "./controllers/root.controller";
+import { DeviceController } from "./controllers/device.controller";
+
 // TODO - refactor ugly container cruft out of app.js
 import * as bodyParser from "body-parser";
-import { inject } from "inversify";
+import * as express from "express";
 
 // TODO - ormconfig.js is importing typescript when running app directly
 // Need to override entities
