@@ -1,6 +1,7 @@
 import { Database } from "../database/types";
 import { UtilRoutines } from "../common/types";
 import { ServiceIdentifier } from "../ioc/types";
+import { Router } from "express";
 export interface Controller<Model, Entry = Model> {
   utils: UtilRoutines;
   database: Database<Model, Entry>;
@@ -21,6 +22,10 @@ export type HTTP_METHODS =
   | HTTP_PATCH
   | HTTP_HEAD
   | HTTP_DELETE;
+
+export type ControllerConstructorTest = {
+  new (r: Router, ...args: any[]): ControllerConstructorTest;
+};
 
 export type ControllerConstructor<Model, Entry = Model> = {
   new (u: UtilRoutines, d: Database<Model, Entry>): Controller<Model, Entry>;

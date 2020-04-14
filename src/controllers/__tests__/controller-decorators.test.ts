@@ -1,4 +1,4 @@
-import { controller, httpGet } from "../decorators";
+import { controller, httpGet, httpPost } from "../decorators";
 import { ControllerMetadata, ControllerMethodMetadata } from "../types";
 import { METADATA_KEY } from "../ioc/constants";
 import { Request, Response, Router } from "express";
@@ -15,7 +15,7 @@ test("Controller should add metadata", () => {
 
   @controller("/devices")
   class ControllerB {
-    @httpGet("/")
+    @httpPost("/")
     index(req: Request, res: Response) {}
   }
 
@@ -24,17 +24,34 @@ test("Controller should add metadata", () => {
     Reflect
   );
 
-  expect(meta[0].target.name).toBeTruthy();
+  let metaMethodsA: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    ControllerA
+  );
+
+  let metaMethodsB: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    ControllerB
+  );
+
   expect(meta[0].target.name).toEqual("ControllerB");
   expect(meta[0].path).toEqual("/devices");
   expect(meta[0].middleware.length).toEqual(0);
+  expect(metaMethodsB[0].middleware.length).toEqual(0);
+  expect(metaMethodsB[0].path).toEqual("/");
+  expect(metaMethodsB[0].key).toEqual("index");
+  expect(metaMethodsB[0].method).toEqual("post");
 
-  expect(meta[1].target.name).toBeTruthy();
   expect(meta[1].target.name).toEqual("ControllerA");
   expect(meta[1].path).toEqual("/users");
   expect(meta[1].middleware.length).toEqual(0);
+  expect(metaMethodsA[0].middleware.length).toEqual(0);
+  expect(metaMethodsA[0].path).toEqual("/");
+  expect(metaMethodsA[0].key).toEqual("index");
+  expect(metaMethodsA[0].method).toEqual("get");
 });
 
+/*
 test("should map controllers", () => {
   @controller("/users")
   class ControllerA {
@@ -48,3 +65,4 @@ test("should map controllers", () => {
     index(req: Request, res: Response) {}
   }
 });
+*/
