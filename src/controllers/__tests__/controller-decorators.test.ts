@@ -1,4 +1,4 @@
-import { controller, httpGet, httpPost, addController } from "../decorators";
+import { controller, httpGet, httpPost, createRouter } from "../decorators";
 import { ControllerMetadata, ControllerMethodMetadata } from "../types";
 import { METADATA_KEY } from "../ioc/constants";
 import { Request, Response, Router } from "express";
@@ -49,6 +49,30 @@ test("Controller should add metadata", () => {
   expect(metaMethodsA[0].method).toEqual("get");
 });
 
+test("Controller metadata should be available on constructor", () => {
+  @controller("/foo")
+  class Foo {
+    @httpGet("/")
+    index() {}
+  }
+  let f = new Foo();
+  let meta: ControllerMetadata = Reflect.getMetadata(
+    METADATA_KEY.controller,
+    f.constructor
+  );
+  let metaMethods: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    f.constructor
+  );
+  expect(meta.middleware.length).toEqual(0);
+  expect(meta.path).toEqual("/foo");
+  expect(meta.target.name).toEqual("Foo");
+  expect(metaMethods[0].method).toEqual("get");
+  expect(metaMethods[0].key).toEqual("index");
+  expect(metaMethods[0].path).toEqual("/");
+  expect(metaMethods[0].middleware.length).toEqual(0);
+});
+
 test("Controller should add", () => {
   @controller("/users")
   class ControllerA {
@@ -56,9 +80,6 @@ test("Controller should add", () => {
     index(req: Request, res: Response) {}
   }
 
-  let router = Router();
-  let getSpy = jest.spyOn(router, "get");
-
-  addController(router, ControllerA);
-  expect(getSpy).toBeCalledWith("/", ControllerA.prototype.index);
+  let c = new Container();
+  let router = createRouter(c, ControllerA);
 });

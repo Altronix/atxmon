@@ -17,10 +17,12 @@ export class UserController implements Controller<UserModel, UserEntry> {
   ) {
     this.utils = utils;
     this.database = database;
+    this.index = this.index.bind(this);
   }
 
   @httpGet("/")
-  private async index(req: express.Request, res: express.Response) {
-    res.send({ hello: "world" });
+  public async index(req: express.Request, res: express.Response) {
+    console.log(this.utils);
+    res.json({ hello: "world" });
   }
 }

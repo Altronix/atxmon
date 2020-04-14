@@ -8,6 +8,7 @@ import {
 import { ServiceIdentifier } from "../ioc/types";
 import { injectable, decorate } from "inversify";
 import { Router } from "express";
+import { Container } from "inversify";
 
 // Copied from inversify-express-utils. We like decorators for initialization
 // but not excessive use during runtime See inversify-express-utils performance
@@ -33,6 +34,8 @@ export function controller(
     const newMetadata = [currentMetadata, ...previousMetadata];
 
     Reflect.defineMetadata(METADATA_KEY.controller, newMetadata, Reflect);
+
+    console.log(Reflect.getMetadata(METADATA_KEY.controllerMethod, target));
   };
 }
 
@@ -124,8 +127,8 @@ export function httpMethod(
   };
 }
 
-export function addController(
-  router: Router,
+export function createRouter(
+  container: Container,
   controller: { new (...args: any[]): {} }
 ) {
   let metaData: ControllerMetadata = Reflect.getMetadata(
@@ -136,8 +139,25 @@ export function addController(
     METADATA_KEY.controllerMethod,
     metaData.target
   );
+  const name = metaData.target.name;
 
+  if (container.isBoundNamed(SYMBOLS.CONTROLLER, name)) {
+    throw new Error(`Duplicated controller name ${name}`);
+  }
+  container
+    .bind(SYMBOLS.CONTROLLER)
+    .to(controller)
+    .whenTargetNamed(name);
+
+  // ...
+  let c = container.getNamed(SYMBOLS.CONTROLLER, name) as any;
+
+  let routes = Router();
   metaMethodData.forEach(data => {
-    router[data.method](data.path, controller.prototype[data.key]);
+    routes[data.method](data.path, c[data.key]);
+    (c[data.key] as any).bind(c);
   });
+  let ctrl = Router();
+  ctrl.use(metaData.path, routes);
+  return { c, ctrl };
 }
