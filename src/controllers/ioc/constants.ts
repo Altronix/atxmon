@@ -1,9 +1,4 @@
-export const SYMBOLS = {
-  CONTROLLER: Symbol.for("Controller"),
-  CONTROLLER_ROOT: Symbol.for("RootController"),
-  CONTROLLER_USER: Symbol.for("UserController"),
-  CONTROLLER_DEVICE: Symbol.for("DeviceController")
-};
+export const SYMBOLS = {};
 
 export const METADATA_KEY = {
   controller: "altronix/controller",

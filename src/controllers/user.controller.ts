@@ -22,7 +22,6 @@ export class UserController implements Controller<UserModel, UserEntry> {
 
   @httpGet("/")
   public async index(req: express.Request, res: express.Response) {
-    console.log(this.utils);
-    res.json({ hello: "world" });
+    res.send({ hello: "world" });
   }
 }

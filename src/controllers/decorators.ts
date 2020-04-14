@@ -138,37 +138,21 @@ export function httpMethod(
   };
 }
 
-export function createRouter(
-  container: Container,
-  controller: { new (...args: any[]): {} }
-) {
+export function createRouter(controller: any) {
   let metaData: ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
-    controller
+    controller.constructor
   );
   let metaMethodData: ControllerMethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
-    metaData.target
+    controller.constructor
   );
-  const name = metaData.target.name;
-
-  if (container.isBoundNamed(SYMBOLS.CONTROLLER, name)) {
-    throw new Error(`Duplicated controller name ${name}`);
-  }
-  container
-    .bind(SYMBOLS.CONTROLLER)
-    .to(controller)
-    .whenTargetNamed(name);
-
-  // ...
-  let c = container.getNamed(SYMBOLS.CONTROLLER, name) as any;
 
   let routes = Router();
   metaMethodData.forEach(data => {
-    routes[data.method](data.path, c[data.key]);
-    (c[data.key] as any).bind(c);
+    routes[data.method](data.path, controller[data.key]);
   });
   let ctrl = Router();
   ctrl.use(metaData.path, routes);
-  return { c, ctrl };
+  return ctrl;
 }

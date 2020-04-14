@@ -81,7 +81,5 @@ test("Controller should add", () => {
       console.log(this);
     }
   }
-
-  let c = new ControllerA();
-  c.index(("" as any) as Request, ("" as any) as Response);
+  // TODO
 });
