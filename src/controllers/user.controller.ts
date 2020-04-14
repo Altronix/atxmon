@@ -22,6 +22,6 @@ export class UserController implements Controller<UserModel, UserEntry> {
 
   @httpGet("/")
   public async index(req: express.Request, res: express.Response) {
-    res.send({ hello: "world" });
+    res.send({ users: [] });
   }
 }

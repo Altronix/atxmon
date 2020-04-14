@@ -21,6 +21,6 @@ export class DeviceController implements Controller<DeviceModel> {
 
   @httpGet("/")
   private async index(req: express.Request, res: express.Response) {
-    res.send({ hello: "world" });
+    res.send({ devices: [] });
   }
 }
