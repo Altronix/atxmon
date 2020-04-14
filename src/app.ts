@@ -7,7 +7,7 @@ import log from "./common/logger";
 import { UserController } from "./controllers/user.controller";
 import { RootController } from "./controllers/root.controller";
 import { DeviceController } from "./controllers/device.controller";
-import { createRouter } from "./controllers/decorators";
+import { createRouter } from "./decorators";
 
 import * as bodyParser from "body-parser";
 import { boot } from "./boot";

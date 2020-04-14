@@ -1,6 +1,6 @@
 import { injectable, inject } from "inversify";
 import { UtilRoutines } from "../common/types";
-import { middleware } from "./decorators";
+import { middleware } from "../decorators";
 import { MiddlewareHandler } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
 import * as express from "express";

@@ -1,7 +1,4 @@
-import {
-  getControllerMiddleware,
-  createRouter
-} from "./controllers/decorators";
+import { getControllerMiddleware, createRouter } from "./decorators";
 import express from "express";
 import { Container } from "inversify";
 

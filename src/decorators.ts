@@ -1,19 +1,32 @@
-import { METADATA_KEY, SYMBOLS } from "./ioc/constants";
+import { METADATA_KEY } from "./ioc/constants.root";
 import {
   HTTP_METHODS,
   ControllerConstructorTest,
   ControllerMetadata,
   ControllerMethodMetadata
-} from "./types";
-import { ServiceIdentifier } from "../ioc/types";
-import { injectable, decorate } from "inversify";
+} from "./controllers/types";
+import { ServiceIdentifier } from "./ioc/types";
+import { Container, injectable, decorate } from "inversify";
 import { Router } from "express";
-import { Container } from "inversify";
-import { MiddlewareHandler } from "../middleware/types";
+import { MiddlewareHandler } from "./middleware/types";
 
 // Copied from inversify-express-utils. We like decorators for initialization
 // but not excessive use during runtime See inversify-express-utils performance
 // issues https://github.com/inversify/inversify-express-utils/issues/1046
+
+export function middleware() {
+  return function<T extends { new (...args: any[]): {} }>(target: T) {
+    decorate(injectable(), target);
+    class C extends target {
+      constructor(...args: any[]) {
+        super(...args);
+        (this as any).handler = ((this as any).handler as any).bind(this);
+      }
+    }
+    decorate(injectable(), C);
+    return C;
+  };
+}
 
 export function controller(
   path: string,
