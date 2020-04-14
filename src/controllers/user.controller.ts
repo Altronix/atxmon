@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { UtilRoutines } from "../common/types";
+import { LoggerMiddleware } from "../middleware/logger.middleware";
 import { Database, UserModel, UserEntry } from "../database/types";
 import { Controller } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
-import { injectable, inject } from "inversify";
-import * as express from "express";
 import { httpGet, httpPost, controller } from "./decorators";
+import { injectable, inject } from "inversify";
 
-@controller("/users")
+@controller("/users", LoggerMiddleware)
 export class UserController implements Controller<UserModel, UserEntry> {
   utils: UtilRoutines;
   database: Database<UserModel, UserEntry>;
@@ -21,7 +21,7 @@ export class UserController implements Controller<UserModel, UserEntry> {
   }
 
   @httpGet("/")
-  public async index(req: express.Request, res: express.Response) {
+  public async index(req: Request, res: Response) {
     res.send({ users: [] });
   }
 }

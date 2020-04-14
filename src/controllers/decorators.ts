@@ -35,7 +35,6 @@ export function controller(
 
     Reflect.defineMetadata(METADATA_KEY.controller, newMetadata, Reflect);
 
-    // console.log(Reflect.getMetadata(METADATA_KEY.controllerMethod, target));
     return class extends target {
       constructor(...args: any[]) {
         super(...args);
