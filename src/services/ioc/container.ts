@@ -3,7 +3,7 @@ import { AsyncContainerModule } from "inversify";
 
 // Database Imports
 import {
-  Database,
+  DatabaseService,
   Repository,
   UserModel,
   UserEntry,
@@ -12,8 +12,8 @@ import {
 import { OrmRepository, getConnection } from "../orm/typeorm";
 import { DeviceEntity } from "../orm/entities/device.entity";
 import { UserEntity } from "../orm/entities/user.entity";
-import { Users } from "../user";
-import { Devices } from "../device";
+import { UserService } from "../user.service";
+import { DeviceService } from "../device.service";
 import { UtilRoutines } from "../../common/types";
 
 const databaseBindings = new AsyncContainerModule(async bind => {
@@ -47,13 +47,13 @@ const databaseBindings = new AsyncContainerModule(async bind => {
     .inSingletonScope();
 
   // Create a Users Database (manages repository)
-  bind<Database<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
-    .to(Users)
+  bind<DatabaseService<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
+    .to(UserService)
     .inSingletonScope();
 
   // Create a Devices Database (manages repository)
-  bind<Database<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
-    .to(Devices)
+  bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
+    .to(DeviceService)
     .inSingletonScope();
 });
 

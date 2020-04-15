@@ -1,12 +1,12 @@
 import "jest";
 import { UserEntity } from "../orm/entities/user.entity";
-import { Users } from "../user";
+import { UserService } from "../user.service";
 import { setup, cleanup } from "./__helpers";
 
 const DATABASE = "user.integration.test.db";
 
 test("Should add a user", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
@@ -27,7 +27,7 @@ test("Should add a user", async () => {
 });
 
 test("Should not find a user", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
@@ -41,7 +41,7 @@ test("Should not find a user", async () => {
 });
 
 test("Should remove a user", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
@@ -57,7 +57,7 @@ test("Should remove a user", async () => {
 });
 
 test("Should remove a user by ID", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",
@@ -77,7 +77,7 @@ test("Should remove a user by ID", async () => {
 });
 
 test("Should not remove a user", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
@@ -93,7 +93,7 @@ test("Should not remove a user", async () => {
 });
 
 test("Should update a user", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",
@@ -116,7 +116,7 @@ test("Should update a user", async () => {
 });
 
 test("Should update a user by ID", async () => {
-  let test = await setup(UserEntity, Users, DATABASE);
+  let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",

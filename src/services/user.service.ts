@@ -2,7 +2,7 @@ import { WithOptional } from "../common/utils";
 import {
   DatabaseDeepPartialEntity,
   Repository,
-  Database,
+  DatabaseService,
   FindCriteria,
   UserModel,
   UserEntry
@@ -14,7 +14,7 @@ import { UserEntity } from "./orm/entities/user.entity";
 
 // TODO rename UsersService to free up Users Namespace
 @injectable()
-export class Users implements Database<UserModel, UserEntry> {
+export class UserService implements DatabaseService<UserModel, UserEntry> {
   utils: UtilRoutines;
   repository: Repository<UserModel>;
   constructor(

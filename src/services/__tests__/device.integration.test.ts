@@ -1,12 +1,12 @@
 import "jest";
 import { DeviceEntity } from "../orm/entities/device.entity";
-import { Devices } from "../device";
+import { DeviceService } from "../device.service";
 import { setup, cleanup } from "./__helpers";
 
 const DATABASE = "device.integration.test.db";
 
 test("Should add a device", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
   let device = await test.database.create({
     serial: "Serial ID",
     product: "LINQ2",
@@ -30,7 +30,7 @@ test("Should add a device", async () => {
 });
 
 test("Should not find a device", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
   let device = await test.database.create({
     serial: "Serial ID",
     product: "LINQ2",
@@ -46,7 +46,7 @@ test("Should not find a device", async () => {
 });
 
 test("Should remove a device", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
 
   let device = await test.database.create({
     serial: "Serial ID",
@@ -65,7 +65,7 @@ test("Should remove a device", async () => {
 });
 
 test("Should remove a device by ID", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
 
   let device = await test.database.create({
     serial: "Serial ID",
@@ -84,7 +84,7 @@ test("Should remove a device by ID", async () => {
 });
 
 test("Should not remove a device", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
 
   let device = await test.database.create({
     serial: "Serial ID",
@@ -103,7 +103,7 @@ test("Should not remove a device", async () => {
 });
 
 test("Should update a device", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
   await test.database.create({
     serial: "Serial ID",
     product: "LINQ2",
@@ -128,7 +128,7 @@ test("Should update a device", async () => {
 });
 
 test("Should update a device by ID", async () => {
-  let test = await setup(DeviceEntity, Devices, DATABASE);
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
   await test.database.create({
     serial: "Serial ID",
     product: "LINQ2",

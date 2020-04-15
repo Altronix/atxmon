@@ -1,7 +1,7 @@
 import {
   DatabaseDeepPartialEntity,
   Repository,
-  Database,
+  DatabaseService,
   FindCriteria,
   IdCriteria,
   DeviceModel
@@ -13,7 +13,7 @@ import { DeviceEntity } from "./orm/entities/device.entity";
 
 // TODO rename to DeviceService to freeup Devices namespace
 @injectable()
-export class Devices implements Database<DeviceModel> {
+export class DeviceService implements DatabaseService<DeviceModel> {
   utils: UtilRoutines;
   repository: Repository<DeviceModel>;
   constructor(

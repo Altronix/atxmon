@@ -17,7 +17,7 @@ export interface Repository<E> {
 }
 
 // Database
-export interface Database<Model, Entry = Model> {
+export interface DatabaseService<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
   find(key: FindCriteria<Model>): Promise<Model | undefined>;
   remove(key: FindCriteria<Model> | IdCriteria): Promise<number>;
@@ -29,7 +29,7 @@ export interface Database<Model, Entry = Model> {
 }
 
 export type DatabaseConstructor<Entity, Model, Entry = Model> = {
-  new (u: UtilRoutines, r: Repository<Entity>): Database<Model, Entry>;
+  new (u: UtilRoutines, r: Repository<Entity>): DatabaseService<Model, Entry>;
 };
 
 // Typeorm Types are libraries in themselves. We try to decouple here
@@ -38,7 +38,7 @@ export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
 // DeviceModel
-export type DeviceService = Database<DeviceModel>;
+export type DeviceService = DatabaseService<DeviceModel>;
 export interface DeviceModel {
   serial: string;
   product: string;
@@ -49,7 +49,7 @@ export interface DeviceModel {
 }
 
 // UserModel
-export type UserService = Database<UserModel, UserEntry>;
+export type UserService = DatabaseService<UserModel, UserEntry>;
 export interface UserModel {
   id: number;
   name: string;

@@ -1,17 +1,17 @@
 import { UtilRoutines } from "../../common/types";
-import { Database, DatabaseConstructor } from "../../database/types";
-import { Repository } from "../../database/types";
+import { DatabaseService, DatabaseConstructor } from "../../services/types";
+import { Repository } from "../../services/types";
 import { Controller, ControllerConstructor } from "../types";
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import { SYMBOLS } from "../../ioc/constants.root";
 import { createContainer } from "../../ioc/container.root";
-import mockDatabaseContainers from "../../database/__tests__/__mocks__/containers.mock";
+import mockDatabaseContainers from "../../services/__tests__/__mocks__/containers.mock";
 
-export type MockedDatabase<M, E = M> = jest.Mocked<Database<M, E>>;
+export type MockedDatabase<M, E = M> = jest.Mocked<DatabaseService<M, E>>;
 
 // A test harness
 export interface Harness<Model, Entry = Model> {
-  database: jest.Mocked<Database<Model, Entry>>;
+  database: jest.Mocked<DatabaseService<Model, Entry>>;
   utils: MockUtils;
   controller: Controller<Model, Entry>;
 }

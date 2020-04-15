@@ -1,6 +1,6 @@
 import { OrmRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
-import { Database, DatabaseConstructor, Repository } from "../types";
+import { DatabaseService, DatabaseConstructor, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
@@ -20,7 +20,7 @@ export async function unlinkDatabase(db: string) {
 // A test harness
 export interface Harness<Model, Entry> {
   connection: Connection;
-  database: Database<Model, Entry>;
+  database: DatabaseService<Model, Entry>;
   utils: MockUtils;
   file: string;
 }

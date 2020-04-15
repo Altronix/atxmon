@@ -1,7 +1,7 @@
 import { UserController } from "../user.controller";
 import { DeviceController } from "../device.controller";
 import { RootController } from "../root.controller";
-import { DeviceModel, UserModel, UserEntry } from "../../database/types";
+import { DeviceModel, UserModel, UserEntry } from "../../services/types";
 import { Controller } from "../types";
 import { ContainerModule } from "inversify";
 import { SYMBOLS } from "../../ioc/constants.root";
