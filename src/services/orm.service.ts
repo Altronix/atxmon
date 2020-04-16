@@ -55,7 +55,7 @@ export class OrmRepository<E> implements Repository<E> {
     return ret.length ? ret[0] : undefined;
   }
 
-  async find(key: FindCriteria<E>): Promise<E[]> {
+  async find(key?: FindCriteria<E>): Promise<E[]> {
     let ret: E[] = [];
     try {
       ret = await this.repository.find(key);
