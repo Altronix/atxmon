@@ -8,6 +8,7 @@ export interface AltronixLinqNetworkService {
   listen(port: string | number): AltronixLinqNetworkService;
   connect(port: string | number): AltronixLinqNetworkService;
   close(idx: number): AltronixLinqNetworkService;
+  on: (ev: string, handler: (...args: any[]) => void) => void;
   send<T>(
     serial: string,
     meth: "GET" | "POST" | "DELETE",

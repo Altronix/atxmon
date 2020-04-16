@@ -23,10 +23,37 @@ export class DeviceController implements Controller<DeviceModel> {
     this.utils = utils;
     this.database = database;
     this.linq = linq;
+    this.initializeLinq();
+  }
+
+  private initializeLinq() {
+    let self = this;
+    self.linq.listen(44555);
+    self.linq.on("new", (...args: any[]) => self.onNew(...args));
+    self.linq.on("heartbeat", (...args: any[]) => self.onHeartbeat(...args));
+    self.linq.on("alert", (...args: any[]) => self.onAlert(...args));
+    self.linq.on("ctrlc", (...args: any[]) => self.onCtrlc(...args));
+    self.linq.on("error", (...args: any[]) => self.onError(...args));
+  }
+
+  private async onNew(...args: any[]) {
+    this.utils.logger.info(`NEW [${args[0]}] [${args[1]}]`);
+  }
+  private async onHeartbeat(...args: any[]) {
+    this.utils.logger.info(`HEARTBEAT [${args[0]}]`);
+  }
+  private async onAlert(...args: any[]) {
+    this.utils.logger.info(`ALERT [${args[0]}] [${args[1]}]`);
+  }
+  private async onCtrlc(...args: any[]) {
+    this.utils.logger.warn(`CTRLC ...shutting down`);
+  }
+  private async onError(...args: any[]) {
+    this.utils.logger.error(`ERROR [${args[0]}] [${args[1]}`);
   }
 
   @httpGet("/")
   private async index(req: Request, res: Response) {
-    res.send({ devices: [] });
+    res.send(await this.database.find());
   }
 }

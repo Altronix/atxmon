@@ -31,8 +31,12 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   const users = await c.getRepository(UserEntity);
 
   // Linq Service (@altronix/linq-network + our inversion wrapper)
-  bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE).to(LinqNetwork);
-  bind<LinqNetworkService>(SYMBOLS.LINQ_SERVICE).to(LinqService);
+  bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)
+    .toDynamicValue(() => new LinqNetwork())
+    .inSingletonScope();
+  bind<LinqNetworkService>(SYMBOLS.LINQ_SERVICE)
+    .to(LinqService)
+    .inSingletonScope();
 
   // Create a Users Repository
   bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)

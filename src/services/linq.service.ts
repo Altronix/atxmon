@@ -30,6 +30,10 @@ export class LinqService implements LinqNetworkService {
     return this;
   }
 
+  on(ev: string, handler: (...args: any[]) => void) {
+    this.atx.on(ev, handler);
+  }
+
   send<T>(
     serial: string,
     meth: "GET" | "POST" | "DELETE",
