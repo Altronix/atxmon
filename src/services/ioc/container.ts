@@ -17,6 +17,7 @@ import { OrmRepository, getConnection } from "../orm.service";
 import { UserService } from "../user.service";
 import { DeviceService } from "../device.service";
 import { LinqService } from "../linq.service";
+import { Services } from "../services";
 import { UtilRoutines } from "../../common/types";
 import { LinqNetwork } from "@altronix/linq-network";
 
@@ -69,6 +70,9 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
     .to(DeviceService)
     .inSingletonScope();
+
+  // Create the services namespace
+  bind(Services).toSelf();
 });
 
 export default databaseBindings;
