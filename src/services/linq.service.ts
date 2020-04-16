@@ -36,7 +36,11 @@ export class LinqService implements LinqNetworkService {
     path: string,
     data?: T
   ): Promise<any> {
-    return this.atx.send(serial, meth, path, data);
+    if (data) {
+      return this.atx.send(serial, meth, path, data);
+    } else {
+      return this.atx.send(serial, meth, path);
+    }
   }
 
   deviceCount(): number {

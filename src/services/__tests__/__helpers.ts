@@ -1,6 +1,6 @@
 import { OrmRepository, Connection, getConnection } from "../orm/typeorm";
 import { EntityTarget } from "typeorm";
-import { DatabaseService, DatabaseConstructor, Repository } from "../types";
+import { DatabaseService, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
@@ -27,7 +27,7 @@ export interface Harness<Model, Entry> {
 
 export async function setup<Entity, Model, Entry = Model>(
   e: EntityTarget<Entity>,
-  db: DatabaseConstructor<Entity, Model, Entry>,
+  db: { new (...args: any[]): DatabaseService<Model, Entry> },
   file: string
 ): Promise<Harness<Model, Entry>> {
   // All tests start with an empty database
