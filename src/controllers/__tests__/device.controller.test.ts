@@ -1,9 +1,16 @@
-import "jest";
-import { SYMBOLS } from "../../ioc/constants.root";
-import { setup } from "./__helpers";
 import { DeviceController } from "../device.controller";
+import makeMockUtils from "../../common/__test__/__mocks__/utils.mock";
+import makeMockLinqService from "../../services/__tests__/__mocks__/linq.service.mock";
+import makeMockDeviceService from "../../services/__tests__/__mocks__/device.service.mock";
 
-test("Should construct", async () => {
-  let test = await setup(DeviceController, SYMBOLS.DATABASE_DEVICE);
-  expect(test.controller).toBeTruthy();
+function setup() {
+  let utils = makeMockUtils();
+  let linqService = makeMockLinqService();
+  let deviceService = makeMockDeviceService();
+  let controller = new DeviceController(utils, deviceService, linqService);
+  return { utils, linqService, deviceService, controller };
+}
+
+test("Should send all", async () => {
+  let { utils, linqService, deviceService, controller } = setup();
 });
