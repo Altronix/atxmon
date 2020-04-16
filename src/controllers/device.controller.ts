@@ -28,12 +28,13 @@ export class DeviceController implements Controller<DeviceModel> {
 
   private initializeLinq() {
     let self = this;
-    self.linq.listen(44555);
+    self.linq.listen("tcp://*:33248");
     self.linq.on("new", (...args: any[]) => self.onNew(...args));
     self.linq.on("heartbeat", (...args: any[]) => self.onHeartbeat(...args));
     self.linq.on("alert", (...args: any[]) => self.onAlert(...args));
     self.linq.on("ctrlc", (...args: any[]) => self.onCtrlc(...args));
     self.linq.on("error", (...args: any[]) => self.onError(...args));
+    self.linq.run(50);
   }
 
   private async onNew(...args: any[]) {
