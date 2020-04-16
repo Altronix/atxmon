@@ -2,12 +2,12 @@ import { WithOptional } from "../common/utils";
 import { UtilRoutines } from "../common/types";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
-// Embedded Device IO Service
-export interface ZmtpService {
+// @altronix/linq-network interface
+export interface AltronixLinqNetworkService {
   version(): string;
-  listen(port: string | number): ZmtpService;
-  connect(port: string | number): ZmtpService;
-  close(idx: number): this;
+  listen(port: string | number): AltronixLinqNetworkService;
+  connect(port: string | number): AltronixLinqNetworkService;
+  close(idx: number): AltronixLinqNetworkService;
   send<T>(
     serial: string,
     meth: "GET" | "POST" | "DELETE",
@@ -17,6 +17,13 @@ export interface ZmtpService {
   deviceCount(): number;
   nodeCount(): number;
   run(ms: number): Promise<unknown>;
+}
+
+// Our inversion interface (is the same)
+export interface LinqNetworkService extends AltronixLinqNetworkService {
+  listen(port: string | number): LinqNetworkService;
+  connect(port: string | number): LinqNetworkService;
+  close(idx: number): LinqNetworkService;
 }
 
 // Database Service
@@ -30,10 +37,6 @@ export interface DatabaseService<Model, Entry = Model> {
   ): Promise<number>;
   count(key?: FindCriteria<Model>): Promise<number>;
 }
-
-export type DatabaseConstructor<Entity, Model, Entry = Model> = {
-  new (u: UtilRoutines, r: Repository<Entity>): DatabaseService<Model, Entry>;
-};
 
 // Repository
 export interface Repository<E> {

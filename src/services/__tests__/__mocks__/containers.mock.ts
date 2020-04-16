@@ -3,7 +3,6 @@ import {
   DatabaseService,
   Repository,
   UserModel,
-  DatabaseConstructor,
   UserEntry,
   DeviceModel
 } from "../../types";
@@ -16,13 +15,16 @@ import { Container, decorate, injectable } from "inversify";
 
 import { DeviceService } from "../../device.service";
 import { UserService } from "../../user.service";
-jest.mock("../../device.service"); // Blocking metadata
-jest.mock("../../user.service"); // Blocking metadata
+import { LinqService } from "../../linq.service";
+jest.mock("../../device.service");
+jest.mock("../../user.service");
+jest.mock("../../linq.service");
 
 // NOTE jest.mock("./some/file") will block injectable metadata so we
 // need to redecroate
 decorate(injectable(), DeviceService);
 decorate(injectable(), UserService);
+decorate(injectable(), LinqService);
 
 function rebindRepository<Entity>(
   c: Container,
@@ -40,7 +42,7 @@ function rebindRepository<Entity>(
 
 function rebindDatabase<Entity, Model, Entry = Model>(
   container: Container,
-  db: DatabaseConstructor<Entity, Model, Entry>,
+  db: { new (...args: any[]): any },
   dbSymbol: symbol
 ) {
   container.rebind<DatabaseService<Model, Entry>>(dbSymbol).to(db);
@@ -55,6 +57,7 @@ export default (container: Container): Container => {
   rebindRepository(container, devices, SYMBOLS.ORM_REPOSITORY_DEVICE);
   rebindDatabase(container, DeviceService, SYMBOLS.DATABASE_DEVICE);
   rebindDatabase(container, UserService, SYMBOLS.DATABASE_USER);
+  rebindDatabase(container, LinqService, SYMBOLS.LINQ_SERVICE);
 
   return container;
 };

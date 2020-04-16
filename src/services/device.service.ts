@@ -11,7 +11,6 @@ import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
 import { DeviceEntity } from "./orm/entities/device.entity";
 
-// TODO rename to DeviceService to freeup Devices namespace
 @injectable()
 export class DeviceService implements DatabaseService<DeviceModel> {
   utils: UtilRoutines;

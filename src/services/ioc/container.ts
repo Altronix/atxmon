@@ -1,5 +1,5 @@
 import { SYMBOLS } from "../../ioc/constants.root";
-import { AsyncContainerModule } from "inversify";
+import { AsyncContainerModule, injectable, decorate } from "inversify";
 
 // Database Imports
 import {
@@ -7,14 +7,20 @@ import {
   Repository,
   UserModel,
   UserEntry,
-  DeviceModel
+  DeviceModel,
+  AltronixLinqNetworkService,
+  LinqNetworkService
 } from "../types";
 import { OrmRepository, getConnection } from "../orm/typeorm";
 import { DeviceEntity } from "../orm/entities/device.entity";
 import { UserEntity } from "../orm/entities/user.entity";
 import { UserService } from "../user.service";
 import { DeviceService } from "../device.service";
+import { LinqService } from "../linq.service";
 import { UtilRoutines } from "../../common/types";
+import { LinqNetwork } from "@altronix/linq-network";
+
+decorate(injectable(), LinqNetwork);
 
 const databaseBindings = new AsyncContainerModule(async bind => {
   // helpful context - https://stackoverflow.com/questions/46867437
@@ -23,6 +29,10 @@ const databaseBindings = new AsyncContainerModule(async bind => {
   const c = await getConnection();
   const devices = await c.getRepository(DeviceEntity);
   const users = await c.getRepository(UserEntity);
+
+  // Linq Service (@altronix/linq-network + our inversion wrapper)
+  bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE).to(LinqNetwork);
+  bind<LinqNetworkService>(SYMBOLS.LINQ_SERVICE).to(LinqService);
 
   // Create a Users Repository
   bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
