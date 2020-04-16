@@ -43,7 +43,27 @@ test("Should find many users", async () => {
   expect(search.length).toBe(2);
   expect(search[0].name).toEqual("Thomas FOO 1");
   expect(search[1].name).toEqual("Thomas FOO 2");
-  cleanup(test);
+  await cleanup(test);
+});
+
+test("Should find all users", async () => {
+  let test = await setup(UserEntity, UserService, DATABASE);
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
+  let user1 = await test.database.create({
+    name: "Thomas FOO 1",
+    pass: "secret",
+    role: 0
+  });
+  let user2 = await test.database.create({
+    name: "Thomas FOO 2",
+    pass: "secret",
+    role: 0
+  });
+  let search = await test.database.find();
+  expect(search.length).toBe(2);
+  expect(search[0].name).toEqual("Thomas FOO 1");
+  expect(search[1].name).toEqual("Thomas FOO 2");
+  await cleanup(test);
 });
 
 test("Should not find a user", async () => {

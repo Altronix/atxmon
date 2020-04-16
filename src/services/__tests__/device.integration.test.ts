@@ -51,7 +51,32 @@ test("Should find many devices", async () => {
   expect(search.length).toBe(2);
   expect(search[0].serial).toEqual("Serial ID 1");
   expect(search[1].serial).toEqual("Serial ID 2");
-  cleanup(test);
+  await cleanup(test);
+});
+
+test("Should find all devices", async () => {
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
+  let serial1 = await test.database.create({
+    serial: "Serial ID 1",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+  let serial2 = await test.database.create({
+    serial: "Serial ID 2",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+  let search = await test.database.find();
+  expect(search.length).toBe(2);
+  expect(search[0].serial).toEqual("Serial ID 1");
+  expect(search[1].serial).toEqual("Serial ID 2");
+  await cleanup(test);
 });
 
 test("Should not find a device", async () => {
