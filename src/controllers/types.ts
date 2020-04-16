@@ -1,11 +1,8 @@
-import { Database } from "../database/types";
+import { DatabaseService } from "../services/types";
 import { UtilRoutines } from "../common/types";
 import { ServiceIdentifier } from "../ioc/types";
 import { Router, Request, Response, NextFunction } from "express";
-export interface Controller<Model, Entry = Model> {
-  utils: UtilRoutines;
-  database: Database<Model, Entry>;
-}
+export interface Controller<Model, Entry = Model> {}
 
 export type HTTP_ALL = "all";
 export type HTTP_GET = "get";
@@ -28,7 +25,10 @@ export type ControllerConstructorTest = {
 };
 
 export type ControllerConstructor<Model, Entry = Model> = {
-  new (u: UtilRoutines, d: Database<Model, Entry>): Controller<Model, Entry>;
+  new (u: UtilRoutines, d: DatabaseService<Model, Entry>): Controller<
+    Model,
+    Entry
+  >;
 };
 
 export interface ControllerMetadata {

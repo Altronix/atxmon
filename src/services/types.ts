@@ -1,5 +1,8 @@
 import { WithOptional } from "../common/utils";
 import { UtilRoutines } from "../common/types";
+
+// Dependency types
+import { LinqEventHandler } from "@altronix/linq-network";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
 // @altronix/linq-network interface
@@ -9,6 +12,7 @@ export interface AltronixLinqNetworkService {
   connect(port: string | number): AltronixLinqNetworkService;
   close(idx: number): AltronixLinqNetworkService;
   on: (ev: string, handler: (...args: any[]) => void) => void;
+  registerEventHandler(eh: LinqEventHandler): AltronixLinqNetworkService;
   send<T>(
     serial: string,
     meth: "GET" | "POST" | "DELETE",
@@ -22,6 +26,7 @@ export interface AltronixLinqNetworkService {
 
 // Our inversion interface (is the same)
 export interface LinqNetworkService extends AltronixLinqNetworkService {
+  registerEventHandler(eh: LinqEventHandler): LinqNetworkService;
   listen(port: string | number): LinqNetworkService;
   connect(port: string | number): LinqNetworkService;
   close(idx: number): LinqNetworkService;

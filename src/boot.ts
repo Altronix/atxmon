@@ -15,6 +15,8 @@ export interface Boot {
 
 export function boot(args: BootArgs): Boot {
   let middleware: any[] = [];
+
+  // Create app
   let app: express.Application = express();
   let controllers = args.controllers.map(c => args.container.get(c));
   controllers.forEach(c => {
@@ -22,5 +24,6 @@ export function boot(args: BootArgs): Boot {
     app.use(createRouter(c, ...m));
     middleware = middleware.concat(m);
   });
+
   return { controllers, middleware, app };
 }

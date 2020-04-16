@@ -1,4 +1,5 @@
 import { AltronixLinqNetworkService, LinqNetworkService } from "./types";
+import { LinqEventHandler } from "@altronix/linq-network";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";
 
@@ -13,6 +14,11 @@ export class LinqService implements LinqNetworkService {
 
   version(): string {
     return this.atx.version();
+  }
+
+  registerEventHandler(eh: LinqEventHandler): LinqNetworkService {
+    this.atx.registerEventHandler(eh);
+    return this;
   }
 
   listen(arg: string | number): LinqService {
