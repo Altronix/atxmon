@@ -10,18 +10,14 @@ import { Container, injectable, inject } from "inversify";
 import * as bodyParser from "body-parser";
 import express from "express";
 
-log("info", "starting app...");
-
 @injectable()
 export class App {
   server: express.Application;
   services: Services;
   middleware: any[] = [];
   constructor(
-    @inject(Controllers)
-    private controllers: Controllers,
-    @inject(Services)
-    services: Services
+    @inject(Controllers) private controllers: Controllers,
+    @inject(Services) services: Services
   ) {
     this.server = express();
     this.services = services;
@@ -43,21 +39,9 @@ export class App {
   }
 }
 
-(async () => {
+export default async () => {
   let container = await createContainer();
-  container.bind<App>(App).toSelf();
   let app = container.get<App>(App);
   app.load(container);
-  app.server.use(bodyParser.urlencoded({ extended: true }));
-  app.server.use(bodyParser.json());
-  app.server.listen(3000);
-  let user = await app.services.users.create({
-    name: "Thomas",
-    pass: "Secret",
-    role: 0
-  });
-
-  app.services.linq.listen(33455);
-  app.services.linq.on("heartbeat", serial => log("info", serial));
-  app.services.linq.run(50);
-})();
+  return app;
+};

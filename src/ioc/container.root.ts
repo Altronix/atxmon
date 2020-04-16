@@ -14,10 +14,14 @@ import serviceContainerModule from "../services/ioc/container";
 import commonContainerModule from "../common/ioc/container";
 import controllerContainer from "../controllers/ioc/container";
 import middlewareContainer from "../middleware/ioc/container";
+import { App } from "../app";
 
 // Combine containers
 export const createContainerContext = () => {
   const container = new Container();
+
+  // Load app containers
+  container.bind(App).toSelf();
 
   // Load syncronous containers
   container.load(commonContainerModule);
