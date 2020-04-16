@@ -2,13 +2,16 @@ import "reflect-metadata";
 import { Container, AsyncContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
-import { LinqDeviceManager } from "../linq/types";
-import { DatabaseService, DeviceModel, UserModel, UserEntry } from "../services/types";
+import {
+  DatabaseService,
+  DeviceModel,
+  UserModel,
+  UserEntry
+} from "../services/types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import serviceContainerModule from "../services/ioc/container";
 import commonContainerModule from "../common/ioc/container";
-import linqContainer from "../linq/ioc/container";
 import controllerContainer from "../controllers/ioc/container";
 import middlewareContainer from "../middleware/ioc/container";
 
@@ -18,7 +21,6 @@ export const createContainerContext = () => {
 
   // Load syncronous containers
   container.load(commonContainerModule);
-  container.load(linqContainer);
   container.load(controllerContainer);
   container.load(middlewareContainer);
 

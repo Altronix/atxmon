@@ -2,21 +2,24 @@ import { WithOptional } from "../common/utils";
 import { UtilRoutines } from "../common/types";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
-// Repository
-export interface Repository<E> {
-  insert(
-    entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
-  ): Promise<boolean>;
-  find(criteria: FindCriteria<E>): Promise<E | undefined>;
-  remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
-  update(
-    key: FindCriteria<E> | IdCriteria,
-    next: DatabaseDeepPartialEntity<E>
-  ): Promise<number>;
-  count(key?: FindCriteria<E>): Promise<number>;
+// Embedded Device IO Service
+export interface ZmtpService {
+  version(): string;
+  listen(port: string | number): ZmtpService;
+  connect(port: string | number): ZmtpService;
+  close(idx: number): this;
+  send<T>(
+    serial: string,
+    meth: "GET" | "POST" | "DELETE",
+    path: string,
+    data?: T
+  ): Promise<any>;
+  deviceCount(): number;
+  nodeCount(): number;
+  run(ms: number): Promise<unknown>;
 }
 
-// Database
+// Database Service
 export interface DatabaseService<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
   find(key: FindCriteria<Model>): Promise<Model | undefined>;
@@ -31,6 +34,20 @@ export interface DatabaseService<Model, Entry = Model> {
 export type DatabaseConstructor<Entity, Model, Entry = Model> = {
   new (u: UtilRoutines, r: Repository<Entity>): DatabaseService<Model, Entry>;
 };
+
+// Repository
+export interface Repository<E> {
+  insert(
+    entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
+  ): Promise<boolean>;
+  find(criteria: FindCriteria<E>): Promise<E | undefined>;
+  remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
+  update(
+    key: FindCriteria<E> | IdCriteria,
+    next: DatabaseDeepPartialEntity<E>
+  ): Promise<number>;
+  count(key?: FindCriteria<E>): Promise<number>;
+}
 
 // Typeorm Types are libraries in themselves. We try to decouple here
 export type FindCriteria<E> = FindOptionsWhere<E>;
