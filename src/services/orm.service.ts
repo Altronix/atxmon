@@ -47,11 +47,18 @@ export class OrmRepository<E> implements Repository<E> {
     }
   }
 
-  async find(key: FindCriteria<E>): Promise<E | undefined> {
-    // TODO support find many
-    let ret: E | undefined = undefined;
+  async findById(key: IdCriteria): Promise<E | undefined> {
+    let ret: E[] = [];
     try {
-      ret = await this.repository.findOne(key);
+      ret = await this.repository.findByIds([key]);
+    } catch {}
+    return ret.length ? ret[0] : undefined;
+  }
+
+  async find(key: FindCriteria<E>): Promise<E[]> {
+    let ret: E[] = [];
+    try {
+      ret = await this.repository.find(key);
     } catch {}
     return ret;
   }

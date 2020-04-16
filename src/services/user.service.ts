@@ -4,6 +4,7 @@ import {
   Repository,
   DatabaseService,
   FindCriteria,
+  IdCriteria,
   UserModel,
   UserEntry
 } from "./types";
@@ -32,7 +33,11 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     return this.repository.insert(user);
   }
 
-  async find(key: FindCriteria<UserModel>): Promise<UserModel | undefined> {
+  async findById(key: IdCriteria): Promise<UserModel | undefined> {
+    return this.repository.findById(key);
+  }
+
+  async find(key: FindCriteria<UserModel>): Promise<UserModel[]> {
     return this.repository.find(key);
   }
 

@@ -15,7 +15,7 @@ test("Should add a user", async () => {
   });
 
   expect(await test.database.count()).toBe(1);
-  let read = await test.database.find({ name: "Thomas FOO" });
+  let read = await test.database.findById(1);
   expect(read).toBeTruthy();
   if (read) {
     expect(read.hash).toBe("foo secret hash");
@@ -24,6 +24,26 @@ test("Should add a user", async () => {
     expect(read.devices).toBeFalsy;
   }
   await cleanup(test);
+});
+
+test("Should find many users", async () => {
+  let test = await setup(UserEntity, UserService, DATABASE);
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
+  let user1 = await test.database.create({
+    name: "Thomas FOO 1",
+    pass: "secret",
+    role: 0
+  });
+  let user2 = await test.database.create({
+    name: "Thomas FOO 2",
+    pass: "secret",
+    role: 0
+  });
+  let search = await test.database.find({ role: 0 });
+  expect(search.length).toBe(2);
+  expect(search[0].name).toEqual("Thomas FOO 1");
+  expect(search[1].name).toEqual("Thomas FOO 2");
+  cleanup(test);
 });
 
 test("Should not find a user", async () => {
@@ -35,7 +55,7 @@ test("Should not find a user", async () => {
     role: 0
   });
 
-  let read = await test.database.find({ name: "NOT FOUND" });
+  let read = await test.database.findById(2);
   expect(read).toBeFalsy();
   await cleanup(test);
 });
@@ -65,7 +85,7 @@ test("Should remove a user by ID", async () => {
     role: 0
   });
 
-  let user = await test.database.find({ name: "Thomas FOO" });
+  let user = await test.database.findById(1);
   expect(user).toBeTruthy();
   if (user) {
     expect(await test.database.count()).toBe(1);
@@ -102,15 +122,15 @@ test("Should update a user", async () => {
   });
 
   // Check initial user
-  let user = await test.database.find({ name: "Thomas FOO" });
+  let user = await test.database.findById(1);
   expect(user).toBeTruthy();
   if (user) expect(user.name).toBe("Thomas FOO");
 
   // Check updated user
   await test.database.update({ name: "Thomas FOO" }, { name: "Updated" });
-  user = await test.database.find({ name: "Updated" });
-  expect(user).toBeTruthy();
-  if (user) expect(user.name).toBe("Updated");
+  let search = await test.database.find({ name: "Updated" });
+  expect(search.length).toBe(1);
+  expect(search[0].name).toBe("Updated");
 
   await cleanup(test);
 });
@@ -125,16 +145,16 @@ test("Should update a user by ID", async () => {
   });
 
   // Check initial user
-  let user = await test.database.find({ name: "Thomas FOO" });
+  let user = await test.database.findById(1);
   expect(user).toBeTruthy();
   if (user) {
     expect(user.name).toBe("Thomas FOO");
     await test.database.update(user.id, { name: "Updated" });
   }
 
-  user = await test.database.find({ name: "Updated" });
-  expect(user).toBeTruthy();
-  if (user) expect(user.name).toBe("Updated");
+  let search = await test.database.find({ name: "Updated" });
+  expect(search.length).toBe(1);
+  expect(search[0].name).toBe("Updated");
 
   await cleanup(test);
 });

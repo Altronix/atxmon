@@ -16,7 +16,7 @@ test("Should add a device", async () => {
     mac: "00:00:00:00:00:00"
   });
 
-  let read = await test.database.find({ serial: "Serial ID" });
+  let read = await test.database.findById("Serial ID");
   expect(read).toBeTruthy();
   if (read) {
     expect(read.serial).toBe("Serial ID");
@@ -27,6 +27,31 @@ test("Should add a device", async () => {
     expect(read.mac).toBe("00:00:00:00:00:00");
   }
   await cleanup(test);
+});
+
+test("Should find many devices", async () => {
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
+  let serial1 = await test.database.create({
+    serial: "Serial ID 1",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+  let serial2 = await test.database.create({
+    serial: "Serial ID 2",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+  let search = await test.database.find({ product: "LINQ2" });
+  expect(search.length).toBe(2);
+  expect(search[0].serial).toEqual("Serial ID 1");
+  expect(search[1].serial).toEqual("Serial ID 2");
+  cleanup(test);
 });
 
 test("Should not find a device", async () => {
@@ -40,7 +65,7 @@ test("Should not find a device", async () => {
     mac: "00:00:00:00:00:00"
   });
 
-  let read = await test.database.find({ serial: "NOT  FOUND" });
+  let read = await test.database.findById("NOT FOUND");
   expect(read).toBeFalsy();
   await cleanup(test);
 });
@@ -114,15 +139,15 @@ test("Should update a device", async () => {
   });
 
   // Check initial device
-  let device = await test.database.find({ serial: "Serial ID" });
+  let device = await test.database.findById("Serial ID");
   expect(device).toBeTruthy();
   if (device) expect(device.product).toBe("LINQ2");
 
   // Check updated device
   await test.database.update({ product: "LINQ2" }, { product: "Updated" });
-  device = await test.database.find({ product: "Updated" });
-  expect(device).toBeTruthy();
-  if (device) expect(device.product).toBe("Updated");
+  let search = await test.database.find({ product: "Updated" });
+  expect(search.length).toBe(1);
+  expect(search[0].product).toBe("Updated");
 
   await cleanup(test);
 });
@@ -139,15 +164,15 @@ test("Should update a device by ID", async () => {
   });
 
   // Check initial device
-  let device = await test.database.find({ serial: "Serial ID" });
+  let device = await test.database.findById("Serial ID");
   expect(device).toBeTruthy();
   if (device) expect(device.product).toBe("LINQ2");
 
   // Check updated device
   await test.database.update("Serial ID", { product: "Updated" });
-  device = await test.database.find({ product: "Updated" });
-  expect(device).toBeTruthy();
-  if (device) expect(device.product).toBe("Updated");
+  let search = await test.database.find({ product: "Updated" });
+  expect(search.length).toBe(1);
+  expect(search[0].product).toBe("Updated");
 
   await cleanup(test);
 });

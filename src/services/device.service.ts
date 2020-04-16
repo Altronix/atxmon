@@ -27,7 +27,11 @@ export class DeviceService implements DatabaseService<DeviceModel> {
     return this.repository.insert(d);
   }
 
-  async find(key: FindCriteria<DeviceModel>): Promise<DeviceModel | undefined> {
+  async findById(key: IdCriteria): Promise<DeviceModel | undefined> {
+    return this.repository.findById(key);
+  }
+
+  async find(key: FindCriteria<DeviceModel>): Promise<DeviceModel[]> {
     return this.repository.find(key);
   }
 

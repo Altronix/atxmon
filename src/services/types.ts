@@ -29,7 +29,8 @@ export interface LinqNetworkService extends AltronixLinqNetworkService {
 // Database Service
 export interface DatabaseService<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
-  find(key: FindCriteria<Model>): Promise<Model | undefined>;
+  findById(key: IdCriteria): Promise<Model | undefined>;
+  find(key: FindCriteria<Model>): Promise<Model[]>;
   remove(key: FindCriteria<Model> | IdCriteria): Promise<number>;
   update(
     key: FindCriteria<Model> | IdCriteria,
@@ -43,7 +44,8 @@ export interface Repository<E> {
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
   ): Promise<boolean>;
-  find(criteria: FindCriteria<E>): Promise<E | undefined>;
+  findById(key: IdCriteria): Promise<E | undefined>;
+  find(criteria: FindCriteria<E>): Promise<E[]>;
   remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
   update(
     key: FindCriteria<E> | IdCriteria,
