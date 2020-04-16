@@ -1,5 +1,5 @@
 import "jest";
-import { DeviceEntity } from "../orm/entities/device.entity";
+import { DeviceEntity } from "../../entities/device.entity";
 import { DeviceService } from "../device.service";
 import { setup, cleanup } from "./__helpers";
 

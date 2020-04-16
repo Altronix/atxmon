@@ -8,11 +8,11 @@ import {
 } from "../../types";
 import { UtilRoutines } from "../../../common/types";
 import { Repository as TypeormRepository } from "typeorm";
-import { OrmRepository } from "../../orm/typeorm";
-import { DeviceEntity } from "../../orm/entities/device.entity";
-import { UserEntity } from "../../orm/entities/user.entity";
+import { DeviceEntity } from "../../../entities/device.entity";
+import { UserEntity } from "../../../entities/user.entity";
 import { Container, decorate, injectable } from "inversify";
 
+import { OrmRepository } from "../../orm.service";
 import { DeviceService } from "../../device.service";
 import { UserService } from "../../user.service";
 import { LinqService } from "../../linq.service";

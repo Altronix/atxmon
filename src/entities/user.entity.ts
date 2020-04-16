@@ -1,4 +1,4 @@
-import { UserModel, DeviceModel } from "../../types";
+import { UserModel, DeviceModel } from "../services/types";
 import { DeviceEntity } from "./device.entity";
 import {
   Entity,

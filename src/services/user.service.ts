@@ -10,7 +10,7 @@ import {
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
-import { UserEntity } from "./orm/entities/user.entity";
+import { UserEntity } from "../entities/user.entity";
 
 // TODO rename UsersService to free up Users Namespace
 @injectable()

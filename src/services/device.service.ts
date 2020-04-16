@@ -9,7 +9,7 @@ import {
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
-import { DeviceEntity } from "./orm/entities/device.entity";
+import { DeviceEntity } from "../entities/device.entity";
 
 @injectable()
 export class DeviceService implements DatabaseService<DeviceModel> {

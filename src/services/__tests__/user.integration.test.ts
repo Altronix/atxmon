@@ -1,5 +1,5 @@
 import "jest";
-import { UserEntity } from "../orm/entities/user.entity";
+import { UserEntity } from "../../entities/user.entity";
 import { UserService } from "../user.service";
 import { setup, cleanup } from "./__helpers";
 

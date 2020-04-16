@@ -11,9 +11,9 @@ import {
   AltronixLinqNetworkService,
   LinqNetworkService
 } from "../types";
-import { OrmRepository, getConnection } from "../orm/typeorm";
-import { DeviceEntity } from "../orm/entities/device.entity";
-import { UserEntity } from "../orm/entities/user.entity";
+import { DeviceEntity } from "../../entities/device.entity";
+import { UserEntity } from "../../entities/user.entity";
+import { OrmRepository, getConnection } from "../orm.service";
 import { UserService } from "../user.service";
 import { DeviceService } from "../device.service";
 import { LinqService } from "../linq.service";

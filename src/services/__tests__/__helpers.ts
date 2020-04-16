@@ -1,4 +1,4 @@
-import { OrmRepository, Connection, getConnection } from "../orm/typeorm";
+import { OrmRepository, Connection, getConnection } from "../orm.service";
 import { EntityTarget } from "typeorm";
 import { DatabaseService, Repository } from "../types";
 import { UtilRoutines } from "../../common/types";
