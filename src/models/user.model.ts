@@ -32,8 +32,8 @@ export class User implements UserEntry {
 
   static async from(user: UserEntry): Promise<UserEntry> {
     let u = new User();
-    Object.assign({}, u, user);
-    if ((await validate(u)).length) throw new Error("Invalid UserEntry");
+    let ret = Object.assign(u, user);
+    if ((await validate(ret)).length) throw new Error("Invalid UserEntry");
     return u;
   }
 
