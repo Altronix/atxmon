@@ -155,33 +155,74 @@ export function httpMethod(
   };
 }
 
-export function getControllerMiddleware(controller: any) {
-  let metaData: ControllerMetadata = Reflect.getMetadata(
-    METADATA_KEY.controller,
-    controller.constructor
-  );
-  return metaData.middleware;
+export interface MiddlewareIdentifiers {
+  controller: ServiceIdentifier<any>[];
+  methods: { [key: string]: ServiceIdentifier<any>[] };
 }
 
-export function createRouter(
-  controller: any,
-  ...middleware: MiddlewareHandler[]
-) {
-  let metaData: ControllerMetadata = Reflect.getMetadata(
+export interface Middleware {
+  controller: MiddlewareHandler[];
+  methods: { [key: string]: MiddlewareHandler[] };
+}
+
+export function getControllerMiddlewareIdentifiers(
+  controller: any
+): MiddlewareIdentifiers {
+  let meta: ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
     controller.constructor
   );
-  let metaMethodData: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let methodMeta: ControllerMethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     controller.constructor
   );
+  let ret: MiddlewareIdentifiers = {
+    controller: meta.middleware,
+    methods: {}
+  };
+  methodMeta.forEach(m => (ret.methods[m.key] = m.middleware));
+  return ret;
+}
 
+export function getControllerMiddlewareInstances(
+  c: Container,
+  service: MiddlewareIdentifiers
+): Middleware {
+  let controller = service.controller.map(i => c.get<MiddlewareHandler>(i));
+  let methods: { [key: string]: MiddlewareHandler[] } = {};
+  Object.keys(service.methods).forEach(key => {
+    methods[key] = service.methods[key].map(i => c.get<MiddlewareHandler>(i));
+  });
+  return { controller, methods };
+}
+
+export function createRouter(container: Container, controller: any) {
+  let id = getControllerMiddlewareIdentifiers(controller);
+  let middleware = getControllerMiddlewareInstances(container, id);
+  /*
+  let meta: ControllerMetadata = Reflect.getMetadata(
+    METADATA_KEY.controller,
+    controller.constructor
+  );
+  let methodMeta: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    controller.constructor
+  );
+*/
+
+  /*
   let routes = Router();
-  metaMethodData.forEach(data => {
+  Object.keys(middleware.methods).forEach(fnName => {
+    if (middleware.methods && middleware.methods[fnName]) {
+      middleware.methods[fnName].forEach(m =>
+        routes[data.method](data.path, m.handler)
+      );
+    }
     routes[data.method](data.path, controller[data.key]);
   });
   let root = Router();
-  middleware.forEach(m => root.use(m.handler));
-  root.use(metaData.path, routes);
+  middleware.controller.forEach(m => root.use(m.handler));
+  root.use(meta.path, routes);
   return root;
+  */
 }

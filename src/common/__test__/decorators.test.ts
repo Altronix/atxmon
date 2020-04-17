@@ -1,10 +1,21 @@
-import { controller, httpGet, httpPost, createRouter } from "../decorators";
+import {
+  controller,
+  middleware,
+  httpGet,
+  httpPost,
+  createRouter,
+  getControllerMiddlewareIdentifiers,
+  getControllerMiddlewareInstances,
+  MiddlewareIdentifiers
+} from "../decorators";
 import {
   ControllerMetadata,
   ControllerMethodMetadata
 } from "../../controllers/types";
+import { Newable } from "../../ioc/types";
+import { MiddlewareHandler } from "../../middleware/types";
 import { METADATA_KEY } from "../../ioc/constants.root";
-import { Request, Response, Router } from "express";
+import { Request, Response, NextFunction, Router } from "express";
 import { Container } from "inversify";
 
 test("Controller should add metadata", () => {
@@ -84,4 +95,93 @@ test("Controller should add", () => {
       console.log(this);
     }
   }
+});
+
+test("Get controller middleware identifiers", () => {
+  @middleware()
+  class ControllerMiddlewareA implements MiddlewareHandler {
+    name: string = "ControllerMiddlewareA";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class ControllerMiddlewareB implements MiddlewareHandler {
+    name: string = "ControllerMiddlewareB";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class MethodAMiddleware implements MiddlewareHandler {
+    name: string = "MethodAMiddleware";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class MethodBMiddleware implements MiddlewareHandler {
+    name: string = "MethodBMiddleware";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @controller("/foo", ControllerMiddlewareA, ControllerMiddlewareB)
+  class ControllerA {
+    @httpGet("/", MethodAMiddleware) getIndex(req: Request, res: Response) {}
+    @httpGet("/:id", MethodBMiddleware) postId(req: Request, res: Response) {}
+  }
+  let c = new ControllerA();
+  let m: MiddlewareIdentifiers = getControllerMiddlewareIdentifiers(c);
+  expect(m.controller.length).toEqual(2);
+  expect(m.methods["getIndex"]).toBeTruthy();
+  expect(m.methods["postId"]).toBeTruthy();
+  let cma = new (m.controller[0] as Newable<ControllerMiddlewareA>)();
+  let cmb = new (m.controller[1] as Newable<ControllerMiddlewareB>)();
+  let mam = new (m.methods["getIndex"][0] as Newable<MethodAMiddleware>)();
+  let mbm = new (m.methods["postId"][0] as Newable<MethodAMiddleware>)();
+  expect(cma.name).toEqual("ControllerMiddlewareA");
+  expect(cmb.name).toEqual("ControllerMiddlewareB");
+  expect(mam.name).toEqual("MethodAMiddleware");
+  expect(mbm.name).toEqual("MethodBMiddleware");
+});
+
+test("Get controller middleware instances", () => {
+  @middleware()
+  class ControllerMiddlewareA implements MiddlewareHandler {
+    name: string = "ControllerMiddlewareA";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class ControllerMiddlewareB implements MiddlewareHandler {
+    name: string = "ControllerMiddlewareB";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class MethodAMiddleware implements MiddlewareHandler {
+    name: string = "MethodAMiddleware";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @middleware()
+  class MethodBMiddleware implements MiddlewareHandler {
+    name: string = "MethodBMiddleware";
+    handler(req: Request, res: Response, next: NextFunction) {}
+  }
+  @controller("/foo", ControllerMiddlewareA, ControllerMiddlewareB)
+  class ControllerA {
+    @httpGet("/", MethodAMiddleware) getIndex(req: Request, res: Response) {}
+    @httpGet("/:id", MethodBMiddleware) postId(req: Request, res: Response) {}
+  }
+  let container = new Container();
+  container.bind(ControllerMiddlewareA).toSelf();
+  container.bind(ControllerMiddlewareB).toSelf();
+  container.bind(MethodAMiddleware).toSelf();
+  container.bind(MethodBMiddleware).toSelf();
+  container.bind(ControllerA).toSelf();
+  let c = new ControllerA();
+  let id = getControllerMiddlewareIdentifiers(c);
+  let m = getControllerMiddlewareInstances(container, id);
+  expect(m.controller.length).toEqual(2);
+  expect(m.methods["getIndex"]).toBeTruthy();
+  expect(m.methods["postId"]).toBeTruthy();
+  let cma = m.controller[0] as ControllerMiddlewareA;
+  let cmb = m.controller[1] as ControllerMiddlewareB;
+  let mam = m.methods["getIndex"][0] as MethodAMiddleware;
+  let mbm = m.methods["postId"][0] as MethodBMiddleware;
+  expect(cma.name).toEqual("ControllerMiddlewareA");
+  expect(cmb.name).toEqual("ControllerMiddlewareB");
+  expect(mam.name).toEqual("MethodAMiddleware");
+  expect(mbm.name).toEqual("MethodBMiddleware");
 });
