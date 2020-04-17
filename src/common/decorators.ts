@@ -1,12 +1,11 @@
 import { METADATA_KEY } from "../ioc/constants.root";
 import {
   HTTP_METHODS,
-  ControllerConstructorTest,
   ControllerMetadata,
   ControllerMetadataResolved,
   MethodMetadata,
   MethodMetadataResolved
-} from "../controllers/types";
+} from "./types";
 import { ServiceIdentifier } from "../ioc/types";
 import { Container, injectable, decorate } from "inversify";
 import { Router } from "express";

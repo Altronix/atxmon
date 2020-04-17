@@ -1,4 +1,22 @@
+import { ServiceIdentifier } from "../ioc/types";
+import { MiddlewareHandler } from "../middleware/types";
 import * as bcrypt from "bcrypt";
+
+export type HTTP_ALL = "all";
+export type HTTP_GET = "get";
+export type HTTP_POST = "post";
+export type HTTP_PUT = "put";
+export type HTTP_PATCH = "patch";
+export type HTTP_HEAD = "head";
+export type HTTP_DELETE = "delete";
+export type HTTP_METHODS =
+  | HTTP_ALL
+  | HTTP_GET
+  | HTTP_POST
+  | HTTP_PUT
+  | HTTP_PATCH
+  | HTTP_HEAD
+  | HTTP_DELETE;
 
 export type LOG_CHANNELS =
   | "trace"
@@ -29,4 +47,29 @@ export interface Logger {}
 export interface UtilRoutines {
   crypto: CryptoRoutines;
   logger: LoggerRoutines;
+}
+
+export interface _ControllerMetadata {
+  path: string;
+  middleware: ServiceIdentifier<any>[] | MiddlewareHandler[];
+  target: any;
+}
+
+export interface ControllerMetadata extends _ControllerMetadata {
+  middleware: ServiceIdentifier<any>[];
+}
+
+export interface MethodMetadata extends _ControllerMetadata {
+  method: HTTP_METHODS;
+  key: string;
+  middleware: ServiceIdentifier<any>[];
+}
+
+export interface ControllerMetadataResolved extends _ControllerMetadata {
+  middleware: MiddlewareHandler[];
+}
+
+export interface MethodMetadataResolved extends ControllerMetadataResolved {
+  method: HTTP_METHODS;
+  key: string;
 }

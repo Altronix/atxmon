@@ -8,7 +8,7 @@ import {
   getControllerMiddleware,
   MiddlewareMetadata
 } from "../decorators";
-import { ControllerMetadata, MethodMetadata } from "../../controllers/types";
+import { ControllerMetadata, MethodMetadata } from "../types";
 import { Newable } from "../../ioc/types";
 import { MiddlewareHandler } from "../../middleware/types";
 import { METADATA_KEY } from "../../ioc/constants.root";
