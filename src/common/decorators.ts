@@ -227,21 +227,4 @@ export function createRouter(container: Container, controller: any) {
   );
   root.use(middleware.controller.path, routes);
   return root;
-  /*
-   */
-  /*
-  let routes = Router();
-  Object.keys(middleware.methods).forEach(fnName => {
-    if (middleware.methods && middleware.methods[fnName]) {
-      middleware.methods[fnName].forEach(m =>
-        routes[data.method](data.path, m.handler)
-      );
-    }
-    routes[data.method](data.path, controller[data.key]);
-  });
-  let root = Router();
-  middleware.controller.forEach(m => root.use(m.handler));
-  root.use(meta.path, routes);
-  return root;
-  */
 }
