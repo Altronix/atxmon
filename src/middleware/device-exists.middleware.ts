@@ -15,7 +15,7 @@ export class DeviceExistsMiddleware implements MiddlewareHandler {
 
   handler(req: Request, res: Response, next: NextFunction) {
     req.params.id;
-    this.utils.logger.trace(`Found Device ${req.params.sid}`);
+    this.utils.logger.trace(`Device ID Middleware ${req.params.id}`);
     if (req.params.sid) {
     } else {
     }
