@@ -1,5 +1,7 @@
-import { WithOptional } from "../common/utils";
 import { UtilRoutines } from "../common/types";
+
+import { UserModel, UserEntry } from "../modles/user.model";
+import { DeviceModel } from "../modles/device.model";
 
 // Dependency types
 import { LinqEventHandler } from "@altronix/linq-network";
@@ -66,29 +68,5 @@ export type FindCriteria<E> = FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
-// DeviceModel
 export type DeviceService = DatabaseService<DeviceModel>;
-export interface DeviceModel {
-  serial: string;
-  product: string;
-  prj_version: string;
-  atx_version: string;
-  web_version: string;
-  mac: string;
-}
-
-// UserModel
 export type UserService = DatabaseService<UserModel, UserEntry>;
-export interface UserModel {
-  id: number;
-  name: string;
-  hash: string;
-  role: number;
-  devices: DeviceModel[]; //?
-}
-
-// UserEntry
-export type UserEntry = WithOptional<
-  Omit<UserModel, "id" | "hash">,
-  "devices"
-> & { pass: string };
