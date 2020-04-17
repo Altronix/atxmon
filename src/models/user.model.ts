@@ -1,7 +1,7 @@
 import { WithOptional } from "../common/utils";
 import { DeviceModel } from "./device.model";
 
-import { validate } from "class-validator";
+import { validate, Length, IsInt, Min } from "class-validator";
 
 // UserModel
 export interface UserModel {
@@ -19,7 +19,29 @@ export type UserEntry = WithOptional<
 > & { pass: string };
 
 export class User implements UserEntry {
-  constructor() {}
-  static async from(user: UserEntry): UserEntry {}
-  static async fromUntrusted(obj: any): UserEntry {}
+  @Length(3, 64)
+  name: string = "";
+
+  @IsInt()
+  @Min(0)
+  role: number = -1;
+
+  @Length(12, 64)
+  pass: string = "";
+  devices: DeviceModel[] = [];
+
+  static async from(user: UserEntry): Promise<UserEntry> {
+    let u = new User();
+    u.name = user.name;
+    u.pass = user.pass;
+    u.devices = Object.assign([], user.devices);
+    u.role = user.role;
+    let errors = await validate(u);
+    if (errors.length) throw errors;
+    return u;
+  }
+
+  static async fromUntrusted(obj: any): Promise<UserEntry> {
+    return User.from(obj);
+  }
 }
