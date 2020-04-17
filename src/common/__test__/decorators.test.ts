@@ -5,7 +5,7 @@ import {
   httpPost,
   createRouter,
   getControllerMiddlewareMetadata,
-  // getControllerMiddlewareInstances,
+  getControllerMiddleware,
   MiddlewareMetadata
 } from "../decorators";
 import { ControllerMetadata, MethodMetadata } from "../../controllers/types";
@@ -94,7 +94,7 @@ test("Controller should add", () => {
   }
 });
 
-test("Get controller middleware identifiers", () => {
+test("Get controller middleware metadta", () => {
   @middleware()
   class MiddlewareA implements MiddlewareHandler {
     name: string = "MiddlewareA";
@@ -135,8 +135,7 @@ test("Get controller middleware identifiers", () => {
   expect(mb.name).toEqual("MiddlewareD");
 });
 
-/*
-test("Get controller middleware instances", () => {
+test("Get controller middleware", () => {
   @middleware()
   class ControllerMiddlewareA implements MiddlewareHandler {
     name: string = "ControllerMiddlewareA";
@@ -169,18 +168,17 @@ test("Get controller middleware instances", () => {
   container.bind(MethodBMiddleware).toSelf();
   container.bind(ControllerA).toSelf();
   let c = new ControllerA();
-  let id = getControllerMiddlewareIdentifiers(c);
-  let m = getControllerMiddlewareInstances(container, id);
-  expect(m.controller.length).toEqual(2);
+  let meta = getControllerMiddlewareMetadata(c);
+  let m = getControllerMiddleware(container, meta);
+  expect(m.controller.middleware.length).toEqual(2);
   expect(m.methods["getIndex"]).toBeTruthy();
   expect(m.methods["postId"]).toBeTruthy();
-  let cma = m.controller[0] as ControllerMiddlewareA;
-  let cmb = m.controller[1] as ControllerMiddlewareB;
-  let mam = m.methods["getIndex"][0] as MethodAMiddleware;
-  let mbm = m.methods["postId"][0] as MethodBMiddleware;
+  let cma = m.controller.middleware[0] as ControllerMiddlewareA;
+  let cmb = m.controller.middleware[1] as ControllerMiddlewareB;
+  let mam = m.methods["getIndex"].middleware[0] as MethodAMiddleware;
+  let mbm = m.methods["postId"].middleware[0] as MethodBMiddleware;
   expect(cma.name).toEqual("ControllerMiddlewareA");
   expect(cmb.name).toEqual("ControllerMiddlewareB");
   expect(mam.name).toEqual("MethodAMiddleware");
   expect(mbm.name).toEqual("MethodBMiddleware");
 });
-*/
