@@ -1,5 +1,6 @@
 import "jest";
 import { UserEntity } from "../../entities/user.entity";
+import { UserEntry } from "../../models/user.model";
 import { UserService } from "../user.service";
 import { setup, cleanup } from "./__helpers";
 
@@ -16,6 +17,36 @@ test("Should add a user", async () => {
 
   expect(await test.database.count()).toBe(1);
   let read = await test.database.findById(1);
+  expect(read).toBeTruthy();
+  if (read) {
+    expect(read.hash).toBe("foo secret hash");
+    expect(read.name).toBe("Thomas FOO");
+    expect(read.role).toBe(0);
+    expect(read.devices).toBeFalsy;
+  }
+  await cleanup(test);
+});
+
+test("Should fail if user already exist", async () => {
+  let test = await setup(UserEntity, UserService, DATABASE);
+  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  let result = await test.database.create({
+    id: 0,
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  } as UserEntry);
+  expect(result).toBe(true);
+
+  result = await test.database.create({
+    id: 0,
+    name: "Thomas FOO",
+    pass: "secret",
+    role: 0
+  } as UserEntry);
+  expect(result).toBe(false);
+
+  let read = await test.database.findById(0);
   expect(read).toBeTruthy();
   if (read) {
     expect(read.hash).toBe("foo secret hash");

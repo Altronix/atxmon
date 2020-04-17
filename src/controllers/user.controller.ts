@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UtilRoutines } from "../common/types";
 import { LoggerMiddleware } from "../middleware/logger.middleware";
 import { DatabaseService } from "../services/types";
-import { UserModel, UserEntry } from "../models/user.model";
+import { User, UserModel, UserEntry } from "../models/user.model";
 import { Controller } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { httpGet, httpPost, controller } from "../common/decorators";
@@ -10,16 +10,12 @@ import { injectable, inject } from "inversify";
 
 @controller("/users", LoggerMiddleware)
 export class UserController implements Controller<UserModel, UserEntry> {
-  utils: UtilRoutines;
-  database: DatabaseService<UserModel, UserEntry>;
   constructor(
-    @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
+    @inject(SYMBOLS.UTIL_ROUTINES)
+    private utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER)
-    database: DatabaseService<UserModel, UserEntry>
-  ) {
-    this.utils = utils;
-    this.database = database;
-  }
+    private database: DatabaseService<UserModel, UserEntry>
+  ) {}
 
   @httpGet("/")
   private async index(req: Request, res: Response) {
@@ -27,5 +23,13 @@ export class UserController implements Controller<UserModel, UserEntry> {
   }
 
   @httpPost("/")
-  private async create(req: Request, res: Response) {}
+  private async create(req: Request, res: Response) {
+    try {
+      let user = await User.fromUntrusted(req.body);
+      let exists = await this.database.find({ name: user.name });
+      if (exists.length) res.status(400).send({ error: "exists" });
+      let result = await this.database.create(user);
+    } catch {
+    }
+  }
 }

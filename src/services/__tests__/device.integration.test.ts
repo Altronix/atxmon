@@ -29,6 +29,41 @@ test("Should add a device", async () => {
   await cleanup(test);
 });
 
+test("Should fail if device already exist", async () => {
+  let test = await setup(DeviceEntity, DeviceService, DATABASE);
+  let result = await test.database.create({
+    serial: "Serial ID",
+    product: "LINQ2",
+    prj_version: "2.2.1",
+    atx_version: "2.2.2",
+    web_version: "2.2.3",
+    mac: "00:00:00:00:00:00"
+  });
+  expect(result).toBe(true);
+
+  result = await test.database.create({
+    serial: "Serial ID",
+    product: "FOO",
+    prj_version: "FOO",
+    atx_version: "FOO",
+    web_version: "FOO",
+    mac: "FOO"
+  });
+  expect(result).toBe(false);
+
+  let read = await test.database.findById("Serial ID");
+  expect(read).toBeTruthy();
+  if (read) {
+    expect(read.serial).toBe("Serial ID");
+    expect(read.product).toBe("LINQ2");
+    expect(read.prj_version).toBe("2.2.1");
+    expect(read.atx_version).toBe("2.2.2");
+    expect(read.web_version).toBe("2.2.3");
+    expect(read.mac).toBe("00:00:00:00:00:00");
+  }
+  await cleanup(test);
+});
+
 test("Should find many devices", async () => {
   let test = await setup(DeviceEntity, DeviceService, DATABASE);
   let serial1 = await test.database.create({
