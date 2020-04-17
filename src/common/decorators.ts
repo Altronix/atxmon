@@ -162,11 +162,6 @@ export function httpMethod(
 //   methods: { [key: string]: ServiceIdentifier<any>[] };
 // }
 
-export interface Middleware {
-  controller: MiddlewareHandler[];
-  methods: { [key: string]: MiddlewareHandler[] };
-}
-
 // export function getControllerMiddlewareIdentifiers(
 //   controller: any
 // ): MiddlewareIdentifiers {
@@ -191,6 +186,11 @@ export interface MiddlewareMetadata {
   methods: { [key: string]: MethodMetadata };
 }
 
+export interface Middleware {
+  controller: ControllerMetadataResolved;
+  methods: { [key: string]: MethodMetadataResolved };
+}
+
 export function getControllerMiddlewareMetadata(
   controller: any
 ): MiddlewareMetadata {
@@ -210,14 +210,20 @@ export function getControllerMiddlewareMetadata(
   return ret;
 }
 
-export function getControllerMiddlewareInstances(
+export function getControllerMiddleware(
   c: Container,
-  service: MiddlewareIdentifiers
+  service: MiddlewareMetadata
 ): Middleware {
-  let controller = service.controller.map(i => c.get<MiddlewareHandler>(i));
-  let methods: { [key: string]: MiddlewareHandler[] } = {};
+  let controller = Object.assign({}, service.controller, {
+    middleware: service.controller.middleware.map(i =>
+      c.get<MiddlewareHandler>(i)
+    )
+  });
+  let methods: { [key: string]: MethodMetadataResolved } = {};
   Object.keys(service.methods).forEach(key => {
-    methods[key] = service.methods[key].map(i => c.get<MiddlewareHandler>(i));
+    methods[key].middleware = service.methods[key].middleware.map(i =>
+      c.get<MiddlewareHandler>(i)
+    );
   });
   return { controller, methods };
 }

@@ -5,7 +5,7 @@ import {
   httpPost,
   createRouter,
   getControllerMiddlewareMetadata,
-  getControllerMiddlewareInstances,
+  // getControllerMiddlewareInstances,
   MiddlewareMetadata
 } from "../decorators";
 import { ControllerMetadata, MethodMetadata } from "../../controllers/types";
