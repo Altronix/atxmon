@@ -1,6 +1,8 @@
 import { SYMBOLS } from "../ioc/constants.root";
 import { LinqNetworkService } from "./types";
-import { DatabaseService, DeviceModel, UserModel, UserEntry } from "./types";
+import { DatabaseService } from "./types";
+import { DeviceModel } from "../models/device.model";
+import { UserModel, UserEntry } from "../models/user.model";
 import { injectable, inject } from "inversify";
 
 @injectable()

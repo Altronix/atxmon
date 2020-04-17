@@ -1,8 +1,5 @@
 import { UtilRoutines } from "../common/types";
 
-import { UserModel, UserEntry } from "../modles/user.model";
-import { DeviceModel } from "../modles/device.model";
-
 // Dependency types
 import { LinqEventHandler } from "@altronix/linq-network";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
@@ -67,6 +64,3 @@ export interface Repository<E> {
 export type FindCriteria<E> = FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
-
-export type DeviceService = DatabaseService<DeviceModel>;
-export type UserService = DatabaseService<UserModel, UserEntry>;

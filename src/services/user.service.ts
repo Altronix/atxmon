@@ -4,10 +4,9 @@ import {
   Repository,
   DatabaseService,
   FindCriteria,
-  IdCriteria,
-  UserModel,
-  UserEntry
+  IdCriteria
 } from "./types";
+import { UserModel, UserEntry } from "../models/user.model";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";

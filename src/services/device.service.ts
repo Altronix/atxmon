@@ -3,9 +3,9 @@ import {
   Repository,
   DatabaseService,
   FindCriteria,
-  IdCriteria,
-  DeviceModel
+  IdCriteria
 } from "./types";
+import { DeviceModel } from "../models/device.model";
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";

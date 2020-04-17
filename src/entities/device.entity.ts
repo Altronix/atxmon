@@ -1,4 +1,4 @@
-import { DeviceModel } from "../services/types";
+import { DeviceModel } from "../models/device.model";
 import { Entity, Column, Connection, PrimaryColumn } from "typeorm";
 
 // Explanation of properties followed by "!" (fixed next release)

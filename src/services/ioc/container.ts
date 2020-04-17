@@ -5,12 +5,11 @@ import { AsyncContainerModule, injectable, decorate } from "inversify";
 import {
   DatabaseService,
   Repository,
-  UserModel,
-  UserEntry,
-  DeviceModel,
   AltronixLinqNetworkService,
   LinqNetworkService
 } from "../types";
+import { UserModel, UserEntry } from "../../models/user.model";
+import { DeviceModel } from "../../models/device.model";
 import { DeviceEntity } from "../../entities/device.entity";
 import { UserEntity } from "../../entities/user.entity";
 import { OrmRepository, getConnection } from "../orm.service";
