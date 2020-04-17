@@ -157,34 +157,34 @@ export function httpMethod(
   };
 }
 
-export interface MiddlewareIdentifiers {
-  controller: ServiceIdentifier<any>[];
-  methods: { [key: string]: ServiceIdentifier<any>[] };
-}
+// export interface MiddlewareIdentifiers {
+//   controller: ServiceIdentifier<any>[];
+//   methods: { [key: string]: ServiceIdentifier<any>[] };
+// }
 
 export interface Middleware {
   controller: MiddlewareHandler[];
   methods: { [key: string]: MiddlewareHandler[] };
 }
 
-export function getControllerMiddlewareIdentifiers(
-  controller: any
-): MiddlewareIdentifiers {
-  let meta: ControllerMetadata = Reflect.getMetadata(
-    METADATA_KEY.controller,
-    controller.constructor
-  );
-  let methodMeta: MethodMetadata[] = Reflect.getMetadata(
-    METADATA_KEY.controllerMethod,
-    controller.constructor
-  );
-  let ret: MiddlewareIdentifiers = {
-    controller: meta.middleware,
-    methods: {}
-  };
-  methodMeta.forEach(m => (ret.methods[m.key] = m.middleware));
-  return ret;
-}
+// export function getControllerMiddlewareIdentifiers(
+//   controller: any
+// ): MiddlewareIdentifiers {
+//   let meta: ControllerMetadata = Reflect.getMetadata(
+//     METADATA_KEY.controller,
+//     controller.constructor
+//   );
+//   let methodMeta: MethodMetadata[] = Reflect.getMetadata(
+//     METADATA_KEY.controllerMethod,
+//     controller.constructor
+//   );
+//   let ret: MiddlewareIdentifiers = {
+//     controller: meta.middleware,
+//     methods: {}
+//   };
+//   methodMeta.forEach(m => (ret.methods[m.key] = m.middleware));
+//   return ret;
+// }
 
 export interface MiddlewareMetadata {
   controller: ControllerMetadata;
