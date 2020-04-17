@@ -30,12 +30,9 @@ export class App {
       this.controllers.root
     ];
 
-    // For each controller, get middleware
-    controllers.forEach(controller => {
-      let m = getControllerMiddleware(controller).map(m => container.get(m));
-      this.server.use(createRouter(controller, ...m));
-      this.middleware = this.middleware.concat(m);
-    });
+    controllers.forEach(controller =>
+      this.server.use(createRouter(container, controller))
+    );
   }
 }
 

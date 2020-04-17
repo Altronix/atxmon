@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UtilRoutines } from "../common/types";
+import { DeviceExistsMiddleware } from "../middleware/device-exists.middleware";
 import {
   DatabaseService,
   DeviceModel,
@@ -24,5 +25,10 @@ export class DeviceController implements Controller<DeviceModel> {
   @httpGet("/")
   private async index(req: Request, res: Response) {
     res.send(await this.database.find());
+  }
+
+  @httpGet("/:id", DeviceExistsMiddleware)
+  private async id(req: Request, res: Response) {
+    this.utils.logger.trace("Device ID Request");
   }
 }

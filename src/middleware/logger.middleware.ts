@@ -7,17 +7,13 @@ import * as express from "express";
 
 @middleware()
 export class LoggerMiddleware implements MiddlewareHandler {
-  _utils: UtilRoutines;
-
-  constructor(@inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines) {
-    this._utils = utils;
-  }
+  constructor(@inject(SYMBOLS.UTIL_ROUTINES) private utils: UtilRoutines) {}
   public handler(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    this._utils.logger.info("ROUTE HIT");
+    this.utils.logger.info("ROUTE HIT");
     next();
   }
 }
