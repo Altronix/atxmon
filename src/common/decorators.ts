@@ -184,6 +184,30 @@ export function getControllerMiddlewareIdentifiers(
   return ret;
 }
 
+export interface MiddlewareMetadata {
+  controller: ControllerMetadata;
+  methods: { [key: string]: ControllerMethodMetadata };
+}
+
+export function getControllerMiddlewareMetadata(
+  controller: any
+): MiddlewareMetadata {
+  let meta: ControllerMetadata = Reflect.getMetadata(
+    METADATA_KEY.controller,
+    controller.constructor
+  );
+  let methodMeta: ControllerMethodMetadata[] = Reflect.getMetadata(
+    METADATA_KEY.controllerMethod,
+    controller.constructor
+  );
+  let ret: MiddlewareMetadata = {
+    controller: meta,
+    methods: {}
+  };
+  methodMeta.forEach(m => (ret.methods[m.key] = m));
+  return ret;
+}
+
 export function getControllerMiddlewareInstances(
   c: Container,
   service: MiddlewareIdentifiers
@@ -197,8 +221,8 @@ export function getControllerMiddlewareInstances(
 }
 
 export function createRouter(container: Container, controller: any) {
-  let id = getControllerMiddlewareIdentifiers(controller);
-  let middleware = getControllerMiddlewareInstances(container, id);
+  // let id = getControllerMiddlewareIdentifiers(controller);
+  // let middleware = getControllerMiddlewareInstances(container, id);
   /*
   let meta: ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
@@ -209,7 +233,6 @@ export function createRouter(container: Container, controller: any) {
     controller.constructor
   );
 */
-
   /*
   let routes = Router();
   Object.keys(middleware.methods).forEach(fnName => {
