@@ -36,8 +36,9 @@ export class LinqService implements LinqNetworkService {
     return this;
   }
 
-  on(ev: string, handler: (...args: any[]) => void) {
+  on(ev: string, handler: (...args: any[]) => void): LinqNetworkService {
     this.atx.on(ev, handler);
+    return this;
   }
 
   send<T>(

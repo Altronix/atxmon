@@ -28,6 +28,7 @@ export interface AltronixLinqNetworkService {
 export interface LinqNetworkService extends AltronixLinqNetworkService {
   registerEventHandler(eh: LinqEventHandler): LinqNetworkService;
   listen(port: string | number): LinqNetworkService;
+  on: (ev: string, handler: (...args: any[]) => void) => LinqNetworkService;
   connect(port: string | number): LinqNetworkService;
   close(idx: number): LinqNetworkService;
 }

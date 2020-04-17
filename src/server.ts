@@ -15,8 +15,20 @@ log("info", "starting app...");
     role: 0
   });
 
-  app.services.linq.listen(33455);
-  app.services.linq.on("heartbeat", serial => log("info", serial));
-  await app.services.linq.run(50);
-  await sock.close();
+  await app.services.linq
+    .listen(33455)
+    .on("heartbeat", async serial => {
+      log("info", `${serial}`);
+    })
+    .on("alert", async event => {
+      log("info", `${event}`);
+    })
+    .on("error", async (error, what) => {
+      log("info", `${error} ${what}`);
+    })
+    .on("ctrlc", async serial => {
+      log("warn", "Shutting down...");
+      await sock.close();
+    })
+    .run(50);
 })();
