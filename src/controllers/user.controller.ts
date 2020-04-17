@@ -24,4 +24,7 @@ export class UserController implements Controller<UserModel, UserEntry> {
   private async index(req: Request, res: Response) {
     res.send(await this.database.find());
   }
+
+  @httpPost("/")
+  private async create(req: Request, res: Response) {}
 }
