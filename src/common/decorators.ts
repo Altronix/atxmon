@@ -3,7 +3,9 @@ import {
   HTTP_METHODS,
   ControllerConstructorTest,
   ControllerMetadata,
-  ControllerMethodMetadata
+  ControllerMetadataResolved,
+  MethodMetadata,
+  MethodMetadataResolved
 } from "../controllers/types";
 import { ServiceIdentifier } from "../ioc/types";
 import { Container, injectable, decorate } from "inversify";
@@ -52,7 +54,7 @@ export function controller(
     class C extends target {
       constructor(...args: any[]) {
         super(...args);
-        let meta: ControllerMethodMetadata[] = Reflect.getMetadata(
+        let meta: MethodMetadata[] = Reflect.getMetadata(
           METADATA_KEY.controllerMethod,
           target
         );
@@ -126,7 +128,7 @@ export function httpMethod(
   ...middleware: ServiceIdentifier<any>[]
 ): HandlerDecorator {
   return function(target: any, key: string, value: any) {
-    let metadata: ControllerMethodMetadata = {
+    let metadata: MethodMetadata = {
       key,
       method,
       middleware,
@@ -134,7 +136,7 @@ export function httpMethod(
       target
     };
 
-    let metadataList: ControllerMethodMetadata[] = [];
+    let metadataList: MethodMetadata[] = [];
 
     if (
       !Reflect.hasMetadata(METADATA_KEY.controllerMethod, target.constructor)
@@ -172,7 +174,7 @@ export function getControllerMiddlewareIdentifiers(
     METADATA_KEY.controller,
     controller.constructor
   );
-  let methodMeta: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let methodMeta: MethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     controller.constructor
   );
@@ -186,7 +188,7 @@ export function getControllerMiddlewareIdentifiers(
 
 export interface MiddlewareMetadata {
   controller: ControllerMetadata;
-  methods: { [key: string]: ControllerMethodMetadata };
+  methods: { [key: string]: MethodMetadata };
 }
 
 export function getControllerMiddlewareMetadata(
@@ -196,7 +198,7 @@ export function getControllerMiddlewareMetadata(
     METADATA_KEY.controller,
     controller.constructor
   );
-  let methodMeta: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let methodMeta: MethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     controller.constructor
   );

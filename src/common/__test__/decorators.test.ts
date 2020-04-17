@@ -8,10 +8,7 @@ import {
   getControllerMiddlewareInstances,
   MiddlewareMetadata
 } from "../decorators";
-import {
-  ControllerMetadata,
-  ControllerMethodMetadata
-} from "../../controllers/types";
+import { ControllerMetadata, MethodMetadata } from "../../controllers/types";
 import { Newable } from "../../ioc/types";
 import { MiddlewareHandler } from "../../middleware/types";
 import { METADATA_KEY } from "../../ioc/constants.root";
@@ -36,12 +33,12 @@ test("Controller should add metadata", () => {
     Reflect
   );
 
-  let metaMethodsA: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let metaMethodsA: MethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     ControllerA
   );
 
-  let metaMethodsB: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let metaMethodsB: MethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     ControllerB
   );
@@ -74,7 +71,7 @@ test("Controller metadata should be available on constructor", () => {
     METADATA_KEY.controller,
     f.constructor
   );
-  let metaMethods: ControllerMethodMetadata[] = Reflect.getMetadata(
+  let metaMethods: MethodMetadata[] = Reflect.getMetadata(
     METADATA_KEY.controllerMethod,
     f.constructor
   );

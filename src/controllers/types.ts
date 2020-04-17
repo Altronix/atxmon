@@ -2,6 +2,7 @@ import { DatabaseService } from "../services/types";
 import { UtilRoutines } from "../common/types";
 import { ServiceIdentifier } from "../ioc/types";
 import { Router, Request, Response, NextFunction } from "express";
+import { MiddlewareHandler } from "../middleware/types";
 export interface Controller<Model, Entry = Model> {}
 
 export type HTTP_ALL = "all";
@@ -31,13 +32,27 @@ export type ControllerConstructor<Model, Entry = Model> = {
   >;
 };
 
-export interface ControllerMetadata {
+export interface _ControllerMetadata {
   path: string;
-  middleware: ServiceIdentifier<any>[];
+  middleware: ServiceIdentifier<any>[] | MiddlewareHandler[];
   target: any;
 }
 
-export interface ControllerMethodMetadata extends ControllerMetadata {
+export interface ControllerMetadata extends _ControllerMetadata {
+  middleware: ServiceIdentifier<any>[];
+}
+
+export interface MethodMetadata extends _ControllerMetadata {
+  method: HTTP_METHODS;
+  key: string;
+  middleware: ServiceIdentifier<any>[];
+}
+
+export interface ControllerMetadataResolved extends _ControllerMetadata {
+  middleware: MiddlewareHandler[];
+}
+
+export interface MethodMetadataResolved extends ControllerMetadataResolved {
   method: HTTP_METHODS;
   key: string;
 }
