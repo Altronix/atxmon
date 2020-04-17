@@ -2,8 +2,8 @@ import { controller, httpGet, httpPost, createRouter } from "../decorators";
 import {
   ControllerMetadata,
   ControllerMethodMetadata
-} from "../controllers/types";
-import { METADATA_KEY } from "../ioc/constants.root";
+} from "../../controllers/types";
+import { METADATA_KEY } from "../../ioc/constants.root";
 import { Request, Response, Router } from "express";
 import { Container } from "inversify";
 

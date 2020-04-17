@@ -8,7 +8,7 @@ import {
 import { Controller } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";
-import { httpGet, httpPost, controller } from "../decorators";
+import { httpGet, httpPost, controller } from "../common/decorators";
 
 @controller("/devices")
 export class DeviceController implements Controller<DeviceModel> {

@@ -4,7 +4,7 @@ import { LoggerMiddleware } from "../middleware/logger.middleware";
 import { DatabaseService, UserModel, UserEntry } from "../services/types";
 import { Controller } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
-import { httpGet, httpPost, controller } from "../decorators";
+import { httpGet, httpPost, controller } from "../common/decorators";
 import { injectable, inject } from "inversify";
 
 @controller("/users", LoggerMiddleware)

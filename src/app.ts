@@ -4,7 +4,7 @@ import log from "./common/logger";
 
 import { Controllers } from "./controllers/controllers";
 import { Services } from "./services/services";
-import { createRouter, getControllerMiddleware } from "./decorators";
+import { createRouter, getControllerMiddleware } from "./common/decorators";
 import { Container, injectable, inject } from "inversify";
 
 import * as bodyParser from "body-parser";
