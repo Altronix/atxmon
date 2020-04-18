@@ -6,8 +6,7 @@ log("info", "starting app...");
 
 (async () => {
   let app = await createApp();
-  app.server.use(bodyParser.urlencoded({ extended: true }));
-  app.server.use(bodyParser.json());
+  app.load();
   let sock = app.server.listen(3000);
   let user = await app.services.users.create({
     name: "Thomas",

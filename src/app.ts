@@ -12,18 +12,23 @@ import express from "express";
 
 @injectable()
 export class App {
+  container!: Container;
   server: express.Application;
   services: Services;
-  middleware: any[] = [];
   constructor(
     @inject(Controllers) private controllers: Controllers,
     @inject(Services) services: Services
   ) {
-    this.server = express();
     this.services = services;
+    this.server = express();
   }
 
-  load(container: Container) {
+  use(...args: any[]): App {
+    this.server.use(...args);
+    return this;
+  }
+
+  load(): App {
     let controllers = [
       this.controllers.user,
       this.controllers.device,
@@ -31,14 +36,15 @@ export class App {
     ];
 
     controllers.forEach(controller =>
-      this.server.use(createRouter(container, controller))
+      this.server.use(createRouter(this.container, controller))
     );
+    return this;
   }
 }
 
 export default async () => {
   let container = await createContainer();
   let app = container.get<App>(App);
-  app.load(container);
+  app.container = container;
   return app;
 };
