@@ -19,7 +19,7 @@ export class UserController implements Controller<UserModel, UserEntry> {
 
   @httpGet("/")
   async index(req: Request, res: Response) {
-    res.send(await this.database.find());
+    res.status(200).send(await this.database.find());
   }
 
   @httpPost("/")
