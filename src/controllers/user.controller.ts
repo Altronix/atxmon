@@ -30,14 +30,14 @@ export class UserController implements Controller<UserModel, UserEntry> {
       );
       if (result) {
         this.utils.logger.info(`Create user [success]`);
-        res.status(200).json("ok");
+        res.status(200).send("ok");
       } else {
         this.utils.logger.warn(`Create user already exists error detected`);
-        res.status(403).json({ error: "User already exists" });
+        res.status(403).send({ error: "User already exists" });
       }
     } catch (e) {
       this.utils.logger.warn(`Create user bad args detected [${e}]`);
-      res.status(400).json({ error: "Bad request" });
+      res.status(400).send({ error: "Bad request" });
     }
   }
 }

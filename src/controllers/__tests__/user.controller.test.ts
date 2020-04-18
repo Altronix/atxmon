@@ -14,11 +14,45 @@ function setup() {
   return { utils, userService, controller, res };
 }
 
-test("UserController GET /users success", async () => {
+test("UserController GET /users 200", async () => {
   let { utils, userService, controller, res } = setup();
   let data: Promise<[]> = new Promise(resolve => resolve([]));
   userService.find.mockReturnValue(data);
   await controller.index(asRequest({}), asResponse(res));
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledWith([]);
+});
+
+test("UserController POST /users 200", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { body: { name: "Tom", pass: "0123456789012", role: 0 } };
+  userService.create.mockReturnValue(new Promise(resolve => resolve(true)));
+  await controller.create(asRequest(req), asResponse(res));
+  expect(userService.create).toBeCalledWith(
+    Object.assign(req.body, { devices: [] })
+  );
+  expect(res.status).toBeCalledWith(200);
+  expect(res.send).toBeCalledWith("ok");
+});
+
+test("UserController POST /users 400", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { body: { name: "Tom", pass: "BAD", role: 0 } };
+  userService.create.mockReturnValue(new Promise(resolve => resolve(true)));
+  await controller.create(asRequest(req), asResponse(res));
+  expect(userService.create).toHaveBeenCalledTimes(0);
+  expect(res.status).toBeCalledWith(400);
+  expect(res.send).toBeCalledWith({ error: "Bad request" });
+});
+
+test("UserController POST /users 403", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { body: { name: "Tom", pass: "0123456789012", role: 0 } };
+  userService.create.mockReturnValue(new Promise(resolve => resolve(false)));
+  await controller.create(asRequest(req), asResponse(res));
+  expect(userService.create).toBeCalledWith(
+    Object.assign(req.body, { devices: [] })
+  );
+  expect(res.status).toBeCalledWith(403);
+  expect(res.send).toBeCalledWith({ error: "User already exists" });
 });
