@@ -6,13 +6,8 @@ log("info", "starting app...");
 
 (async () => {
   let app = await createApp();
-  app.load();
+
   let sock = app.server.listen(3000);
-  let user = await app.services.users.create({
-    name: "Thomas",
-    pass: "Secret",
-    role: 0
-  });
 
   await app.services.linq
     .listen(33455)
@@ -29,5 +24,5 @@ log("info", "starting app...");
       log("warn", "Shutting down...");
       await sock.close();
     })
-    .run(50);
+    .run(500);
 })();

@@ -46,5 +46,6 @@ export default async () => {
   let container = await createContainer();
   let app = container.get<App>(App);
   app.container = container;
+  app.load();
   return app;
 };
