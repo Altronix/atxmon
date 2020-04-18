@@ -18,12 +18,12 @@ export class UserController implements Controller<UserModel, UserEntry> {
   ) {}
 
   @httpGet("/")
-  private async index(req: Request, res: Response) {
+  async index(req: Request, res: Response) {
     res.send(await this.database.find());
   }
 
   @httpPost("/")
-  private async create(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     try {
       let result = await this.database.create(
         await User.fromUntrusted(req.body)

@@ -14,7 +14,7 @@ export class RootController {
   }
 
   @httpGet("/")
-  private async index(req: Request, res: Response, next: NextFunction) {
+  async index(req: Request, res: Response, next: NextFunction) {
     res.send({ root: [] });
   }
 }
