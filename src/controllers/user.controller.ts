@@ -25,19 +25,17 @@ export class UserController implements Controller<UserModel, UserEntry> {
   @httpPost("/")
   async create(req: Request, res: Response) {
     try {
-      let result = await this.database.create(
-        await User.fromUntrusted(req.body)
-      );
-      if (result) {
-        this.utils.logger.info(`Create user [success]`);
-        res.status(200).send("ok");
+      let user, result;
+      if (
+        (user = await User.fromUntrustedThrowable(req.body)) &&
+        (result = await this.database.create(user))
+      ) {
+        res.status(200).send("Success");
       } else {
-        this.utils.logger.warn(`Create user already exists error detected`);
-        res.status(403).send({ error: "User already exists" });
+        res.status(403).send("User already exists");
       }
-    } catch (e) {
-      this.utils.logger.warn(`Create user bad args detected [${e}]`);
-      res.status(400).send({ error: "Bad request" });
+    } catch {
+      res.status(400).send("Bad request");
     }
   }
 }

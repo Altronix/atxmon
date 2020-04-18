@@ -1,19 +1,19 @@
 import { User } from "../user.model";
 
-test("User fromUntrusted should fail with invalid input", async () => {
+test("User fromUntrustedThrowable should fail with invalid input", async () => {
   let pass: boolean = false;
   try {
-    let user = await User.fromUntrusted({ foo: "wrong" });
+    let user = await User.fromUntrustedThrowable({ foo: "wrong" });
   } catch (e) {
     pass = true;
   }
   expect(pass).toBe(true);
 });
 
-test("User fromUntrusted should pass with valid input", async () => {
+test("User fromUntrustedThrowable should pass with valid input", async () => {
   let pass: boolean = false;
   try {
-    let user = await User.fromUntrusted({
+    let user = await User.fromUntrustedThrowable({
       name: "Tom",
       role: 1,
       pass: "01234567890ab"
@@ -21,6 +21,20 @@ test("User fromUntrusted should pass with valid input", async () => {
     pass = true;
   } catch (e) {}
   expect(pass).toBe(true);
+});
+
+test("User fromUntrusted should fail with invalid input", async () => {
+  let user = await User.fromUntrusted({ foo: "wrong" });
+  expect(user).toBe(undefined);
+});
+
+test("User fromUntrusted should pass with valid input", async () => {
+  let user = await User.fromUntrusted({
+    name: "Tom",
+    role: 1,
+    pass: "01234567890ab"
+  });
+  expect(user).toBeTruthy();
 });
 
 test("User from should fail with invalid input", async () => {

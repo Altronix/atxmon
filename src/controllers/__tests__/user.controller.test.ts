@@ -32,7 +32,7 @@ test("UserController POST /users 200", async () => {
     Object.assign(req.body, { devices: [] })
   );
   expect(res.status).toBeCalledWith(200);
-  expect(res.send).toBeCalledWith("ok");
+  expect(res.send).toBeCalledWith("Success");
 });
 
 test("UserController POST /users 400", async () => {
@@ -42,7 +42,7 @@ test("UserController POST /users 400", async () => {
   await controller.create(asRequest(req), asResponse(res));
   expect(userService.create).toHaveBeenCalledTimes(0);
   expect(res.status).toBeCalledWith(400);
-  expect(res.send).toBeCalledWith({ error: "Bad request" });
+  expect(res.send).toBeCalledWith("Bad request");
 });
 
 test("UserController POST /users 403", async () => {
@@ -54,5 +54,5 @@ test("UserController POST /users 403", async () => {
     Object.assign(req.body, { devices: [] })
   );
   expect(res.status).toBeCalledWith(403);
-  expect(res.send).toBeCalledWith({ error: "User already exists" });
+  expect(res.send).toBeCalledWith("User already exists");
 });

@@ -37,7 +37,16 @@ export class User implements UserEntry {
     return u;
   }
 
-  static async fromUntrusted(obj: any): Promise<UserEntry> {
+  static async fromUntrusted(obj: any): Promise<UserEntry | undefined> {
+    try {
+      let u = await User.from(obj);
+      return u;
+    } catch {
+      return undefined;
+    }
+  }
+
+  static async fromUntrustedThrowable(obj: any): Promise<UserEntry> {
     return User.from(obj);
   }
 }
