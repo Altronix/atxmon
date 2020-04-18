@@ -3,7 +3,7 @@ import { ExpectJsonMiddleware } from "./expect-json.middleware";
 import { DeviceExistsMiddleware } from "./device-exists.middleware";
 import { BodyParserMiddleware } from "./body-parser.middleware";
 
-export const GlobalMiddleware = [
+export const StandardMiddleware = [
   ExpectJsonMiddleware,
   BodyParserMiddleware,
   LoggerMiddleware
