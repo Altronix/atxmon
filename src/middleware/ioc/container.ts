@@ -1,6 +1,6 @@
 import { LoggerMiddleware } from "../logger.middleware";
 import { DeviceExistsMiddleware } from "../device-exists.middleware";
-import { ExpectJsonMiddleware } from "../default-content-type.middleware";
+import { ExpectJsonMiddleware } from "../expect-json.middleware";
 import { BodyParserMiddleware } from "../body-parser.middleware";
 import { SYMBOLS } from "../../ioc/constants.root";
 import { ContainerModule } from "inversify";
