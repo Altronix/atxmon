@@ -14,6 +14,14 @@ function setup() {
   return { utils, userService, controller, res };
 }
 
+const goodUser = {
+  name: "Tom",
+  email: "tom@gmail.com",
+  pass: "111111111111",
+  role: 0
+};
+const badUser = Object.assign({}, goodUser, { pass: "foo" });
+
 test("UserController GET /users 200", async () => {
   let { utils, userService, controller, res } = setup();
   let data: Promise<[]> = new Promise(resolve => resolve([]));
@@ -25,7 +33,7 @@ test("UserController GET /users 200", async () => {
 
 test("UserController POST /users 200", async () => {
   let { utils, userService, controller, res } = setup();
-  let req = { body: { name: "Tom", pass: "0123456789012", role: 0 } };
+  let req = { body: goodUser };
   userService.create.mockReturnValue(new Promise(resolve => resolve(true)));
   await controller.create(asRequest(req), asResponse(res));
   expect(userService.create).toBeCalledWith(
@@ -37,7 +45,7 @@ test("UserController POST /users 200", async () => {
 
 test("UserController POST /users 400", async () => {
   let { utils, userService, controller, res } = setup();
-  let req = { body: { name: "Tom", pass: "BAD", role: 0 } };
+  let req = { body: badUser };
   userService.create.mockReturnValue(new Promise(resolve => resolve(true)));
   await controller.create(asRequest(req), asResponse(res));
   expect(userService.create).toHaveBeenCalledTimes(0);
@@ -47,7 +55,7 @@ test("UserController POST /users 400", async () => {
 
 test("UserController POST /users 403", async () => {
   let { utils, userService, controller, res } = setup();
-  let req = { body: { name: "Tom", pass: "0123456789012", role: 0 } };
+  let req = { body: goodUser };
   userService.create.mockReturnValue(new Promise(resolve => resolve(false)));
   await controller.create(asRequest(req), asResponse(res));
   expect(userService.create).toBeCalledWith(

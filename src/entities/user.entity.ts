@@ -23,6 +23,9 @@ export class UserEntity implements UserModel {
   name!: string;
 
   @Column()
+  email!: string;
+
+  @Column()
   hash!: string;
 
   @Column()

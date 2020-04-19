@@ -14,6 +14,7 @@ test("User fromUntrustedThrowable should pass with valid input", async () => {
   let pass: boolean = false;
   try {
     let user = await User.fromUntrustedThrowable({
+      email: "tom@gmail.com",
       name: "Tom",
       role: 1,
       pass: "01234567890ab"
@@ -31,6 +32,7 @@ test("User fromUntrusted should fail with invalid input", async () => {
 test("User fromUntrusted should pass with valid input", async () => {
   let user = await User.fromUntrusted({
     name: "Tom",
+    email: "tom@gmail.com",
     role: 1,
     pass: "01234567890ab"
   });
@@ -40,7 +42,7 @@ test("User fromUntrusted should pass with valid input", async () => {
 test("User from should fail with invalid input", async () => {
   let pass: boolean = false;
   try {
-    let user = await User.from({ name: "", pass: "", role: -1 });
+    let user = await User.from({ email: "", name: "", pass: "", role: -1 });
   } catch (e) {
     pass = true;
   }
@@ -52,6 +54,7 @@ test("User from should pass with valid input", async () => {
   try {
     let user = await User.from({
       name: "Tom",
+      email: "tom@gmail.com",
       role: 1,
       pass: "01234567890ab"
     });

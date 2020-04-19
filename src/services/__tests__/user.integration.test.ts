@@ -11,6 +11,7 @@ test("Should add a user", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -21,18 +22,21 @@ test("Should add a user", async () => {
   if (read) {
     expect(read.hash).toBe("foo secret hash");
     expect(read.name).toBe("Thomas FOO");
+    expect(read.email).toBe("tom@tom.com");
     expect(read.role).toBe(0);
     expect(read.devices).toBeFalsy;
   }
   await cleanup(test);
 });
 
+// TODO exists by ID vs exists by Email
 test("Should fail if user already exist", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let result = await test.database.create({
     id: 0,
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   } as UserEntry);
@@ -40,7 +44,8 @@ test("Should fail if user already exist", async () => {
 
   result = await test.database.create({
     id: 0,
-    name: "Thomas FOO",
+    name: "Thomas FOO 1",
+    email: "tom1@tom.com",
     pass: "secret",
     role: 0
   } as UserEntry);
@@ -51,6 +56,7 @@ test("Should fail if user already exist", async () => {
   if (read) {
     expect(read.hash).toBe("foo secret hash");
     expect(read.name).toBe("Thomas FOO");
+    expect(read.email).toBe("tom@tom.com");
     expect(read.role).toBe(0);
     expect(read.devices).toBeFalsy;
   }
@@ -62,11 +68,13 @@ test("Should find many users", async () => {
   test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   let user1 = await test.database.create({
     name: "Thomas FOO 1",
+    email: "tom1@tom.com",
     pass: "secret",
     role: 0
   });
   let user2 = await test.database.create({
     name: "Thomas FOO 2",
+    email: "tom2@tom.com",
     pass: "secret",
     role: 0
   });
@@ -82,11 +90,13 @@ test("Should find all users", async () => {
   test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   let user1 = await test.database.create({
     name: "Thomas FOO 1",
+    email: "tom1@tom.com",
     pass: "secret",
     role: 0
   });
   let user2 = await test.database.create({
     name: "Thomas FOO 2",
+    email: "tom2@tom.com",
     pass: "secret",
     role: 0
   });
@@ -102,6 +112,7 @@ test("Should not find a user", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -116,6 +127,7 @@ test("Should remove a user", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -132,6 +144,7 @@ test("Should remove a user by ID", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -152,6 +165,7 @@ test("Should not remove a user", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   let user = await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -168,6 +182,7 @@ test("Should update a user", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
@@ -191,6 +206,7 @@ test("Should update a user by ID", async () => {
   test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
   await test.database.create({
     name: "Thomas FOO",
+    email: "tom@tom.com",
     pass: "secret",
     role: 0
   });
