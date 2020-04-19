@@ -62,3 +62,11 @@ test("User from should pass with valid input", async () => {
   } catch (e) {}
   expect(pass).toBe(true);
 });
+
+test("User fromPartial pass", async () => {
+  // TODO
+});
+
+test("User fromPartial fail", async () => {
+  // TODO
+});
