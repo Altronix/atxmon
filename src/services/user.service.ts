@@ -6,7 +6,7 @@ import {
   FindCriteria,
   IdCriteria
 } from "./types";
-import { UserModel, UserEntry } from "../models/user.model";
+import { User, UserModel, UserEntry } from "../models/user.model";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
@@ -56,9 +56,9 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     key: FindCriteria<UserModel>,
     next: Partial<UserModel>
   ): Promise<number> {
-    // TODO call validate
     if (next.email) next.email = next.email.toLowerCase();
-    return this.repository.update(key, next);
+    let insert = await User.fromPartial(next);
+    return insert ? this.repository.update(key, insert) : 0;
   }
 
   async count(key?: FindCriteria<UserModel>): Promise<number> {

@@ -21,17 +21,17 @@ export type UserEntry = WithOptional<
 
 export class User implements UserEntry {
   @Length(3, 64)
-  name: string = "";
+  name!: string;
 
   @IsEmail()
-  email: string = "";
+  email!: string;
 
   @IsInt()
   @Min(0)
-  role: number = -1;
+  role!: number;
 
   @Length(12, 64)
-  pass: string = "";
+  pass!: string;
   devices: DeviceModel[] = [];
 
   static async from(user: UserEntry): Promise<UserEntry> {
@@ -39,6 +39,16 @@ export class User implements UserEntry {
     let ret = Object.assign(u, user);
     if ((await validate(ret)).length) throw new Error("Invalid UserEntry");
     return u;
+  }
+
+  static async fromPartial(
+    user: Partial<UserEntry>
+  ): Promise<Partial<UserEntry> | undefined> {
+    let u = new User();
+    let ret = Object.assign(u, user);
+    return (await validate(ret, { skipMissingProperties: true })).length == 0
+      ? ret
+      : undefined;
   }
 
   static async fromUntrusted(obj: any): Promise<UserEntry | undefined> {
