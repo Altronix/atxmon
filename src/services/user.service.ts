@@ -12,7 +12,6 @@ import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
 import { UserEntity } from "../entities/user.entity";
 
-// TODO rename UsersService to free up Users Namespace
 @injectable()
 export class UserService implements DatabaseService<UserModel, UserEntry> {
   utils: UtilRoutines;
@@ -26,14 +25,22 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
   }
 
   async create(u: UserEntry) {
+    // TODO call validate
     const salt = await this.utils.crypto.salt();
     const hash = await this.utils.crypto.hash(u.pass, salt);
     const user = Object.assign({ hash, devices: [] }, u);
+    user.email = user.email.toLowerCase();
+    // TODO do not create if user already exists
     return this.repository.insert(user);
   }
 
   async findById(key: IdCriteria): Promise<UserModel | undefined> {
     return this.repository.findById(key);
+  }
+
+  async findByEmail(key: string): Promise<UserModel | undefined> {
+    let query = await this.find({ email: key.toLowerCase() });
+    return query.length ? query[0] : undefined;
   }
 
   async find(key?: FindCriteria<UserModel>): Promise<UserModel[]> {
@@ -46,8 +53,10 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
 
   async update(
     key: FindCriteria<UserModel>,
-    next: DatabaseDeepPartialEntity<UserModel>
+    next: Partial<UserModel>
   ): Promise<number> {
+    // TODO call validate
+    if (next.email) next.email = next.email.toLowerCase();
     return this.repository.update(key, next);
   }
 
