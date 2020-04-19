@@ -23,7 +23,7 @@ const hash = "development-unsafe-hash-for-test";
 
 test("Should add a user", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => hash);
+  test.utils.crypto.hash.mockImplementation(async () => hash);
   let u = await test.database.create(user);
 
   expect(await test.database.count()).toBe(1);
@@ -34,7 +34,7 @@ test("Should add a user", async () => {
     expect(read.name).toBe(user.name);
     expect(read.email).toBe(user.email);
     expect(read.role).toBe(user.role);
-    expect(read.devices).toBeFalsy;
+    expect(read.devices).toBeFalsy();
   }
   await cleanup(test);
 });
@@ -42,7 +42,7 @@ test("Should add a user", async () => {
 test("Should fail if user already exist", async () => {
   let result;
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => hash);
+  test.utils.crypto.hash.mockImplementation(async () => hash);
   result = await test.database.create(Object.assign({}, user0, { id: 0 }));
   expect(result).toBe(true);
 
@@ -56,13 +56,35 @@ test("Should fail if user already exist", async () => {
     expect(read.name).toBe(user0.name);
     expect(read.email).toBe(user0.email);
     expect(read.role).toBe(user0.role);
-    expect(read.devices).toBeFalsy;
+    expect(read.devices).toBeFalsy();
   }
   await cleanup(test);
 });
 
 test("Should fail if user already exists by email", async () => {
-  // TODO
+  let result;
+  let test = await setup(UserEntity, UserService, DATABASE);
+  test.utils.crypto.hash.mockImplementation(async () => hash);
+  result = await test.database.create(
+    Object.assign({}, user0, { email: "tom@tom.com" })
+  );
+  expect(result).toBe(true);
+
+  result = await test.database.create(
+    Object.assign({}, user1, { email: "tom@tom.com" })
+  );
+  expect(result).toBe(false);
+  let read = await test.database.findById(1);
+  expect(await test.database.count()).toBe(1);
+  expect(read).toBeTruthy();
+  if (read) {
+    expect(read.hash).toBe(hash);
+    expect(read.name).toBe(user0.name);
+    expect(read.email).toBe("tom@tom.com");
+    expect(read.role).toBe(user0.role);
+    expect(read.devices).toBeFalsy();
+  }
+  await cleanup(test);
 });
 
 test("Should find many users", async () => {
@@ -99,7 +121,7 @@ test("Should not find user by email (case insensitive)", async () => {
 
 test("Should not find a user", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   let u = await test.database.create(user);
   let read = await test.database.findById(2);
   expect(read).toBeFalsy();
@@ -108,7 +130,7 @@ test("Should not find a user", async () => {
 
 test("Should remove a user", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   let u = await test.database.create(user);
 
   expect(await test.database.count()).toBe(1);
@@ -120,7 +142,7 @@ test("Should remove a user", async () => {
 
 test("Should remove a user by ID", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   await test.database.create(user);
 
   let u = await test.database.findById(1);
@@ -136,7 +158,7 @@ test("Should remove a user by ID", async () => {
 
 test("Should not remove a user", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   let u = await test.database.create(user);
 
   expect(await test.database.count()).toBe(1);
@@ -148,7 +170,7 @@ test("Should not remove a user", async () => {
 
 test("Should update a user", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   await test.database.create(user);
 
   // Check initial user
@@ -167,7 +189,7 @@ test("Should update a user", async () => {
 
 test("Should update a user by ID", async () => {
   let test = await setup(UserEntity, UserService, DATABASE);
-  test.utils.crypto.hash.mockImplementationOnce(async () => "foo secret hash");
+  test.utils.crypto.hash.mockImplementation(async () => "foo secret hash");
   await test.database.create(user);
 
   // Check initial user

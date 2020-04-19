@@ -24,14 +24,15 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     this.repository = repository;
   }
 
-  async create(u: UserEntry) {
+  async create(u: UserEntry): Promise<boolean> {
     // TODO call validate
     const salt = await this.utils.crypto.salt();
     const hash = await this.utils.crypto.hash(u.pass, salt);
     const user = Object.assign({ hash, devices: [] }, u);
     user.email = user.email.toLowerCase();
-    // TODO do not create if user already exists
-    return this.repository.insert(user);
+    return (await this.findByEmail(u.email))
+      ? false
+      : this.repository.insert(user);
   }
 
   async findById(key: IdCriteria): Promise<UserModel | undefined> {
