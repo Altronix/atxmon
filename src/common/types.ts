@@ -45,6 +45,10 @@ export interface CryptoRoutines {
   verify: <T>(json: string, key: string) => Promise<T>;
 }
 
+export interface DateRoutines {
+  now: () => number;
+}
+
 export interface Logger {}
 
 export interface UtilRoutines {

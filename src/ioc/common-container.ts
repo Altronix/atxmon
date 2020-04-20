@@ -1,5 +1,6 @@
 import { Crypto } from "../common/crypto";
-import { sign, verify } from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
 import { Logger as LoggerImpl } from "../common/logger";
 import { Utils as UtilsImpl } from "../common/utils";
 import { SYMBOLS } from "./constants.root";
@@ -9,7 +10,7 @@ import { ContainerModule } from "inversify";
 
 const commonBindings = new ContainerModule(bind => {
   bind<CryptoRoutines>(SYMBOLS.CRYPTO_ROUTINES)
-    .to(Crypto)
+    .toDynamicValue(() => new Crypto(jwt, bcrypt))
     .inSingletonScope();
 
   bind<LoggerRoutines>(SYMBOLS.LOGGER_ROUTINES)

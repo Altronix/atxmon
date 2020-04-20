@@ -8,6 +8,7 @@ import {
   CryptoRoutines,
   UtilRoutines
 } from "../../../common/types";
+import { BcryptRoutines, JwtRoutines } from "../../../ioc/types";
 import { Utils } from "../../../common/utils";
 import { Crypto as MockCrypto } from "../../../common/crypto";
 import { Logger as MockLogger } from "../../../common/logger";
@@ -22,4 +23,8 @@ export type MockUtils = {
   logger: MockLoggerRoutines;
 };
 
-export default () => new Utils(new MockLogger(), new MockCrypto()) as MockUtils;
+let bcrypt!: BcryptRoutines;
+let jwt!: JwtRoutines;
+
+export default () =>
+  new Utils(new MockLogger(), new MockCrypto(jwt, bcrypt)) as MockUtils;

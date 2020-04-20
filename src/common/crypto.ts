@@ -1,25 +1,25 @@
 import { injectable } from "inversify";
-import bcrypt from "bcrypt";
-import { sign as jwtSign, verify as jwtVerify } from "jsonwebtoken";
 import { CryptoRoutines } from "./types";
+import { JwtRoutines, BcryptRoutines } from "../ioc/types";
 
 @injectable()
 export class Crypto implements CryptoRoutines {
+  constructor(private jwt: JwtRoutines, private bcrypt: BcryptRoutines) {}
   hash(data: string, salt: string): Promise<string> {
-    return bcrypt.hash(data, salt);
+    return this.bcrypt.hash(data, salt);
   }
 
   validate(tpass: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(tpass, hash);
+    return this.bcrypt.compare(tpass, hash);
   }
 
   salt(): Promise<string> {
-    return bcrypt.genSalt();
+    return this.bcrypt.genSalt();
   }
 
   sign(json: object | string, key: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      jwtSign(json, key, (err, encoded) => {
+      this.jwt.sign(json, key, (err, encoded) => {
         if (err) {
           reject("Bad sign");
         } else {
@@ -31,7 +31,7 @@ export class Crypto implements CryptoRoutines {
 
   verify<T>(json: string, key: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      jwtVerify(json, key, (err, decoded) => {
+      this.jwt.verify(json, key, (err, decoded) => {
         if (err) {
           reject("Bad verify");
         } else {

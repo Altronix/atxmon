@@ -1,4 +1,6 @@
 import { LinqEventHandler } from "@altronix/linq-network";
+import * as jwt from "jsonwebtoken";
+import * as bcrypt from "bcrypt";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
 export interface Newable<T> {
@@ -10,6 +12,9 @@ export interface Abstract<T> {
 }
 
 export type ServiceIdentifier<T> = string | symbol | Newable<T> | Abstract<T>;
+
+export type JwtRoutines = typeof jwt;
+export type BcryptRoutines = typeof bcrypt;
 
 // Database Service
 export interface DatabaseService<Model, Entry = Model> {
