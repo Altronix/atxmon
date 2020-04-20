@@ -12,7 +12,7 @@ import { UserModel, UserEntry } from "../models/user.model";
 import { DeviceModel } from "../models/device.model";
 import { DeviceEntity } from "../entities/device.entity";
 import { UserEntity } from "../entities/user.entity";
-import { OrmRepository, getConnection } from "../services/orm.service";
+import { OrmRepository, getConnection } from "./orm.service";
 import { UserService } from "../services/user.service";
 import { DeviceService } from "../services/device.service";
 import { LinqService } from "../services/linq.service";
