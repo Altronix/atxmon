@@ -1,8 +1,8 @@
-import { MiddlewareHandler } from "./types";
+import { MiddlewareHandler } from "../types";
 import { middleware } from "../common/decorators";
 import { inject } from "inversify";
 import { UtilRoutines } from "../common/types";
-import { LinqNetworkService } from "../services/types";
+import { LinqNetworkService } from "../types";
 import { Request, Response, NextFunction } from "express";
 import { SYMBOLS } from "../ioc/constants.root";
 

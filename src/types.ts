@@ -1,8 +1,9 @@
-import { UtilRoutines } from "../common/types";
+import { UtilRoutines } from "./common/types";
 
 // Dependency types
 import { LinqEventHandler } from "@altronix/linq-network";
 import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
+import { Request, Response, NextFunction, Router } from "express";
 
 // @altronix/linq-network interface
 export interface AltronixLinqNetworkService {
@@ -64,3 +65,20 @@ export interface Repository<E> {
 export type FindCriteria<E> = FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
+
+export interface MiddlewareHandler {
+  handler: (req: Request, res: Response, next: NextFunction) => any;
+}
+
+export interface Controller<Model, Entry = Model> {}
+
+export type ControllerConstructorTest = {
+  new (r: Router, ...args: any[]): ControllerConstructorTest;
+};
+
+export type ControllerConstructor<Model, Entry = Model> = {
+  new (u: UtilRoutines, d: DatabaseService<Model, Entry>): Controller<
+    Model,
+    Entry
+  >;
+};

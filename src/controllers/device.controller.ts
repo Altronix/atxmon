@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { UtilRoutines } from "../common/types";
 import { DeviceExistsMiddleware } from "../middleware/device-exists.middleware";
-import { DatabaseService, LinqNetworkService } from "../services/types";
+import { DatabaseService, LinqNetworkService } from "../types";
 import { DeviceModel } from "../models/device.model";
-import { Controller } from "./types";
+import { Controller } from "../types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";
 import { httpGet, httpPost, controller } from "../common/decorators";

@@ -1,7 +1,7 @@
 import { injectable, inject } from "inversify";
 import { UtilRoutines } from "../common/types";
 import { middleware } from "../common/decorators";
-import { MiddlewareHandler } from "./types";
+import { MiddlewareHandler } from "../types";
 import { SYMBOLS } from "../ioc/constants.root";
 import * as express from "express";
 

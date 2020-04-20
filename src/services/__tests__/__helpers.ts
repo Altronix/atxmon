@@ -1,6 +1,6 @@
 import { OrmRepository, Connection, getConnection } from "../orm.service";
 import { EntityTarget } from "typeorm";
-import { DatabaseService, Repository } from "../types";
+import { DatabaseService, Repository } from "../../types";
 import { UtilRoutines } from "../../common/types";
 import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
 import getMockUtils from "../../common/__test__/__mocks__/utils.mock";

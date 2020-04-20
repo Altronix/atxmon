@@ -4,7 +4,7 @@ import { RootController } from "../controllers/root.controller";
 import { Controllers } from "../controllers/controllers";
 import { DeviceModel } from "../models/device.model";
 import { UserModel, UserEntry } from "../models/user.model";
-import { Controller } from "../controllers/types";
+import { Controller } from "../types";
 import { ContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 

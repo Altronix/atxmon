@@ -9,7 +9,7 @@ import {
 import { ServiceIdentifier } from "../ioc/types";
 import { Container, injectable, decorate } from "inversify";
 import { Router } from "express";
-import { MiddlewareHandler } from "../middleware/types";
+import { MiddlewareHandler } from "../types";
 
 // Copied from inversify-express-utils. We like decorators for initialization
 // but not excessive use during runtime See inversify-express-utils performance

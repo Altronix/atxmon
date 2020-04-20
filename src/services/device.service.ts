@@ -4,7 +4,7 @@ import {
   DatabaseService,
   FindCriteria,
   IdCriteria
-} from "./types";
+} from "../types";
 import { DeviceModel } from "../models/device.model";
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";

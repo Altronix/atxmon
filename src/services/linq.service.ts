@@ -1,4 +1,4 @@
-import { AltronixLinqNetworkService, LinqNetworkService } from "./types";
+import { AltronixLinqNetworkService, LinqNetworkService } from "../types";
 import { LinqEventHandler } from "@altronix/linq-network";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";

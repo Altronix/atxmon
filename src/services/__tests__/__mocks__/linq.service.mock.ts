@@ -1,5 +1,5 @@
 import { LinqService } from "../../linq.service";
-import { AltronixLinqNetworkService, Repository } from "../../types";
+import { AltronixLinqNetworkService, Repository } from "../../../types";
 import { UtilRoutines } from "../../../common/types";
 
 jest.mock("../../device.service");

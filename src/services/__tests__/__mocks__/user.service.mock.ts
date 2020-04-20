@@ -1,5 +1,5 @@
 import { UserService } from "../../user.service";
-import { Repository } from "../../types";
+import { Repository } from "../../../types";
 import { UtilRoutines } from "../../../common/types";
 
 jest.mock("../../user.service");

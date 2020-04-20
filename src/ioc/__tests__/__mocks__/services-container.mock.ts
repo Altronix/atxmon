@@ -1,21 +1,17 @@
 import { SYMBOLS } from "../../../ioc/constants.root";
-import {
-  DatabaseService,
-  Repository,
-  UserModel,
-  UserEntry,
-  DeviceModel
-} from "../../types";
+import { DatabaseService, Repository } from "../../../types";
+import { UserModel, UserEntry } from "../../../models/user.model";
+import { DeviceModel } from "../../../models/device.model";
 import { UtilRoutines } from "../../../common/types";
 import { Repository as TypeormRepository } from "typeorm";
 import { DeviceEntity } from "../../../entities/device.entity";
 import { UserEntity } from "../../../entities/user.entity";
 import { Container, decorate, injectable } from "inversify";
 
-import { OrmRepository } from "../../orm.service";
-import { DeviceService } from "../../device.service";
-import { UserService } from "../../user.service";
-import { LinqService } from "../../linq.service";
+import { OrmRepository } from "../../../services/orm.service";
+import { DeviceService } from "../../../services/device.service";
+import { UserService } from "../../../services/user.service";
+import { LinqService } from "../../../services/linq.service";
 jest.mock("../../device.service");
 jest.mock("../../user.service");
 jest.mock("../../linq.service");
