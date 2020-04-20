@@ -16,7 +16,7 @@ import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
 import { OrmRepository, getConnection } from "./orm.service";
-import { Services } from "../services/services";
+import { Services } from "../app";
 import { UtilRoutines } from "../common/types";
 import { LinqNetwork } from "@altronix/linq-network";
 
