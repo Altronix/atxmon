@@ -71,3 +71,9 @@ export interface AltronixLinqNetworkService {
   nodeCount(): number;
   run(ms: number): Promise<unknown>;
 }
+
+// jsonwebtokens
+export interface JwtRoutines {
+  sign: (json: object, key: string) => Promise<string>;
+  verify: <T>(json: string, key: string) => Promise<T>;
+}
