@@ -6,7 +6,7 @@ import { DeviceController } from "./device/device.controller";
 import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";
 import { UserModel, UserEntry } from "./user/user.model";
-import { UtilRoutines } from "./common/types";
+import { UtilRoutines, Config } from "./common/types";
 import {
   createRouter,
   getControllerMiddleware,
@@ -55,8 +55,8 @@ export class Server {
   }
 }
 
-export default async () => {
-  let container = await createContainer();
+export default async (config?: Config) => {
+  let container = await createContainer(config as Config);
   loadMiddleware(container);
   let app = container.get<Server>(Server);
   app.container = container;

@@ -1,6 +1,7 @@
 import createServer from "./server";
+import loadConfig from "./config";
 (async () => {
-  let server = await createServer();
+  let server = await createServer(loadConfig(process.argv, process.env));
 
   let sock = server.app.listen(3000);
 

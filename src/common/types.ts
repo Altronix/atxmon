@@ -66,6 +66,10 @@ export interface Environment {
   TCPS_PORT: number;
 }
 
+export interface Config {
+  env?: Environment;
+}
+
 export interface MiddlewareHandler {
   handler: (req: Request, res: Response, next: NextFunction) => any;
 }
