@@ -14,44 +14,22 @@ import * as bodyParser from "body-parser";
 import express from "express";
 
 @injectable()
-export class Controllers {
-  user: UserController;
-  device: DeviceController;
-  constructor(
-    @inject(UserController) user: UserController,
-    @inject(DeviceController) device: DeviceController
-  ) {
-    this.user = user;
-    this.device = device;
-  }
-}
-
-@injectable()
-export class Services {
-  users: DatabaseService<UserModel, UserEntry>;
-  devices: DatabaseService<DeviceModel>;
+export class App {
+  container!: Container;
   linq: LinqNetworkService;
+  devices: DatabaseService<DeviceModel>;
+  users: DatabaseService<UserModel, UserEntry>;
+  server: express.Application;
   constructor(
     @inject(SYMBOLS.DATABASE_USER) users: DatabaseService<UserModel, UserEntry>,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
-    @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService
+    @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
+    @inject(UserController) private user: UserController,
+    @inject(DeviceController) private device: DeviceController
   ) {
+    this.linq = linq;
     this.users = users;
     this.devices = devices;
-    this.linq = linq;
-  }
-}
-
-@injectable()
-export class App {
-  container!: Container;
-  server: express.Application;
-  services: Services;
-  constructor(
-    @inject(Controllers) private controllers: Controllers,
-    @inject(Services) services: Services
-  ) {
-    this.services = services;
     this.server = express();
   }
 
@@ -61,7 +39,7 @@ export class App {
   }
 
   load(): App {
-    let controllers = [this.controllers.user, this.controllers.device];
+    let controllers = [this.user, this.device];
 
     controllers.forEach(controller =>
       this.server.use(createRouter(this.container, controller))

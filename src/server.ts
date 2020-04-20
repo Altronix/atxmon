@@ -9,7 +9,7 @@ log("info", "starting app...");
 
   let sock = app.server.listen(3000);
 
-  await app.services.linq
+  await app.linq
     .listen(33455)
     .on("heartbeat", async serial => {
       log("info", `${serial}`);
