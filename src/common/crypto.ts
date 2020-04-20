@@ -4,7 +4,7 @@ import { sign as jwtSign, verify as jwtVerify } from "jsonwebtoken";
 import { CryptoRoutines } from "./types";
 
 @injectable()
-export class Bcrypt implements CryptoRoutines {
+export class Crypto implements CryptoRoutines {
   hash(data: string, salt: string): Promise<string> {
     return bcrypt.hash(data, salt);
   }
