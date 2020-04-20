@@ -1,5 +1,5 @@
 module.exports = {
   type: "sqlite",
   database: "./test.db",
-  entities: [__dirname + "/src/entities/**/*.entity.ts"]
+  entities: [__dirname + "/src/**/*.entity.ts"]
 };

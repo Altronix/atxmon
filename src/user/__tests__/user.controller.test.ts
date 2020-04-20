@@ -1,7 +1,7 @@
 import { UserController } from "../user.controller";
 import makeMockUtils from "../../common/__test__/__mocks__/utils.mock";
 import makeMockLinqService from "../../services/__tests__/__mocks__/linq.service.mock";
-import makeMockUserService from "../../services/__tests__/__mocks__/user.service.mock";
+import makeMockUserService from "./__mocks__/user.service.mock";
 import { Request, Response } from "express";
 
 const asResponse = (res: any): Response => res as Response;

@@ -1,6 +1,6 @@
 import "jest";
-import { UserEntity } from "../../entities/user.entity";
-import { UserEntry } from "../../models/user.model";
+import { UserEntity } from "../user.entity";
+import { UserEntry } from "../user.model";
 import { UserService } from "../user.service";
 import { setup, cleanup } from "./__helpers";
 

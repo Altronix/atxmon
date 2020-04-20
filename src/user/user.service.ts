@@ -6,11 +6,11 @@ import {
   FindCriteria,
   IdCriteria
 } from "../types";
-import { User, UserModel, UserEntry } from "../models/user.model";
+import { User, UserModel, UserEntry } from "./user.model";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
-import { UserEntity } from "../entities/user.entity";
+import { UserEntity } from "./user.entity";
 
 @injectable()
 export class UserService implements DatabaseService<UserModel, UserEntry> {

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UtilRoutines } from "../common/types";
 import { StandardMiddleware } from "../middleware/middleware";
 import { DatabaseService, Controller } from "../types";
-import { User, UserModel, UserEntry } from "../models/user.model";
+import { User, UserModel, UserEntry } from "./user.model";
 import { SYMBOLS } from "../ioc/constants.root";
 import { httpGet, httpPost, controller } from "../common/decorators";
 import { injectable, inject } from "inversify";

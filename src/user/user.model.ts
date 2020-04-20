@@ -1,5 +1,5 @@
 import { WithOptional } from "../common/utils";
-import { DeviceModel } from "./device.model";
+import { DeviceModel } from "../models/device.model";
 
 import { validate, Length, IsEmail, IsInt, Min } from "class-validator";
 

@@ -8,12 +8,12 @@ import {
   AltronixLinqNetworkService,
   LinqNetworkService
 } from "../types";
-import { UserModel, UserEntry } from "../models/user.model";
+import { UserModel, UserEntry } from "../user/user.model";
+import { UserEntity } from "../user/user.entity";
+import { UserService } from "../user/user.service";
 import { DeviceModel } from "../models/device.model";
 import { DeviceEntity } from "../entities/device.entity";
-import { UserEntity } from "../entities/user.entity";
 import { OrmRepository, getConnection } from "./orm.service";
-import { UserService } from "../services/user.service";
 import { DeviceService } from "../services/device.service";
 import { LinqService } from "../services/linq.service";
 import { Services } from "../services/services";

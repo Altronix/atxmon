@@ -1,5 +1,5 @@
-import { UserModel, UserEntry } from "../models/user.model";
-import { DeviceEntity } from "./device.entity";
+import { UserModel, UserEntry } from "./user.model";
+import { DeviceEntity } from "../entities/device.entity";
 import {
   Entity,
   Column,
