@@ -56,6 +56,16 @@ export interface UtilRoutines {
   logger: LoggerRoutines;
 }
 
+export interface Environment {
+  NODE_ENV: string;
+  SENDGRID_API_KEY: string;
+  DATABASE_NAME: string;
+  TLS_KEY_FILE: string;
+  TLS_CERT_FILE: string;
+  TCP_PORT: number;
+  TCPS_PORT: number;
+}
+
 export interface MiddlewareHandler {
   handler: (req: Request, res: Response, next: NextFunction) => any;
 }

@@ -3,7 +3,12 @@ import { Container, AsyncContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
 import { DatabaseService } from "./types";
-import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
+import {
+  LoggerRoutines,
+  CryptoRoutines,
+  UtilRoutines,
+  Environment
+} from "../common/types";
 
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
@@ -11,7 +16,7 @@ import controllerContainer from "./controllers-container";
 import { Server } from "../server";
 
 // Combine containers
-export const createContainerContext = () => {
+export const createContainerContext = (env?: Environment) => {
   const container = new Container();
 
   // Load app containers
@@ -22,7 +27,7 @@ export const createContainerContext = () => {
   container.load(controllerContainer);
 
   // Load asyncronous containers
-  const loading = container.loadAsync(serviceContainerModule);
+  const loading = container.loadAsync(serviceContainerModule(env));
   const waitForContainer = async () => await loading;
   return { container, waitForContainer, loading };
 };

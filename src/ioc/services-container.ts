@@ -16,7 +16,7 @@ import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
 import { OrmRepository, getConnection } from "./orm.service";
-import { UtilRoutines } from "../common/types";
+import { UtilRoutines, Environment } from "../common/types";
 import { LinqNetwork } from "@altronix/linq-network";
 
 decorate(injectable(), LinqNetwork);
@@ -70,4 +70,4 @@ const databaseBindings = new AsyncContainerModule(async bind => {
     .inSingletonScope();
 });
 
-export default databaseBindings;
+export default (env?: Environment) => databaseBindings;
