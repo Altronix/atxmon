@@ -156,7 +156,7 @@ export function httpMethod(
   };
 }
 
-export interface MiddlewareMetadata {
+export interface ControllerMiddlewareMetadata {
   controller: ControllerMetadata;
   methods: { [key: string]: MethodMetadata };
 }
@@ -168,7 +168,7 @@ export interface Middleware {
 
 export function getControllerMiddlewareMetadata(
   controller: any
-): MiddlewareMetadata {
+): ControllerMiddlewareMetadata {
   let meta: ControllerMetadata = Reflect.getMetadata(
     METADATA_KEY.controller,
     controller.constructor
@@ -177,7 +177,7 @@ export function getControllerMiddlewareMetadata(
     METADATA_KEY.controllerMethod,
     controller.constructor
   );
-  let ret: MiddlewareMetadata = {
+  let ret: ControllerMiddlewareMetadata = {
     controller: meta,
     methods: {}
   };
@@ -187,7 +187,7 @@ export function getControllerMiddlewareMetadata(
 
 export function getControllerMiddleware(
   c: Container,
-  service: MiddlewareMetadata
+  service: ControllerMiddlewareMetadata
 ): Middleware {
   let controller = Object.assign({}, service.controller, {
     middleware: service.controller.middleware.map(i =>

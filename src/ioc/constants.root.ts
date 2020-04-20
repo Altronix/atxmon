@@ -11,6 +11,7 @@ export const SYMBOLS = Object.assign(
 );
 
 export const METADATA_KEY = {
+  middlware: "altronix/middleware",
   controller: "altronix/controller",
   controllerMethod: "altronix/controllerMethod"
 };

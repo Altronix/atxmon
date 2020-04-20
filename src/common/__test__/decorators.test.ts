@@ -6,7 +6,7 @@ import {
   createRouter,
   getControllerMiddlewareMetadata,
   getControllerMiddleware,
-  MiddlewareMetadata
+  ControllerMiddlewareMetadata
 } from "../decorators";
 import { ControllerMetadata, MethodMetadata } from "../types";
 import { Newable } from "../../ioc/types";
@@ -121,7 +121,7 @@ test("Get controller middleware metadta", () => {
     @httpGet("/:id", MiddlewareD) postId(req: Request, res: Response) {}
   }
   let c = new ControllerA();
-  let m: MiddlewareMetadata = getControllerMiddlewareMetadata(c);
+  let m = getControllerMiddlewareMetadata(c);
   expect(m.controller.middleware.length).toEqual(2);
   expect(m.methods["getIndex"]).toBeTruthy();
   expect(m.methods["postId"]).toBeTruthy();
