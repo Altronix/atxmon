@@ -1,9 +1,9 @@
 import "jest";
-import { SYMBOLS } from "../ioc/constants";
-import { Container } from "inversify";
 import { UtilRoutines } from "../types";
+import { SYMBOLS } from "../../ioc/common-constants";
+import containerModule from "../../ioc/common-container";
+import { Container } from "inversify";
 
-import containerModule from "../ioc/container";
 const container = new Container();
 container.load(containerModule);
 const utils = container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);

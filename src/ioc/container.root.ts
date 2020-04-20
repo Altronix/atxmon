@@ -6,7 +6,7 @@ import { DatabaseService } from "../services/types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import serviceContainerModule from "./services-container";
-import commonContainerModule from "../common/ioc/container";
+import commonContainerModule from "./common-container";
 import controllerContainer from "./controllers-container";
 import middlewareContainer from "./middleware-container";
 import { App } from "../app";

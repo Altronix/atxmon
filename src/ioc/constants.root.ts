@@ -1,4 +1,4 @@
-import { SYMBOLS as UTIL_SYMBOLS } from "../common/ioc/constants";
+import { SYMBOLS as UTIL_SYMBOLS } from "./common-constants";
 import { SYMBOLS as DATABASE_SYMBOLS } from "./services-constants";
 import { SYMBOLS as CONTROLLER_SYMBOLS } from "./controllers-constants";
 import { SYMBOLS as MIDDLEWARE_SYMBOLS } from "./middleware-constants";
