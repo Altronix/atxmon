@@ -2,7 +2,7 @@ import { JwtRoutines } from "../ioc/types";
 import { injectable } from "inversify";
 
 export type SignFn = (
-  payload: object,
+  payload: object | string,
   secret: string,
   callback: (err: Error | null, encoded: string) => void
 ) => void;
@@ -16,7 +16,7 @@ export type VerifyFn = (
 export class Jwt implements JwtRoutines {
   constructor(private signFn: SignFn, private verifyFn: VerifyFn) {}
 
-  sign(json: object, key: string): Promise<string> {
+  sign(json: object | string, key: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.signFn(json, key, (err, encoded) => {
         if (err) {

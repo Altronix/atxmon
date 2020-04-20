@@ -74,6 +74,6 @@ export interface AltronixLinqNetworkService {
 
 // jsonwebtokens
 export interface JwtRoutines {
-  sign: (json: object, key: string) => Promise<string>;
+  sign: (json: string | object, key: string) => Promise<string>;
   verify: <T>(json: string, key: string) => Promise<T>;
 }

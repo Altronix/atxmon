@@ -1,5 +1,6 @@
 import { ServiceIdentifier } from "../ioc/types";
 import { Request, Response, NextFunction, Router } from "express";
+import { JwtRoutines } from "../ioc/types";
 import * as bcrypt from "bcrypt";
 
 export type HTTP_ALL = "all";
@@ -47,6 +48,7 @@ export interface Logger {}
 export interface UtilRoutines {
   crypto: CryptoRoutines;
   logger: LoggerRoutines;
+  jwt: JwtRoutines;
 }
 
 export interface MiddlewareHandler {
