@@ -4,6 +4,8 @@ import createServer from "./server";
 
   let sock = server.app.listen(3000);
 
+  server.utils.logger.info("Starting app...");
+
   await server.linq
     .listen(33455)
     .on("heartbeat", async serial => {
