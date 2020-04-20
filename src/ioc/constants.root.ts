@@ -1,5 +1,5 @@
 import { SYMBOLS as UTIL_SYMBOLS } from "../common/ioc/constants";
-import { SYMBOLS as DATABASE_SYMBOLS } from "../services/ioc/constants";
+import { SYMBOLS as DATABASE_SYMBOLS } from "./services-constants";
 import { SYMBOLS as CONTROLLER_SYMBOLS } from "../controllers/ioc/constants";
 import { SYMBOLS as MIDDLEWARE_SYMBOLS } from "../middleware/ioc/constants";
 

@@ -5,7 +5,7 @@ import { SYMBOLS } from "./constants.root";
 import { DatabaseService } from "../services/types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
-import serviceContainerModule from "../services/ioc/container";
+import serviceContainerModule from "./services-container";
 import commonContainerModule from "../common/ioc/container";
 import controllerContainer from "../controllers/ioc/container";
 import middlewareContainer from "../middleware/ioc/container";

@@ -1,4 +1,4 @@
-import { SYMBOLS } from "../../ioc/constants.root";
+import { SYMBOLS } from "./constants.root";
 import { AsyncContainerModule, injectable, decorate } from "inversify";
 
 // Database Imports
@@ -7,17 +7,17 @@ import {
   Repository,
   AltronixLinqNetworkService,
   LinqNetworkService
-} from "../types";
-import { UserModel, UserEntry } from "../../models/user.model";
-import { DeviceModel } from "../../models/device.model";
-import { DeviceEntity } from "../../entities/device.entity";
-import { UserEntity } from "../../entities/user.entity";
-import { OrmRepository, getConnection } from "../orm.service";
-import { UserService } from "../user.service";
-import { DeviceService } from "../device.service";
-import { LinqService } from "../linq.service";
-import { Services } from "../services";
-import { UtilRoutines } from "../../common/types";
+} from "../services/types";
+import { UserModel, UserEntry } from "../models/user.model";
+import { DeviceModel } from "../models/device.model";
+import { DeviceEntity } from "../entities/device.entity";
+import { UserEntity } from "../entities/user.entity";
+import { OrmRepository, getConnection } from "../services/orm.service";
+import { UserService } from "../services/user.service";
+import { DeviceService } from "../services/device.service";
+import { LinqService } from "../services/linq.service";
+import { Services } from "../services/services";
+import { UtilRoutines } from "../common/types";
 import { LinqNetwork } from "@altronix/linq-network";
 
 decorate(injectable(), LinqNetwork);
