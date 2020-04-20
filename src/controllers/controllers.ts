@@ -1,5 +1,5 @@
-import { DeviceController } from "./device.controller";
 import { RootController } from "./root.controller";
+import { DeviceController } from "../device/device.controller";
 import { UserController } from "../user/user.controller";
 import { injectable, inject } from "inversify";
 

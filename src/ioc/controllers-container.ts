@@ -1,9 +1,9 @@
 import { UserController } from "../user/user.controller";
 import { UserModel, UserEntry } from "../user/user.model";
-import { DeviceController } from "../controllers/device.controller";
+import { DeviceController } from "../device/device.controller";
+import { DeviceModel } from "../device/device.model";
 import { RootController } from "../controllers/root.controller";
 import { Controllers } from "../controllers/controllers";
-import { DeviceModel } from "../models/device.model";
 import { Controller } from "../types";
 import { ContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";

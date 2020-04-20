@@ -1,5 +1,5 @@
 import { UserModel, UserEntry } from "./user.model";
-import { DeviceEntity } from "../entities/device.entity";
+import { DeviceEntity } from "../device/device.entity";
 import {
   Entity,
   Column,

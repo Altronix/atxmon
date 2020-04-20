@@ -1,7 +1,7 @@
 import { DeviceController } from "../device.controller";
 import makeMockUtils from "../../common/__test__/__mocks__/utils.mock";
-import makeMockLinqService from "../../services/__tests__/__mocks__/linq.service.mock";
-import makeMockDeviceService from "../../services/__tests__/__mocks__/device.service.mock";
+import makeMockLinqService from "./__mocks__/linq.service.mock";
+import makeMockDeviceService from "./__mocks__/device.service.mock";
 
 function setup() {
   let utils = makeMockUtils();

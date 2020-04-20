@@ -11,11 +11,11 @@ import {
 import { UserModel, UserEntry } from "../user/user.model";
 import { UserEntity } from "../user/user.entity";
 import { UserService } from "../user/user.service";
-import { DeviceModel } from "../models/device.model";
-import { DeviceEntity } from "../entities/device.entity";
+import { DeviceModel } from "../device/device.model";
+import { DeviceEntity } from "../device/device.entity";
+import { DeviceService } from "../device/device.service";
+import { LinqService } from "../device/linq.service";
 import { OrmRepository, getConnection } from "./orm.service";
-import { DeviceService } from "../services/device.service";
-import { LinqService } from "../services/linq.service";
 import { Services } from "../services/services";
 import { UtilRoutines } from "../common/types";
 import { LinqNetwork } from "@altronix/linq-network";

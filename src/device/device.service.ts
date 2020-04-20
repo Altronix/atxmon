@@ -5,11 +5,11 @@ import {
   FindCriteria,
   IdCriteria
 } from "../types";
-import { DeviceModel } from "../models/device.model";
+import { DeviceModel } from "./device.model";
+import { DeviceEntity } from "./device.entity";
 import { UtilRoutines } from "../common/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
-import { DeviceEntity } from "../entities/device.entity";
 
 @injectable()
 export class DeviceService implements DatabaseService<DeviceModel> {
