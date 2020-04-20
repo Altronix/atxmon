@@ -8,7 +8,7 @@ import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "../common/ioc/container";
 import controllerContainer from "../controllers/ioc/container";
-import middlewareContainer from "../middleware/ioc/container";
+import middlewareContainer from "./middleware-container";
 import { App } from "../app";
 
 // Combine containers
