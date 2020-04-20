@@ -1,5 +1,5 @@
 import { ServiceIdentifier } from "../ioc/types";
-import { MiddlewareHandler } from "../middleware/types";
+import { Request, Response, NextFunction, Router } from "express";
 import * as bcrypt from "bcrypt";
 
 export type HTTP_ALL = "all";
@@ -48,6 +48,12 @@ export interface UtilRoutines {
   crypto: CryptoRoutines;
   logger: LoggerRoutines;
 }
+
+export interface MiddlewareHandler {
+  handler: (req: Request, res: Response, next: NextFunction) => any;
+}
+
+export interface Controller<Model, Entry = Model> {}
 
 export interface _ControllerMetadata {
   path: string;

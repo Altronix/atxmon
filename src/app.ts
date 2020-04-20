@@ -2,7 +2,7 @@ import { createContainer } from "./ioc/container.root";
 import { SYMBOLS } from "./ioc/constants.root";
 import log from "./common/logger";
 
-import { DatabaseService, LinqNetworkService } from "./types";
+import { DatabaseService, LinqNetworkService } from "./ioc/types";
 import { DeviceController } from "./device/device.controller";
 import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";

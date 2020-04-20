@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { UtilRoutines } from "../common/types";
+import { UtilRoutines, Controller } from "../common/types";
 import { StandardMiddleware } from "../middleware/middleware";
-import { DatabaseService, Controller } from "../types";
+import { DatabaseService } from "../ioc/types";
 import { User, UserModel, UserEntry } from "./user.model";
 import { SYMBOLS } from "../ioc/constants.root";
 import { httpGet, httpPost, controller } from "../common/decorators";

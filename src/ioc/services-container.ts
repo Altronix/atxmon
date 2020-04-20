@@ -7,7 +7,7 @@ import {
   Repository,
   AltronixLinqNetworkService,
   LinqNetworkService
-} from "../types";
+} from "./types";
 import { UserModel, UserEntry } from "../user/user.model";
 import { UserEntity } from "../user/user.entity";
 import { UserService } from "../user/user.service";

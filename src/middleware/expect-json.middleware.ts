@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { MiddlewareHandler } from "../types";
+import { MiddlewareHandler } from "../common/types";
 import { middleware } from "../common/decorators";
 import * as bodyParser from "body-parser";
 

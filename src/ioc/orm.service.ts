@@ -10,7 +10,7 @@ import {
   Repository,
   IdCriteria,
   FindCriteria
-} from "../types";
+} from "./types";
 import { UtilRoutines } from "../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";

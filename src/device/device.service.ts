@@ -4,11 +4,11 @@ import {
   DatabaseService,
   FindCriteria,
   IdCriteria
-} from "../types";
+} from "../ioc/types";
+import { SYMBOLS } from "../ioc/constants.root";
 import { DeviceModel } from "./device.model";
 import { DeviceEntity } from "./device.entity";
 import { UtilRoutines } from "../common/types";
-import { SYMBOLS } from "../ioc/constants.root";
 import { inject, injectable } from "inversify";
 
 @injectable()

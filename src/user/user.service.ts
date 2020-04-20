@@ -5,7 +5,7 @@ import {
   DatabaseService,
   FindCriteria,
   IdCriteria
-} from "../types";
+} from "../ioc/types";
 import { User, UserModel, UserEntry } from "./user.model";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";

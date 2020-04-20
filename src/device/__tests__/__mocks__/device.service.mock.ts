@@ -1,5 +1,5 @@
 import { DeviceService } from "../../device.service";
-import { Repository } from "../../../types";
+import { Repository } from "../../../ioc/types";
 import { UtilRoutines } from "../../../common/types";
 
 jest.mock("../../device.service");

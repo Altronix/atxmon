@@ -3,7 +3,7 @@ import { UserModel, UserEntry } from "../user/user.model";
 import { DeviceController } from "../device/device.controller";
 import { DeviceModel } from "../device/device.model";
 import { Controllers } from "../app";
-import { Controller } from "../types";
+import { Controller } from "../common/types";
 import { ContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 

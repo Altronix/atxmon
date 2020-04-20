@@ -10,8 +10,8 @@ import {
 } from "../decorators";
 import { ControllerMetadata, MethodMetadata } from "../types";
 import { Newable } from "../../ioc/types";
-import { MiddlewareHandler } from "../../types";
 import { METADATA_KEY } from "../../ioc/constants.root";
+import { MiddlewareHandler } from "../types";
 import { Request, Response, NextFunction, Router } from "express";
 import { Container } from "inversify";
 

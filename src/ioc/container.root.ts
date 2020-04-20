@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Container, AsyncContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
-import { DatabaseService } from "../types";
+import { DatabaseService } from "./types";
 import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import serviceContainerModule from "./services-container";
