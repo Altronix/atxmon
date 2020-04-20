@@ -9,14 +9,14 @@ import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
 import controllerContainer from "./controllers-container";
 import middlewareContainer from "./middleware-container";
-import { App } from "../app";
+import { Server } from "../server";
 
 // Combine containers
 export const createContainerContext = () => {
   const container = new Container();
 
   // Load app containers
-  container.bind(App).toSelf();
+  container.bind(Server).toSelf();
 
   // Load syncronous containers
   container.load(commonContainerModule);
