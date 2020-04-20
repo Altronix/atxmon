@@ -7,7 +7,11 @@ import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UtilRoutines } from "./common/types";
-import { createRouter, getControllerMiddleware } from "./common/decorators";
+import {
+  createRouter,
+  getControllerMiddleware,
+  loadMiddleware
+} from "./common/decorators";
 import { Container, injectable, inject } from "inversify";
 
 import * as bodyParser from "body-parser";
@@ -53,6 +57,7 @@ export class Server {
 
 export default async () => {
   let container = await createContainer();
+  loadMiddleware(container);
   let app = container.get<Server>(Server);
   app.container = container;
   app.load();

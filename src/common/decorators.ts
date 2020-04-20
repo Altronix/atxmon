@@ -15,6 +15,10 @@ import { Router } from "express";
 // but not excessive use during runtime See inversify-express-utils performance
 // issues https://github.com/inversify/inversify-express-utils/issues/1046
 
+export interface MiddlewareMetadata {
+  target: any;
+}
+
 export function middleware() {
   return function<T extends { new (...args: any[]): {} }>(target: T) {
     decorate(injectable(), target);
@@ -25,6 +29,11 @@ export function middleware() {
       }
     }
     decorate(injectable(), C);
+
+    const prev: MiddlewareMetadata[] =
+      Reflect.getMetadata(METADATA_KEY.middlware, Reflect) || [];
+    const meta: MiddlewareMetadata[] = [{ target: C }, ...prev];
+    Reflect.defineMetadata(METADATA_KEY.middlware, meta, Reflect);
     return C;
   };
 }
@@ -203,6 +212,12 @@ export function getControllerMiddleware(
     });
   });
   return { controller, methods };
+}
+
+export function loadMiddleware(container: Container) {
+  const meta: MiddlewareMetadata[] =
+    Reflect.getMetadata(METADATA_KEY.middlware, Reflect) || [];
+  meta.forEach(m => container.bind(m.target).toSelf());
 }
 
 export function createRouter(container: Container, controller: any) {

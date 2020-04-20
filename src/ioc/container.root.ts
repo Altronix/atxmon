@@ -8,7 +8,6 @@ import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
 import controllerContainer from "./controllers-container";
-import middlewareContainer from "./middleware-container";
 import { Server } from "../server";
 
 // Combine containers
@@ -21,7 +20,6 @@ export const createContainerContext = () => {
   // Load syncronous containers
   container.load(commonContainerModule);
   container.load(controllerContainer);
-  container.load(middlewareContainer);
 
   // Load asyncronous containers
   const loading = container.loadAsync(serviceContainerModule);
