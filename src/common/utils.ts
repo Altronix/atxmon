@@ -1,6 +1,5 @@
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import { CryptoRoutines, LoggerRoutines, UtilRoutines } from "./types";
-import { JwtRoutines } from "../ioc/types";
 import { injectable, inject } from "inversify";
 import { SYMBOLS } from "../ioc/constants.root";
 
@@ -13,14 +12,11 @@ export type WithOptional<T, K extends keyof T> = Omit<T, K> &
 export class Utils implements UtilRoutines {
   logger: LoggerRoutines;
   crypto: CryptoRoutines;
-  jwt: JwtRoutines;
   constructor(
     @inject(SYMBOLS.LOGGER_ROUTINES) logger: LoggerRoutines,
     @inject(SYMBOLS.CRYPTO_ROUTINES) crypto: CryptoRoutines,
-    @inject(SYMBOLS.JWT_ROUTINES) jwt: JwtRoutines
   ) {
     this.logger = logger;
     this.crypto = crypto;
-    this.jwt = jwt;
   }
 }

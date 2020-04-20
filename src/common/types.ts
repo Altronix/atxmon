@@ -41,6 +41,8 @@ export interface CryptoRoutines {
   hash(data: string, salt: string): Promise<string>;
   validate(tpass: string, hash: string): Promise<boolean>;
   salt(): Promise<string>;
+  sign: (json: string | object, key: string) => Promise<string>;
+  verify: <T>(json: string, key: string) => Promise<T>;
 }
 
 export interface Logger {}
@@ -48,7 +50,6 @@ export interface Logger {}
 export interface UtilRoutines {
   crypto: CryptoRoutines;
   logger: LoggerRoutines;
-  jwt: JwtRoutines;
 }
 
 export interface MiddlewareHandler {

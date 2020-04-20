@@ -28,12 +28,12 @@ test("Should invalidate", async () => {
 test("jwt should validate", async () => {
   let { utils } = setup();
   type Token = { sub: string; name: string; iat: number };
-  let token = await utils.jwt.sign(
+  let token = await utils.crypto.sign(
     `{"sub":"1234567890","name":"John Doe","iat":1516239022}`,
     "your-256-bit-secret"
   );
 
-  let result = await utils.jwt.verify<Token>(token, "your-256-bit-secret");
+  let result = await utils.crypto.verify<Token>(token, "your-256-bit-secret");
   expect(result.sub).toBe("1234567890");
   expect(result.name).toBe("John Doe");
   expect(result.iat).toBe(1516239022);
@@ -43,7 +43,7 @@ test("jwt should invalidate", async () => {
   let { utils } = setup();
   let result = false;
   try {
-    await utils.jwt.verify("foo", "your-256-bit-secret");
+    await utils.crypto.verify("foo", "your-256-bit-secret");
   } catch {
     result = true;
   }
