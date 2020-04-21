@@ -62,12 +62,45 @@ export interface Environment {
   DATABASE_NAME: string;
   TLS_KEY_FILE: string;
   TLS_CERT_FILE: string;
-  TCP_PORT: number;
-  TCPS_PORT: number;
+  HTTP_PORT: string;
+  HTTPS_PORT: string;
+  ZMTP_PORT: string;
+  ZMTP_IPC: string;
+  ZMTPS_PORT: string;
+  WWW: string;
+}
+
+export interface DatabaseConfig {
+  name: string;
+  entities: string[];
+  type: string;
+}
+
+export interface LinqConfig {
+  zmtp: number[];
+  zmtps: number;
+  ipc: string[];
+}
+
+export interface HttpConfig {
+  keyFile: string;
+  certFile: string;
+  http: number;
+  https: number;
+  www: string;
+}
+
+export interface MailerConfig {
+  apiKey: string;
+  serviceNotifications: string[];
 }
 
 export interface Config {
+  database: DatabaseConfig;
   env?: Environment;
+  http: HttpConfig;
+  linq: LinqConfig;
+  mail: MailerConfig;
 }
 
 export interface MiddlewareHandler {
