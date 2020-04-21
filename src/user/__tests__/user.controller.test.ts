@@ -1,5 +1,5 @@
 import { UserController } from "../user.controller";
-import makeMockUtils from "../../common/__test__/__mocks__/utils.mock";
+import makeMockUtils from "../../common/__tests__/__mocks__/utils.mock";
 import makeMockLinqService from "../../device/__tests__/__mocks__/linq.service.mock";
 import makeMockUserService from "./__mocks__/user.service.mock";
 import { Request, Response } from "express";

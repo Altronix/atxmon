@@ -1,9 +1,13 @@
-import { OrmRepository, Connection, getConnection } from "../../ioc/orm.service";
+import {
+  OrmRepository,
+  Connection,
+  getConnection
+} from "../../ioc/orm.service";
 import { EntityTarget } from "typeorm";
 import { DatabaseService, Repository } from "../../ioc/types";
-import { UtilRoutines } from "../../common/types";
-import { MockUtils } from "../../common/__test__/__mocks__/utils.mock";
-import getMockUtils from "../../common/__test__/__mocks__/utils.mock";
+import { UtilRoutines } from "../types";
+import { MockUtils } from "./__mocks__/utils.mock";
+import getMockUtils from "./__mocks__/utils.mock";
 import * as fs from "fs";
 
 // Remove a database from the host file system (integration test)

@@ -2,7 +2,7 @@ import "jest";
 import { UserEntity } from "../user.entity";
 import { UserEntry } from "../user.model";
 import { UserService } from "../user.service";
-import { setup, cleanup } from "./__helpers";
+import { setup, cleanup } from "../../common/__tests__/__helpers";
 
 const DATABASE = "user.integration.test.db";
 
