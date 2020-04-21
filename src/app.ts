@@ -1,7 +1,8 @@
 import createServer from "./server";
 import load from "./config";
 (async () => {
-  let server = await createServer(load(process.argv, process.env));
+  let config = load(process.argv, process.env);
+  let server = await createServer(config);
 
   if (!process.env.ATXMON_PATH) {
     server.utils.logger.fatal(
@@ -10,12 +11,12 @@ import load from "./config";
     );
   }
 
-  let sock = server.app.listen(3000);
+  let sock = server.app.listen(config.http.http);
 
   server.utils.logger.info("Starting app...");
 
   await server.linq
-    .listen(33455)
+    .listen(config.linq.zmtp[0])
     .on("heartbeat", async serial => {
       server.utils.logger.info(`${serial}`);
     })
