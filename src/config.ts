@@ -17,11 +17,10 @@ function stringToArrayNumber(arg: string): number[] {
 }
 
 export function root() {
-  return path.dirname(
+  let filename =
     (require.main && require.main.filename) ||
-      (process.mainModule && process.mainModule.filename) ||
-      "ROOT_NOT_FOUND"
-  );
+    (process.mainModule && process.mainModule.filename);
+  return filename ? path.dirname(filename) : undefined;
 }
 
 export function load(args: string[], environment: any): Config {
@@ -54,8 +53,8 @@ export function load(args: string[], environment: any): Config {
     name: env.DATABASE_NAME || "./test.db",
     entities:
       env.NODE_ENV && env.NODE_ENV[0].toLowerCase() === "p"
-        ? [root() + "/**/*.entity.js"]
-        : [root() + "/**/*.entity.ts"],
+        ? [env.ATXMON_PATH + "/**/*.entity.js"]
+        : [env.ATXMON_PATH + "/**/*.entity.ts"],
     type: "sqlite"
   };
 

@@ -78,8 +78,9 @@ export class Logger implements LoggerRoutines {
   error(message: string): void {
     this.log("error", message);
   }
-  fatal(message: string): void {
+  fatal(message: string, code: number): void {
     this.log("fatal", message);
+    process.exit(code);
   }
 }
 

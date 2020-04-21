@@ -34,7 +34,7 @@ export interface LoggerRoutines {
   info(message: string): void;
   warn(message: string): void;
   error(message: string): void;
-  fatal(message: string): void;
+  fatal(message: string, code: number): void;
 }
 
 export interface CryptoRoutines {
@@ -58,6 +58,7 @@ export interface UtilRoutines {
 
 export interface Environment {
   NODE_ENV: string;
+  ATXMON_PATH:string;
   SENDGRID_API_KEY: string;
   DATABASE_NAME: string;
   TLS_KEY_FILE: string;

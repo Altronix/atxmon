@@ -3,6 +3,13 @@ import loadConfig, { root } from "./config";
 (async () => {
   let server = await createServer(loadConfig(process.argv, process.env));
 
+  if (!process.env.ATXMON_PATH) {
+    server.utils.logger.fatal(
+      "Please use ./start.js for proper runtime env.",
+      -1
+    );
+  }
+
   let sock = server.app.listen(3000);
 
   server.utils.logger.info("Starting app...");

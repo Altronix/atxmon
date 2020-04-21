@@ -1,5 +1,5 @@
 {
-  "name": "atx-mon",
+  "name": "atxmon",
   "version": "0.0.1",
   "description": "Light Weight Device Management Demo",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "jest",
     "coverage": "jest --collect-coverage",
     "build": "tsc",
-    "start": "nodemon"
+    "start": "node ./scripts/start.js"
   },
   "altronix": {
     "prebuilt": true
@@ -41,6 +41,7 @@
   "devDependencies": {
     "@types/jest": "^25.1.5",
     "@types/node": "^13.11.0",
+    "cross-env": "^7.0.2",
     "jest": "^25.2.6",
     "nodemon": "^2.0.2",
     "ts-jest": "^25.3.1",
