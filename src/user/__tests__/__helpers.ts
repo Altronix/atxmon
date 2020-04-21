@@ -1,4 +1,8 @@
-import { OrmRepository, Connection, getConnection } from "../../ioc/orm.service";
+import {
+  OrmRepository,
+  Connection,
+  getConnection
+} from "../../ioc/orm.service";
 import { EntityTarget } from "typeorm";
 import { DatabaseService, Repository } from "../../ioc/types";
 import { UtilRoutines } from "../../common/types";

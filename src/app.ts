@@ -1,5 +1,5 @@
 import createServer from "./server";
-import loadConfig from "./config";
+import loadConfig, { root } from "./config";
 (async () => {
   let server = await createServer(loadConfig(process.argv, process.env));
 

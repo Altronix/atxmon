@@ -6,6 +6,7 @@ import {
   DatabaseConfig,
   Environment
 } from "./common/types";
+import path from "path";
 
 function stringToArray(arg: string): (string)[] {
   return arg.split(",").map(n => n);
@@ -13,6 +14,14 @@ function stringToArray(arg: string): (string)[] {
 
 function stringToArrayNumber(arg: string): number[] {
   return arg.split(",").map(n => parseInt(n));
+}
+
+export function root() {
+  return path.dirname(
+    (require.main && require.main.filename) ||
+      (process.mainModule && process.mainModule.filename) ||
+      "ROOT_NOT_FOUND"
+  );
 }
 
 export function load(args: string[], environment: any): Config {
@@ -45,8 +54,8 @@ export function load(args: string[], environment: any): Config {
     name: env.DATABASE_NAME || "./test.db",
     entities:
       env.NODE_ENV && env.NODE_ENV[0].toLowerCase() === "p"
-        ? [__dirname + "/dist/**/*.entity.js"]
-        : [__dirname + "/src/**/*.entity.ts"],
+        ? [root() + "/**/*.entity.js"]
+        : [root() + "/**/*.entity.ts"],
     type: "sqlite"
   };
 
