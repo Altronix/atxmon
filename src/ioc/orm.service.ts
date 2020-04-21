@@ -11,12 +11,12 @@ import {
   IdCriteria,
   FindCriteria
 } from "./types";
-import { UtilRoutines } from "../common/types";
+import { UtilRoutines, DatabaseConfig } from "../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";
 
 export async function getConnection(
-  additionalOptions?: Partial<ConnectionOptions>
+  additionalOptions?: Partial<DatabaseConfig>
 ): Promise<Connection> {
   const opts = await getConnectionOptions();
   if (additionalOptions) Object.assign(opts, additionalOptions);

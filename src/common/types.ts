@@ -58,9 +58,10 @@ export interface UtilRoutines {
 
 export interface Environment {
   NODE_ENV: string;
-  ATXMON_PATH:string;
+  ATXMON_PATH: string;
   SENDGRID_API_KEY: string;
   DATABASE_NAME: string;
+  DATABASE: string;
   TLS_KEY_FILE: string;
   TLS_CERT_FILE: string;
   HTTP_PORT: string;
@@ -73,6 +74,7 @@ export interface Environment {
 
 export interface DatabaseConfig {
   name: string;
+  database: string;
   entities: string[];
   type: string;
 }

@@ -50,11 +50,12 @@ export function load(args: string[], environment: any): Config {
 
   // Build Database Config
   const database: DatabaseConfig = {
-    name: env.DATABASE_NAME || "./test.db",
+    name: env.DATABASE_NAME || "default-database-name",
+    database: env.DATABASE || "./default-development-database.db",
     entities:
       env.NODE_ENV && env.NODE_ENV[0].toLowerCase() === "p"
-        ? [env.ATXMON_PATH + "/**/*.entity.js"]
-        : [env.ATXMON_PATH + "/**/*.entity.ts"],
+        ? [env.ATXMON_PATH + "/dist/**/*.entity.js"]
+        : [env.ATXMON_PATH + "/src/**/*.entity.ts"],
     type: "sqlite"
   };
 

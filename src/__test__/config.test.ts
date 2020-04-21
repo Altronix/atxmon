@@ -14,8 +14,9 @@ test("Should load config", () => {
   expect(config.http.http).toBe(8080);
   expect(config.http.https).toBe(8443);
   expect(config.http.www).toBe("./www");
-  expect(config.database.entities).toEqual(["/foo/**/*.entity.ts"]);
-  expect(config.database.name).toBe("./test.db");
+  expect(config.database.entities).toEqual(["/foo/src/**/*.entity.ts"]);
+  expect(config.database.database).toBe("./default-development-database.db");
+  expect(config.database.name).toBe("default-database-name");
   expect(config.database.type).toBe("sqlite");
   expect(config.linq.ipc).toEqual([]);
   expect(config.linq.zmtp).toEqual([33455]);
@@ -29,7 +30,8 @@ test("Should load config from enviorment", () => {
     NODE_ENV: "Production",
     ATXMON_PATH: "/foo",
     SENDGRID_API_KEY: "api-key",
-    DATABASE_NAME: "db.db",
+    DATABASE_NAME: "test-database",
+    DATABASE: "db.db",
     TLS_KEY_FILE: "./foo-key.pem",
     TLS_CERT_FILE: "./foo-cert.pem",
     HTTP_PORT: "1234",
@@ -45,8 +47,9 @@ test("Should load config from enviorment", () => {
   expect(config.http.http).toBe(1234);
   expect(config.http.https).toBe(123456);
   expect(config.http.www).toBe("./test-www-path");
-  expect(config.database.entities).toEqual(["/foo/**/*.entity.js"]);
-  expect(config.database.name).toBe("db.db");
+  expect(config.database.entities).toEqual(["/foo/dist/**/*.entity.js"]);
+  expect(config.database.database).toBe("db.db");
+  expect(config.database.name).toBe("test-database");
   expect(config.database.type).toBe("sqlite");
   expect(config.linq.ipc).toEqual(["./tmp", "./foo"]);
   expect(config.linq.zmtp).toEqual([1, 2, 3, 4, 5]);
