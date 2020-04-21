@@ -1,20 +1,19 @@
 import createServer from "./server";
 import load from "./config";
-(async () => {
-  let config = load(process.argv, process.env);
-  let server = await createServer(config);
 
+(async () => {
+  // Check environment (required for reading typeorm entities)
   if (!process.env.ATXMON_PATH) {
-    server.utils.logger.fatal(
-      "Please use ./start.js for proper runtime env.",
-      -1
-    );
+    console.error("[ \x1b[35mFATAL\x1b[0m ] atxmon startup error...");
+    console.error("[ \x1b[35mFATAL\x1b[0m ] Please checkout README.md");
+    process.exit(-1);
   }
 
-  let sock = server.app.listen(config.http.http);
-
+  // Start application
+  let config = load(process.argv, process.env);
+  let server = await createServer(config);
   server.utils.logger.info("Starting app...");
-
+  let sock = server.app.listen(config.http.http);
   await server.linq
     .listen(config.linq.zmtp[0])
     .on("heartbeat", async serial => {
