@@ -11,7 +11,6 @@ import load from "./config";
 
   // Start application
   let config = load(process.argv, process.env);
-  console.log(process.argv);
   let server = await createServer(config);
   server.utils.logger.info(`Listening [HTTP] ${config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${config.linq.zmtp}`);
