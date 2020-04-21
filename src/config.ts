@@ -50,8 +50,8 @@ export function load(args: string[], environment: any): Config {
 
   // Build Database Config
   const database: DatabaseConfig = {
-    name: env.DATABASE_NAME || "default-database-name",
-    database: env.DATABASE || "./default-development-database.db",
+    name: env.DATABASE_NAME || "dev-database",
+    database: env.DATABASE || "./dev-database.db",
     entities:
       env.NODE_ENV && env.NODE_ENV[0].toLowerCase() === "p"
         ? [env.ATXMON_PATH + "/dist/**/*.entity.js"]

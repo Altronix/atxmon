@@ -15,8 +15,8 @@ test("Should load config", () => {
   expect(config.http.https).toBe(8443);
   expect(config.http.www).toBe("./www");
   expect(config.database.entities).toEqual(["/foo/src/**/*.entity.ts"]);
-  expect(config.database.database).toBe("./default-development-database.db");
-  expect(config.database.name).toBe("default-database-name");
+  expect(config.database.database).toBe("./dev-database.db");
+  expect(config.database.name).toBe("dev-database");
   expect(config.database.type).toBe("sqlite");
   expect(config.linq.ipc).toEqual([]);
   expect(config.linq.zmtp).toEqual([33455]);
