@@ -7,9 +7,10 @@ let path = require("path"),
 (async () => {
   try {
     let root = await utils.seekRoot(),
+      args = process.argv.slice(2),
       env = Object.assign({}, process.env, { ATXMON_PATH: root }),
       shell = process.platform === "win32" ? true : false,
-      p = await cp.spawn("nodemon", [], { stdio: "inherit", shell, env });
+      p = await cp.spawn("nodemon", args, { stdio: "inherit", shell, env });
   } catch (e) {
     logger.error(e);
   }
