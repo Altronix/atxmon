@@ -49,6 +49,21 @@ export function root() {
   return filename ? path.dirname(filename) : undefined;
 }
 
+/**
+ * @brief This function will take a string array[] (typically process.argv)
+ * and an enviorment variable object (typically process.env) and return a
+ * Config object.
+ *
+ * // Example
+ * import { Config } from "./common/types";
+ * import load from "./config.ts";
+ * let config: Config = load(process.argv, process.env);
+ *
+ * @param process.argb
+ * @param process.env
+ *
+ * @return Config
+ */
 export function load(input: string[], environment: any): Config {
   let env: Environment = environment;
   let args: Args = yargs
