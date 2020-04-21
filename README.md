@@ -8,3 +8,11 @@
 npm install
 npm run start -- --httpPort 3333
 ```
+
+### Test ###
+
+```
+npm run test
+
+npm run coverage
+```
