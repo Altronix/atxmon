@@ -1,7 +1,7 @@
 import createServer from "./server";
-import loadConfig, { root } from "./config";
+import load from "./config";
 (async () => {
-  let server = await createServer(loadConfig(process.argv, process.env));
+  let server = await createServer(load(process.argv, process.env));
 
   if (!process.env.ATXMON_PATH) {
     server.utils.logger.fatal(
