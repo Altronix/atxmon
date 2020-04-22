@@ -26,6 +26,7 @@ const databaseBindings = (config?: Config) =>
     // helpful context - https://stackoverflow.com/questions/46867437
 
     // Initialize database
+    // TODO createConnection() should resolve entities from env
     const c = await createConnection("app", (config && config.database) || {});
 
     // Linq Service

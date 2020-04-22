@@ -49,7 +49,7 @@ export default class implements Config {
   linq!: LinqConfig;
   mail!: MailerConfig;
 
-  constructor(input: string[], environment: any) {
+  constructor(input: string[] = process.argv, environment: any = process.env) {
     let env = (this.env = environment);
     let args: Args = yargs
       .options({
