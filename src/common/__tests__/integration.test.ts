@@ -6,7 +6,7 @@ import { Container } from "inversify";
 
 function setup() {
   const container = new Container();
-  container.load(containerModule());
+  container.load(containerModule);
   const utils = container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);
   return { container, utils };
 }

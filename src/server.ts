@@ -59,8 +59,8 @@ export class Server {
   }
 }
 
-export default async (config?: Config) => {
-  let container = await createContainer(config);
+export default async () => {
+  let container = await createContainer();
   loadMiddleware(container);
   let app = container.get<Server>(Server);
   app.container = container;

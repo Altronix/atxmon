@@ -10,7 +10,7 @@ import Config from "./config";
   }
 
   // Start application
-  let server = await createServer(new Config());
+  let server = await createServer();
   server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
   let sock = server.app.listen(server.config.http.http);

@@ -13,19 +13,18 @@ import {
 
 import { ContainerModule } from "inversify";
 
-const commonBindings = (config?: Config) =>
-  new ContainerModule(bind => {
-    bind<CryptoRoutines>(SYMBOLS.CRYPTO_ROUTINES)
-      .toDynamicValue(() => new Crypto(jwt, bcrypt))
-      .inSingletonScope();
+const commonBindings = new ContainerModule(bind => {
+  bind<CryptoRoutines>(SYMBOLS.CRYPTO_ROUTINES)
+    .toDynamicValue(() => new Crypto(jwt, bcrypt))
+    .inSingletonScope();
 
-    bind<LoggerRoutines>(SYMBOLS.LOGGER_ROUTINES)
-      .to(LoggerImpl)
-      .inSingletonScope();
+  bind<LoggerRoutines>(SYMBOLS.LOGGER_ROUTINES)
+    .to(LoggerImpl)
+    .inSingletonScope();
 
-    bind<UtilRoutines>(SYMBOLS.UTIL_ROUTINES)
-      .to(UtilsImpl)
-      .inSingletonScope();
-  });
+  bind<UtilRoutines>(SYMBOLS.UTIL_ROUTINES)
+    .to(UtilsImpl)
+    .inSingletonScope();
+});
 
-export default (config?: Config) => commonBindings(config);
+export default commonBindings;

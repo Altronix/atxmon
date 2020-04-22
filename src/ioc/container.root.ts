@@ -15,7 +15,7 @@ import { Server } from "../server";
 import Config from "../config";
 
 // Combine containers
-export const createContainerContext = (config?: Config) => {
+export const createContainerContext = () => {
   const container = new Container();
 
   // Load app containers
@@ -25,7 +25,7 @@ export const createContainerContext = (config?: Config) => {
     .toDynamicValue(() => new Config(process.argv, process.env));
 
   // Load syncronous containers
-  container.load(commonContainerModule(config));
+  container.load(commonContainerModule);
   container.load(serviceContainerModule);
   container.load(controllerContainer);
 
@@ -43,8 +43,8 @@ export const createContainerContext = (config?: Config) => {
   return { container, waitForContainer, loading };
 };
 
-export const createContainer = async (config?: Config) => {
-  const ctx = createContainerContext(config);
+export const createContainer = async () => {
+  const ctx = createContainerContext();
   await ctx.loading;
   return ctx.container;
 };
