@@ -18,34 +18,6 @@ import { UtilRoutines, DatabaseConfig } from "../common/types";
 import { injectable, inject } from "inversify";
 export { Connection } from "typeorm";
 
-// TODO deprecate for orm.connection manager
-const connections: { [key: string]: Connection | undefined } = {};
-
-// TODO deprecate for orm.connection manager
-export async function createConnection(
-  name: string,
-  additionalOptions: Partial<DatabaseConfig>
-): Promise<Connection> {
-  if (!connections[name]) {
-    const opts = await typeormGetConnectionOptions();
-    if (additionalOptions) Object.assign(opts, additionalOptions);
-    connections[name] = await typeormCreateConnection(opts);
-    await (connections[name] as Connection).synchronize();
-  }
-  return connections[name] as Connection;
-}
-
-// TODO deprecate for orm.connection manager
-export async function closeConnection(name: string): Promise<void> {
-  await (connections[name] as Connection).close();
-  connections[name] = undefined;
-}
-
-// TODO deprecate for orm.connection manager
-export function getConnection(name: string): Connection {
-  return connections[name] as Connection;
-}
-
 @injectable()
 export class OrmRepository<E> implements Repository<E> {
   repository!: TypeormRepository<E>;

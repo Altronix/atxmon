@@ -47,7 +47,7 @@ export async function setup<Entity, Model, Entry = Model>(
   let utils = getMockUtils();
   let config = Object.assign(new Config().database, {
     database: file,
-    name: "default"
+    name: "default" // hmmm (see above)
   });
   let connectionManager = new OrmConnection(
     createConnection,

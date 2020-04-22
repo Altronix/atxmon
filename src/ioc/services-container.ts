@@ -21,7 +21,7 @@ import { DeviceModel } from "../device/device.model";
 import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
-import { OrmRepository, createConnection, getConnection } from "./orm.service";
+import { OrmRepository } from "./orm.service";
 import { OrmConnection } from "./orm.connection";
 import { UtilRoutines } from "../common/types";
 import Config from "../config";
