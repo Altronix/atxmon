@@ -1,10 +1,8 @@
-import {
-  OrmRepository,
-  Connection,
-  createConnection,
-  closeConnection
-} from "../../ioc/orm.service";
-import { EntityTarget } from "typeorm";
+import { OrmRepository, Connection } from "../../ioc/orm.service";
+import { ConnectionManager } from "../../ioc/types";
+import { DatabaseConfig } from "../../common/types";
+import { OrmConnection } from "../../ioc/orm.connection";
+import { createConnection, getConnectionOptions, EntityTarget } from "typeorm";
 import { DatabaseService, Repository } from "../../ioc/types";
 import { UtilRoutines } from "../types";
 import { MockUtils } from "./__mocks__/utils.mock";
@@ -25,7 +23,9 @@ async function unlinkDatabase(db: string) {
 
 // A test harness
 export interface Harness<Model, Entry> {
+  config: DatabaseConfig;
   connection: Connection;
+  connectionManager: ConnectionManager;
   database: DatabaseService<Model, Entry>;
   utils: MockUtils;
   file: string;
@@ -45,19 +45,25 @@ export async function setup<Entity, Model, Entry = Model>(
   // All tests start with an empty database
   await unlinkDatabase(file);
   let utils = getMockUtils();
-  let opts = Object.assign(new Config().database, {
+  let config = Object.assign(new Config().database, {
     database: file,
     name: "default"
   });
-  let connection = await createConnection("test", opts);
-  const repo = await connection.getRepository<Entity>(e);
-  let repository = new OrmRepository(utils, repo);
+  let connectionManager = new OrmConnection(
+    createConnection,
+    getConnectionOptions,
+    config
+  );
+  let connection = await connectionManager.createConnection(config.name);
+  let provider = async () => connectionManager;
+  let repository = new OrmRepository<Entity>(utils, provider);
   let database = new db(utils, repository);
-  return { file, connection, utils, database };
+  await repository.load(config.name, e);
+  return { file, config, connection, connectionManager, utils, database };
 }
 
 // Cleanup a test
 export async function cleanup<Model, Entity>(harness: Harness<Model, Entity>) {
-  await closeConnection("test");
+  await harness.connectionManager.closeConnection(harness.config.name);
   await unlinkDatabase(harness.file);
 }
