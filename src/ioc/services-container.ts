@@ -33,12 +33,13 @@ const databaseBindings = (config?: Config) =>
     // helpful context - https://stackoverflow.com/questions/46867437
 
     // Initialize database
-    // TODO createConnection() should resolve entities from env
+    // TODO deprecate
     const c = await createConnection("app", (config && config.database) || {});
 
     // Connection Manager
     bind<ConnectionManager>(SYMBOLS.ORM_CONNECTION)
       .toDynamicValue(() => {
+        // TODO create connection in here
         return new OrmConnection(
           typeormCreateConnection,
           typeormGetConnectionOptions
@@ -57,6 +58,7 @@ const databaseBindings = (config?: Config) =>
     // Create a Users Repository
     bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
       .toDynamicValue(ctx => {
+        // TODO get OrmConnection from container
         return new OrmRepository<UserEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           getConnection("app").getRepository(UserEntity)
@@ -67,6 +69,7 @@ const databaseBindings = (config?: Config) =>
     // Create a Devices Repository
     bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
       .toDynamicValue(ctx => {
+        // TODO get OrmConnection from container
         return new OrmRepository<DeviceEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           getConnection("app").getRepository(DeviceEntity)
