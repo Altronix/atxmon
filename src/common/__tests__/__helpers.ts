@@ -1,7 +1,9 @@
 import {
   OrmRepository,
   Connection,
-  getConnection
+  getConnection,
+  createConnection,
+  closeConnection
 } from "../../ioc/orm.service";
 import { EntityTarget } from "typeorm";
 import { DatabaseService, Repository } from "../../ioc/types";
@@ -48,6 +50,7 @@ export async function setup<Entity, Model, Entry = Model>(
     database: file,
     name: "default"
   });
+  // let connection = await createConnection("test", opts);
   let connection = await getConnection(opts);
   const repo = await connection.getRepository<Entity>(e);
   let repository = new OrmRepository(utils, repo);
@@ -58,5 +61,6 @@ export async function setup<Entity, Model, Entry = Model>(
 // Cleanup a test
 export async function cleanup<Model, Entity>(harness: Harness<Model, Entity>) {
   await harness.connection.close();
+  // await closeConnection("test");
   await unlinkDatabase(harness.file);
 }

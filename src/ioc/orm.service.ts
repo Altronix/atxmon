@@ -1,5 +1,5 @@
 import {
-  createConnection,
+  createConnection as typeormCreateConnection,
   Connection,
   getConnectionOptions,
   ConnectionOptions,
@@ -15,15 +15,53 @@ import { UtilRoutines, DatabaseConfig } from "../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";
 
+const connections: { [key: string]: Connection | undefined } = {};
+
+export async function createConnection(
+  name: string,
+  additionalOptions: Partial<DatabaseConfig>
+): Promise<Connection> {
+  if (!connections[name]) {
+    const opts = await getConnectionOptions();
+    if (additionalOptions) Object.assign(opts, additionalOptions);
+    connections[name] = await typeormCreateConnection(opts);
+    (connections[name] as Connection).synchronize();
+  }
+  return connections[name] as Connection;
+}
+
+export async function closeConnection(name: string) {
+  await (connections[name] as Connection).close();
+  connections[name] = undefined;
+}
+
 export async function getConnection(
   additionalOptions?: Partial<DatabaseConfig>
 ): Promise<Connection> {
+  // TODO deprecate infavor of createConnection()
+  // TODO get connection should take name and return connection
   const opts = await getConnectionOptions();
   if (additionalOptions) Object.assign(opts, additionalOptions);
-  const c = await createConnection(opts);
+  const c = await typeormCreateConnection(opts);
   await c.synchronize();
   return c;
 }
+
+/*
+let connection: Connection | undefined = undefined;
+
+export async function getConnection(
+  additionalOptions?: Partial<DatabaseConfig>
+): Promise<Connection> {
+  if (!connection) {
+    const opts = await getConnectionOptions();
+    if (additionalOptions) Object.assign(opts, additionalOptions);
+    connection = await createConnection(opts);
+    await connection.synchronize();
+  }
+  return connection;
+}
+*/
 
 @injectable()
 export class OrmRepository<E> implements Repository<E> {

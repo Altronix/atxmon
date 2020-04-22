@@ -1,3 +1,5 @@
+// TODO this is deprecated in favor of ./common/config.ts
+// Need to migrate database config usage before removing
 import {
   Config,
   HttpConfig,
