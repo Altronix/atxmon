@@ -2,7 +2,12 @@ import { LinqEventHandler } from "@altronix/linq-network";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { DatabaseConfig } from "../common/types";
-import { Connection, FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
+import {
+  Connection,
+  FindOptionsWhere,
+  QueryDeepPartialEntity,
+  EntityTarget
+} from "typeorm";
 
 export interface Newable<T> {
   new (...args: any[]): T;
@@ -39,6 +44,7 @@ export interface ConnectionManager {
 
 // Repository
 export interface Repository<E> {
+  load: (name: string, e: EntityTarget<E>) => Promise<void>;
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
   ): Promise<boolean>;

@@ -1,5 +1,11 @@
 import { SYMBOLS } from "./constants.root";
-import { AsyncContainerModule, injectable, decorate } from "inversify";
+import {
+  Container,
+  ContainerModule,
+  injectable,
+  inject,
+  decorate
+} from "inversify";
 
 // Database Imports
 import {
@@ -29,72 +35,75 @@ import { LinqNetwork } from "@altronix/linq-network";
 
 decorate(injectable(), LinqNetwork);
 
-const databaseBindings = (config?: Config) =>
-  new AsyncContainerModule(async bind => {
-    // helpful context - https://stackoverflow.com/questions/46867437
+// Instansiate generics
+@injectable()
+class OrmRepositoryUser extends OrmRepository<UserEntity> {
+  constructor(
+    @inject(SYMBOLS.UTIL_ROUTINES)
+    utils: UtilRoutines,
+    @inject(SYMBOLS.CONNECTION_PROVIDER)
+    connection: () => Promise<ConnectionManager>
+  ) {
+    super(utils, connection);
+  }
+}
 
-    // Initialize database
-    // TODO deprecate
-    const c = await createConnection("app", (config && config.database) || {});
+@injectable()
+class OrmRepositoryDevice extends OrmRepository<DeviceEntity> {
+  constructor(
+    @inject(SYMBOLS.UTIL_ROUTINES)
+    utils: UtilRoutines,
+    @inject(SYMBOLS.CONNECTION_PROVIDER)
+    connection: () => Promise<ConnectionManager>
+  ) {
+    super(utils, connection);
+  }
+}
 
-    // Connection Manager
-    bind<Promise<ConnectionManager>>(SYMBOLS.CONNECTION_PROVIDER).toProvider(
-      ctx => async () => {
-        let c = new OrmConnection(
+let connection: OrmConnection | undefined;
+const serviceContainerModule = new ContainerModule(bind => {
+  // Connection Manager
+  bind<() => Promise<ConnectionManager>>(
+    SYMBOLS.CONNECTION_PROVIDER
+  ).toProvider(ctx => {
+    return async () => {
+      if (!connection) {
+        connection = new OrmConnection(
           typeormCreateConnection,
           typeormGetConnectionOptions,
           ctx.container.get<Config>(Config).database
         );
-        await c.createConnection("app");
-        return c;
+        await connection.createConnection("app");
       }
-    );
-
-    // Linq Service
-    bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)
-      .toDynamicValue(() => new LinqNetwork())
-      .inSingletonScope();
-    bind<LinqNetworkService>(SYMBOLS.LINQ_SERVICE)
-      .to(LinqService)
-      .inSingletonScope();
-
-    // Create a Users Repository
-    bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
-      .toDynamicValue(ctx => {
-        // TODO get OrmConnection from container
-        const connection = ctx.container.get<ConnectionManager>(
-          SYMBOLS.CONNECTION_PROVIDER
-        );
-        return new OrmRepository<UserEntity>(
-          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-          getConnection("app").getRepository(UserEntity)
-        );
-      })
-      .inSingletonScope();
-
-    // Create a Devices Repository
-    bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
-      .toDynamicValue(ctx => {
-        // TODO get OrmConnection from container
-        // TODO ORM_REPOSITORY_DEVICE should be ORM_PROVIDER_DEVICE
-        // TODO async container module will convert PROVIDER to SERVICE
-        //      with load routine
-        return new OrmRepository<DeviceEntity>(
-          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-          getConnection("app").getRepository(DeviceEntity)
-        );
-      })
-      .inSingletonScope();
-
-    // Create a Users Database (manages repository)
-    bind<DatabaseService<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
-      .to(UserService)
-      .inSingletonScope();
-
-    // Create a Devices Database (manages repository)
-    bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
-      .to(DeviceService)
-      .inSingletonScope();
+      return connection;
+    };
   });
 
-export default (config?: Config) => databaseBindings(config);
+  // Linq Service
+  bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)
+    .toDynamicValue(() => new LinqNetwork())
+    .inSingletonScope();
+  bind<LinqNetworkService>(SYMBOLS.LINQ_SERVICE)
+    .to(LinqService)
+    .inSingletonScope();
+
+  // Repositorys
+  bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
+    .to(OrmRepositoryUser)
+    .inSingletonScope();
+  bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
+    .to(OrmRepositoryDevice)
+    .inSingletonScope();
+
+  // Create a Users Database (manages repository)
+  bind<DatabaseService<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
+    .to(UserService)
+    .inSingletonScope();
+
+  // Create a Devices Database (manages repository)
+  bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
+    .to(DeviceService)
+    .inSingletonScope();
+});
+
+export default serviceContainerModule;

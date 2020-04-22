@@ -3,7 +3,8 @@ import {
   Connection,
   getConnectionOptions as typeormGetConnectionOptions,
   ConnectionOptions,
-  Repository as TypeormRepository
+  Repository as TypeormRepository,
+  EntityTarget
 } from "typeorm";
 import {
   DatabaseDeepPartialEntity,
@@ -12,8 +13,9 @@ import {
   FindCriteria,
   ConnectionManager
 } from "./types";
+import { SYMBOLS } from "../ioc/constants.root";
 import { UtilRoutines, DatabaseConfig } from "../common/types";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
 export { Connection } from "typeorm";
 
 // TODO deprecate for orm.connection manager
@@ -46,11 +48,19 @@ export function getConnection(name: string): Connection {
 
 @injectable()
 export class OrmRepository<E> implements Repository<E> {
-  utils: UtilRoutines;
-  repository: TypeormRepository<E>;
-  constructor(utils: UtilRoutines, repository: TypeormRepository<E>) {
+  repository!: TypeormRepository<E>;
+  constructor(
+    @inject(SYMBOLS.UTIL_ROUTINES)
+    private utils: UtilRoutines,
+    @inject(SYMBOLS.CONNECTION_PROVIDER)
+    private connection: () => Promise<ConnectionManager>
+  ) {
     this.utils = utils;
-    this.repository = repository;
+  }
+
+  async load(name: string, e: EntityTarget<E>): Promise<void> {
+    let c = await this.connection();
+    this.repository = c.getConnection(name).getRepository(e);
   }
 
   async insert(
