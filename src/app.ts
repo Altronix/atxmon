@@ -10,13 +10,12 @@ import load from "./config";
   }
 
   // Start application
-  let config = load(process.argv, process.env);
-  let server = await createServer(config);
-  server.utils.logger.info(`Listening [HTTP] ${config.http.http}`);
-  server.utils.logger.info(`Listening [ZMTP] ${config.linq.zmtp}`);
-  let sock = server.app.listen(config.http.http);
+  let server = await createServer(load(process.argv, process.env));
+  server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
+  server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
+  let sock = server.app.listen(server.config.http.http);
   await server.linq
-    .listen(config.linq.zmtp[0])
+    .listen(server.config.linq.zmtp[0])
     .on("heartbeat", async serial => {
       server.utils.logger.info(`${serial}`);
     })

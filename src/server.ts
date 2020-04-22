@@ -19,6 +19,7 @@ import express from "express";
 
 @injectable()
 export class Server {
+  config: Config;
   utils: UtilRoutines;
   container!: Container;
   linq: LinqNetworkService;
@@ -26,6 +27,7 @@ export class Server {
   users: DatabaseService<UserModel, UserEntry>;
   app: express.Application;
   constructor(
+    @inject(SYMBOLS.CONFIG) config: Config,
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER) users: DatabaseService<UserModel, UserEntry>,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
@@ -33,6 +35,7 @@ export class Server {
     @inject(UserController) private user: UserController,
     @inject(DeviceController) private device: DeviceController
   ) {
+    this.config = config;
     this.utils = utils;
     this.linq = linq;
     this.users = users;

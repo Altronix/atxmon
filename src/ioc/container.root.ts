@@ -23,7 +23,7 @@ export const createContainerContext = (config?: Config) => {
   container.bind(Server).toSelf();
 
   // Load syncronous containers
-  container.load(commonContainerModule);
+  container.load(commonContainerModule(config));
   container.load(controllerContainer);
 
   // Load asyncronous containers
