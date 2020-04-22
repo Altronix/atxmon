@@ -73,6 +73,7 @@ test("Should invalidate access token", async () => {
   let pass = false;
   let token = await utils.crypto.createAccessToken({ hello: "valid" });
   try {
+    // Decode token with the wrong key
     let decoded = await utils.crypto.decodeAndValidateRefreshToken(token);
   } catch {
     pass = true;
@@ -85,6 +86,7 @@ test("Should invalidate refresh token", async () => {
   let pass = false;
   let token = await utils.crypto.createRefreshToken({ hello: "valid" });
   try {
+    // Decode token with the wrong key
     let decoded = await utils.crypto.decodeAndValidateAccessToken(token);
   } catch {
     pass = true;
