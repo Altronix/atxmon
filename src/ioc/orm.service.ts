@@ -25,26 +25,18 @@ export async function createConnection(
     const opts = await getConnectionOptions();
     if (additionalOptions) Object.assign(opts, additionalOptions);
     connections[name] = await typeormCreateConnection(opts);
-    (connections[name] as Connection).synchronize();
+    await (connections[name] as Connection).synchronize();
   }
   return connections[name] as Connection;
 }
 
-export async function closeConnection(name: string) {
+export async function closeConnection(name: string): Promise<void> {
   await (connections[name] as Connection).close();
   connections[name] = undefined;
 }
 
-export async function getConnection(
-  additionalOptions?: Partial<DatabaseConfig>
-): Promise<Connection> {
-  // TODO deprecate infavor of createConnection()
-  // TODO get connection should take name and return connection
-  const opts = await getConnectionOptions();
-  if (additionalOptions) Object.assign(opts, additionalOptions);
-  const c = await typeormCreateConnection(opts);
-  await c.synchronize();
-  return c;
+export function getConnection(name: string): Connection {
+  return connections[name] as Connection;
 }
 
 @injectable()

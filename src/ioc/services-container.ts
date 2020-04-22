@@ -15,7 +15,7 @@ import { DeviceModel } from "../device/device.model";
 import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
-import { OrmRepository, getConnection } from "./orm.service";
+import { OrmRepository, createConnection, getConnection } from "./orm.service";
 import { UtilRoutines, Config } from "../common/types";
 import { LinqNetwork } from "@altronix/linq-network";
 
@@ -26,9 +26,7 @@ const databaseBindings = (config?: Config) =>
     // helpful context - https://stackoverflow.com/questions/46867437
 
     // Initialize database
-    const c = await getConnection((config && config.database) || {});
-    const devices = await c.getRepository(DeviceEntity);
-    const users = await c.getRepository(UserEntity);
+    const c = await createConnection("app", (config && config.database) || {});
 
     // Linq Service
     bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)
@@ -44,7 +42,7 @@ const databaseBindings = (config?: Config) =>
         ctx =>
           new OrmRepository<UserEntity>(
             ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-            users
+            getConnection("app").getRepository(UserEntity)
           )
       )
       .inSingletonScope();
@@ -55,7 +53,7 @@ const databaseBindings = (config?: Config) =>
         ctx =>
           new OrmRepository<DeviceEntity>(
             ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-            devices
+            getConnection("app").getRepository(DeviceEntity)
           )
       )
       .inSingletonScope();

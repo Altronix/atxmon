@@ -5,8 +5,8 @@ import { BodyParserMiddleware } from "./body-parser.middleware";
 import { CookieParserMiddleware } from "./cookie-parser.middleware";
 
 export const StandardMiddleware = [
+  ExpectJsonMiddleware,
   BodyParserMiddleware,
   LoggerMiddleware,
-  ExpectJsonMiddleware,
   CookieParserMiddleware
 ];
