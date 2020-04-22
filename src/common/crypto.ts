@@ -45,4 +45,20 @@ export class Crypto implements CryptoRoutines {
       });
     });
   }
+
+  async createAccessToken(json: any): Promise<string> {
+    return this.sign(json, this.config.accessTokenSecret);
+  }
+
+  async createRefreshToken(json: any): Promise<string> {
+    return this.sign(json, this.config.refreshTokenSecret);
+  }
+
+  async decodeAndValidateAccessToken<T>(token: string): Promise<T> {
+    return this.verify(token, this.config.accessTokenSecret);
+  }
+
+  async decodeAndValidateRefreshToken<T>(token: string): Promise<T> {
+    return this.verify(token, this.config.refreshTokenSecret);
+  }
 }

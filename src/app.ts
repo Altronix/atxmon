@@ -1,11 +1,21 @@
 import createServer from "./server";
-import Config from "./config";
+import { resolve } from "path";
+import { config } from "dotenv";
+
+config({ path: resolve(__dirname, "../.env") });
 
 (async () => {
   // Check environment (required for reading typeorm entities)
   if (!process.env.ATXMON_PATH) {
     console.error("[ \x1b[35mFATAL\x1b[0m ] atxmon startup error...");
     console.error("[ \x1b[35mFATAL\x1b[0m ] Please checkout README.md");
+    process.exit(-1);
+  }
+
+  // Make sure environment is secure
+  if (!(process.env.ACCESS_TOKEN_SECRET && process.env.REFRESH_TOKEN_SECRET)) {
+    console.error("[ \x1b[35mFATAL\x1b[0m ] Warning UNSAFE instance!");
+    console.error("[ \x1b[35mFATAL\x1b[0m ] Security environment invalid");
     process.exit(-1);
   }
 

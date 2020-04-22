@@ -51,3 +51,43 @@ test("jwt should invalidate", async () => {
   }
   expect(result).toBe(true);
 });
+
+test("Should create and validate access token", async () => {
+  type Hello = { hello: string };
+  let { utils } = setup();
+  let token = await utils.crypto.createAccessToken({ hello: "valid" });
+  let decoded = await utils.crypto.decodeAndValidateAccessToken<Hello>(token);
+  expect(decoded.hello).toBe("valid");
+});
+
+test("Should create and validate refresh token", async () => {
+  type Hello = { hello: string };
+  let { utils } = setup();
+  let token = await utils.crypto.createRefreshToken({ hello: "valid" });
+  let decoded = await utils.crypto.decodeAndValidateRefreshToken<Hello>(token);
+  expect(decoded.hello).toBe("valid");
+});
+
+test("Should invalidate access token", async () => {
+  let { utils } = setup();
+  let pass = false;
+  let token = await utils.crypto.createAccessToken({ hello: "valid" });
+  try {
+    let decoded = await utils.crypto.decodeAndValidateRefreshToken(token);
+  } catch {
+    pass = true;
+  }
+  expect(pass).toBeTruthy();
+});
+
+test("Should invalidate refresh token", async () => {
+  let { utils } = setup();
+  let pass = false;
+  let token = await utils.crypto.createRefreshToken({ hello: "valid" });
+  try {
+    let decoded = await utils.crypto.decodeAndValidateAccessToken(token);
+  } catch {
+    pass = true;
+  }
+  expect(pass).toBeTruthy();
+});

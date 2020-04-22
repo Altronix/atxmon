@@ -43,6 +43,10 @@ export interface CryptoRoutines {
   salt(): Promise<string>;
   sign: (json: string | object, key: string) => Promise<string>;
   verify: <T>(json: string, key: string) => Promise<T>;
+  createAccessToken: (json: any) => Promise<string>;
+  createRefreshToken: (json: any) => Promise<string>;
+  decodeAndValidateAccessToken: <T>(token: string) => Promise<T>;
+  decodeAndValidateRefreshToken: <T>(token: string) => Promise<T>;
 }
 
 export interface DateRoutines {

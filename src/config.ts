@@ -110,8 +110,14 @@ export default class implements Config {
       type: "sqlite"
     };
 
-    this.accessTokenSecret = args.accessTokenSecret || env.ACCESS_TOKEN_SECRET;
+    // Access token secrets (Note fatal error if env not set in app.ts...)
+    this.accessTokenSecret =
+      args.accessTokenSecret ||
+      env.ACCESS_TOKEN_SECRET ||
+      "invalid-access-token-secret";
     this.refreshTokenSecret =
-      args.refreshTokenSecret || env.REFRESH_TOKEN_SECRET;
+      args.refreshTokenSecret ||
+      env.REFRESH_TOKEN_SECRET ||
+      "invalid-refresh-token-secret";
   }
 }

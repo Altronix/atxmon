@@ -14,7 +14,7 @@ export class Utils implements UtilRoutines {
   crypto: CryptoRoutines;
   constructor(
     @inject(SYMBOLS.LOGGER_ROUTINES) logger: LoggerRoutines,
-    @inject(SYMBOLS.CRYPTO_ROUTINES) crypto: CryptoRoutines,
+    @inject(SYMBOLS.CRYPTO_ROUTINES) crypto: CryptoRoutines
   ) {
     this.logger = logger;
     this.crypto = crypto;
