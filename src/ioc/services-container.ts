@@ -38,7 +38,7 @@ const databaseBindings = (config?: Config) =>
     const c = await createConnection("app", (config && config.database) || {});
 
     // Connection Manager
-    bind<Promise<ConnectionManager>>(SYMBOLS.ORM_CONNECTION).toProvider(
+    bind<Promise<ConnectionManager>>(SYMBOLS.CONNECTION_PROVIDER).toProvider(
       ctx => async () => {
         let c = new OrmConnection(
           typeormCreateConnection,
@@ -63,7 +63,7 @@ const databaseBindings = (config?: Config) =>
       .toDynamicValue(ctx => {
         // TODO get OrmConnection from container
         const connection = ctx.container.get<ConnectionManager>(
-          SYMBOLS.ORM_CONNECTION
+          SYMBOLS.CONNECTION_PROVIDER
         );
         return new OrmRepository<UserEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
