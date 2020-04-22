@@ -12,6 +12,7 @@ import { BcryptRoutines, JwtRoutines } from "../../../ioc/types";
 import { Utils } from "../../../common/utils";
 import { Crypto as MockCrypto } from "../../../common/crypto";
 import { Logger as MockLogger } from "../../../common/logger";
+import Config from "../../../config";
 
 jest.mock("../../../common/crypto");
 jest.mock("../../../common/logger");
@@ -25,6 +26,7 @@ export type MockUtils = {
 
 let bcrypt!: BcryptRoutines;
 let jwt!: JwtRoutines;
+let config!: Config;
 
 export default () =>
-  new Utils(new MockLogger(), new MockCrypto(jwt, bcrypt)) as MockUtils;
+  new Utils(new MockLogger(), new MockCrypto(jwt, bcrypt, config)) as MockUtils;

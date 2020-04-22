@@ -2,11 +2,13 @@ import "jest";
 import { UtilRoutines } from "../types";
 import { SYMBOLS } from "../../ioc/common-constants";
 import containerModule from "../../ioc/common-container";
+import appModule from "../../ioc/app-container";
 import { Container } from "inversify";
 
 function setup() {
   const container = new Container();
   container.load(containerModule);
+  container.load(appModule);
   const utils = container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES);
   return { container, utils };
 }

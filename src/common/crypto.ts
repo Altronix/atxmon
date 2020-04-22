@@ -1,10 +1,15 @@
 import { injectable } from "inversify";
 import { CryptoRoutines } from "./types";
+import { Config } from "../common/types";
 import { JwtRoutines, BcryptRoutines } from "../ioc/types";
 
 @injectable()
 export class Crypto implements CryptoRoutines {
-  constructor(private jwt: JwtRoutines, private bcrypt: BcryptRoutines) {}
+  constructor(
+    private jwt: JwtRoutines,
+    private bcrypt: BcryptRoutines,
+    private config: Config
+  ) {}
   hash(data: string, salt: string): Promise<string> {
     return this.bcrypt.hash(data, salt);
   }

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Container, AsyncContainerModule } from "inversify";
+import { Container } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
 import { DatabaseService, Repository } from "./types";
@@ -11,20 +11,14 @@ import { DeviceEntity } from "../device/device.entity";
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
 import controllerContainer from "./controllers-container";
-import { Server } from "../server";
-import Config from "../config";
+import appContainerModule from "./app-container";
 
 // Combine containers
 export const createContainerContext = () => {
   const container = new Container();
 
-  // Load app containers
-  container.bind(Server).toSelf();
-  container
-    .bind(Config)
-    .toDynamicValue(() => new Config(process.argv, process.env));
-
-  // Load syncronous containers
+  // Load containers
+  container.load(appContainerModule);
   container.load(commonContainerModule);
   container.load(serviceContainerModule);
   container.load(controllerContainer);
