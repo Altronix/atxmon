@@ -47,22 +47,6 @@ export async function getConnection(
   return c;
 }
 
-/*
-let connection: Connection | undefined = undefined;
-
-export async function getConnection(
-  additionalOptions?: Partial<DatabaseConfig>
-): Promise<Connection> {
-  if (!connection) {
-    const opts = await getConnectionOptions();
-    if (additionalOptions) Object.assign(opts, additionalOptions);
-    connection = await createConnection(opts);
-    await connection.synchronize();
-  }
-  return connection;
-}
-*/
-
 @injectable()
 export class OrmRepository<E> implements Repository<E> {
   utils: UtilRoutines;
