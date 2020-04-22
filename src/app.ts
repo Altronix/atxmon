@@ -1,8 +1,5 @@
+import "dotenv/config";
 import createServer from "./server";
-import { resolve } from "path";
-import { config } from "dotenv";
-
-config({ path: resolve(__dirname, "../.env") });
 
 (async () => {
   // Check environment (required for reading typeorm entities)

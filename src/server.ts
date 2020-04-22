@@ -5,6 +5,7 @@ import { DatabaseService, LinqNetworkService } from "./ioc/types";
 import { DeviceController } from "./device/device.controller";
 import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";
+import { LoginController } from "./login/login.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UtilRoutines } from "./common/types";
 import Config from "./config";
@@ -34,7 +35,8 @@ export class Server {
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
     @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
     @inject(UserController) private user: UserController,
-    @inject(DeviceController) private device: DeviceController
+    @inject(DeviceController) private device: DeviceController,
+    @inject(LoginController) private login: LoginController
   ) {
     this.config = config;
     this.utils = utils;
@@ -50,7 +52,7 @@ export class Server {
   }
 
   load(): Server {
-    let controllers = [this.user, this.device];
+    let controllers = [this.user, this.device, this.login];
 
     controllers.forEach(controller =>
       this.app.use(createRouter(this.container, controller))

@@ -118,6 +118,7 @@ export interface MiddlewareHandler {
   handler: (req: Request, res: Response, next: NextFunction) => any;
 }
 
+// TODO this is actually a 'DatabaseController'
 export interface Controller<Model, Entry = Model> {}
 
 export interface _ControllerMetadata {
