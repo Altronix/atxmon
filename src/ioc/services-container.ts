@@ -16,9 +16,13 @@ import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
 import { OrmRepository, createConnection, getConnection } from "./orm.service";
-import { OrmConnection } from "./orm.service"; // TODO move to orm.connection
+import { OrmConnection } from "./orm.connection";
 import { UtilRoutines, Config } from "../common/types";
 import { ConnectionManager } from "./types";
+import {
+  createConnection as typeormCreateConnection,
+  getConnectionOptions as typeormGetConnectionOptions
+} from "typeorm";
 // import { createConnection, getConnection } from "typeorm";
 import { LinqNetwork } from "@altronix/linq-network";
 
@@ -34,7 +38,12 @@ const databaseBindings = (config?: Config) =>
 
     // Connection Manager
     bind<ConnectionManager>(SYMBOLS.ORM_CONNECTION)
-      .to(OrmConnection)
+      .toDynamicValue(() => {
+        return new OrmConnection(
+          typeormCreateConnection,
+          typeormGetConnectionOptions
+        );
+      })
       .inSingletonScope();
 
     // Linq Service

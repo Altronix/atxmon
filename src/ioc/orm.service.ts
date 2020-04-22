@@ -16,8 +16,10 @@ import { UtilRoutines, DatabaseConfig } from "../common/types";
 import { injectable } from "inversify";
 export { Connection } from "typeorm";
 
+// TODO deprecate for orm.connection manager
 const connections: { [key: string]: Connection | undefined } = {};
 
+// TODO deprecate for orm.connection manager
 export async function createConnection(
   name: string,
   additionalOptions: Partial<DatabaseConfig>
@@ -31,44 +33,15 @@ export async function createConnection(
   return connections[name] as Connection;
 }
 
+// TODO deprecate for orm.connection manager
 export async function closeConnection(name: string): Promise<void> {
   await (connections[name] as Connection).close();
   connections[name] = undefined;
 }
 
+// TODO deprecate for orm.connection manager
 export function getConnection(name: string): Connection {
   return connections[name] as Connection;
-}
-
-@injectable()
-export class OrmConnection implements ConnectionManager {
-  private connections: { [key: string]: Connection | undefined } = {};
-  constructor(
-    private _createConnection: typeof typeormCreateConnection,
-    private _getConnectionOptions: typeof typeormGetConnectionOptions
-  ) {}
-
-  async createConnection(
-    name: string,
-    additionalOptions: Partial<DatabaseConfig>
-  ): Promise<Connection> {
-    if (!connections[name]) {
-      const opts = await this._getConnectionOptions();
-      if (additionalOptions) Object.assign(opts, additionalOptions);
-      connections[name] = await this._createConnection(opts);
-      await (connections[name] as Connection).synchronize();
-    }
-    return connections[name] as Connection;
-  }
-
-  async closeConnection(name: string): Promise<void> {
-    await (connections[name] as Connection).close();
-    connections[name] = undefined;
-  }
-
-  getConnection(name: string): Connection {
-    return connections[name] as Connection;
-  }
 }
 
 @injectable()
