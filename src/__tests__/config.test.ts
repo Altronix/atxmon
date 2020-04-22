@@ -2,7 +2,11 @@ import Config from "../config";
 import { DatabaseConfig, LinqConfig, Environment } from "../common/types";
 
 test("Should load config", () => {
-  let env: Environment = { ATXMON_PATH: "/foo" } as Environment;
+  let env: Environment = {
+    ATXMON_PATH: "/foo",
+    ACCESS_TOKEN_SECRET: "test-access-token-secret",
+    REFRESH_TOKEN_SECRET: "test-refresh-token-secret"
+  } as Environment;
   let config = new Config([], env);
   expect(config.http.certFile).toBe("./unsafe-cert.pem");
   expect(config.http.keyFile).toBe("./unsafe-key.pem");
@@ -17,6 +21,8 @@ test("Should load config", () => {
   expect(config.linq.zmtp).toEqual([33455]);
   expect(config.linq.zmtps).toBe(33456);
   expect(config.mail.apiKey).toBe("");
+  expect(config.accessTokenSecret).toBe("test-access-token-secret");
+  expect(config.refreshTokenSecret).toBe("test-refresh-token-secret");
   expect(config.mail.serviceNotifications).toEqual([]);
 });
 
@@ -34,6 +40,8 @@ test("Should load config from enviorment", () => {
     ZMTP_PORT: "1,2,3,4,5",
     ZMTP_IPC: "./tmp,./foo",
     ZMTPS_PORT: "6",
+    ACCESS_TOKEN_SECRET: "env-access-token-secret",
+    REFRESH_TOKEN_SECRET: "env-refresh-token-secret",
     WWW: "./test-www-path"
   };
   let config = new Config([], env);
@@ -50,6 +58,8 @@ test("Should load config from enviorment", () => {
   expect(config.linq.zmtp).toEqual([1, 2, 3, 4, 5]);
   expect(config.linq.zmtps).toBe(6);
   expect(config.mail.apiKey).toBe("api-key");
+  expect(config.accessTokenSecret).toBe("env-access-token-secret");
+  expect(config.refreshTokenSecret).toBe("env-refresh-token-secret");
   expect(config.mail.serviceNotifications).toEqual([]);
 });
 
@@ -67,6 +77,8 @@ test("Should load config from command line", () => {
     ZMTP_PORT: "1,2,3,4,5",
     ZMTP_IPC: "./tmp,./foo",
     ZMTPS_PORT: "6",
+    ACCESS_TOKEN_SECRET: "env-access-token-secret",
+    REFRESH_TOKEN_SECRET: "env-refresh-token-secret",
     WWW: "./test-www-path"
   };
   const args =
@@ -81,6 +93,8 @@ test("Should load config from command line", () => {
     `--zmtpPort 333 444 555 666 ` +
     `--zmtpsPort 999 ` +
     `--zmtpIpc crackle jingle jam ` +
+    `--accessTokenSecret arg-access-token-secret ` +
+    `--refreshTokenSecret arg-refresh-token-secret ` +
     `--www foohaha`;
   let config = new Config(args.split(" "), env);
   expect(config.http.certFile).toBe("./arg-cert.pem");
@@ -97,4 +111,6 @@ test("Should load config from command line", () => {
   expect(config.linq.zmtps).toBe(999);
   expect(config.mail.apiKey).toBe("argkey");
   expect(config.mail.serviceNotifications).toEqual([]);
+  expect(config.accessTokenSecret).toBe("arg-access-token-secret");
+  expect(config.refreshTokenSecret).toBe("arg-refresh-token-secret");
 });

@@ -23,6 +23,8 @@ interface Args {
   zmtpPort: (string | number)[] | undefined;
   zmtpsPort?: number;
   zmtpIpc: (string | number)[] | undefined;
+  accessTokenSecret?: string;
+  refreshTokenSecret?: string;
   www?: string;
 }
 
@@ -43,11 +45,13 @@ function asArrayN(arg: (string | number)[]): number[] {
 }
 
 export default class implements Config {
-  database!: DatabaseConfig;
+  database: DatabaseConfig;
   env: Environment;
   http: HttpConfig;
-  linq!: LinqConfig;
-  mail!: MailerConfig;
+  linq: LinqConfig;
+  mail: MailerConfig;
+  accessTokenSecret: string;
+  refreshTokenSecret: string;
 
   constructor(input: string[] = process.argv, environment: any = process.env) {
     let env = (this.env = environment);
@@ -64,6 +68,8 @@ export default class implements Config {
         zmtpPort: { type: "array" },
         zmtpsPort: { type: "number" },
         zmtpIpc: { type: "array" },
+        accessTokenSecret: { type: "string" },
+        refreshTokenSecret: { type: "string" },
         www: { type: "string" }
       })
       .parse(input);
@@ -103,5 +109,9 @@ export default class implements Config {
           : [env.ATXMON_PATH + "/src/**/*.entity.ts"],
       type: "sqlite"
     };
+
+    this.accessTokenSecret = args.accessTokenSecret || env.ACCESS_TOKEN_SECRET;
+    this.refreshTokenSecret =
+      args.refreshTokenSecret || env.REFRESH_TOKEN_SECRET;
   }
 }

@@ -69,6 +69,8 @@ export interface Environment {
   ZMTP_PORT: string;
   ZMTP_IPC: string;
   ZMTPS_PORT: string;
+  ACCESS_TOKEN_SECRET: string;
+  REFRESH_TOKEN_SECRET: string;
   WWW: string;
 }
 
@@ -104,6 +106,8 @@ export interface Config {
   http: HttpConfig;
   linq: LinqConfig;
   mail: MailerConfig;
+  accessTokenSecret: string;
+  refreshTokenSecret: string;
 }
 
 export interface MiddlewareHandler {
