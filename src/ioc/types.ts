@@ -32,10 +32,7 @@ export interface DatabaseService<Model, Entry = Model> {
 
 // Connection manager
 export interface ConnectionManager {
-  createConnection: (
-    name: string,
-    opts: Partial<DatabaseConfig>
-  ) => Promise<Connection>;
+  createConnection: (name: string) => Promise<Connection>;
   closeConnection: (name: string) => Promise<void>;
   getConnection: (name: string) => Connection;
 }

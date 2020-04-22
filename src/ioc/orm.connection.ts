@@ -14,16 +14,14 @@ export class OrmConnection implements ConnectionManager {
   private connections: { [key: string]: Connection | undefined } = {};
   constructor(
     private _createConnection: typeof typeormCreateConnection,
-    private _getConnectionOptions: typeof typeormGetConnectionOptions
+    private _getConnectionOptions: typeof typeormGetConnectionOptions,
+    private _config: DatabaseConfig
   ) {}
 
-  async createConnection(
-    name: string,
-    additionalOptions: Partial<DatabaseConfig>
-  ): Promise<Connection> {
+  async createConnection(name: string): Promise<Connection> {
     if (!this.connections[name]) {
       const opts = await this._getConnectionOptions();
-      if (additionalOptions) Object.assign(opts, additionalOptions);
+      if (this._config) Object.assign(opts, this._config);
       this.connections[name] = await this._createConnection(opts);
       await (this.connections[name] as Connection).synchronize();
     }

@@ -17,7 +17,8 @@ import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
 import { OrmRepository, createConnection, getConnection } from "./orm.service";
 import { OrmConnection } from "./orm.connection";
-import { UtilRoutines, Config } from "../common/types";
+import { UtilRoutines } from "../common/types";
+import Config from "../config";
 import { ConnectionManager } from "./types";
 import {
   createConnection as typeormCreateConnection,
@@ -37,15 +38,17 @@ const databaseBindings = (config?: Config) =>
     const c = await createConnection("app", (config && config.database) || {});
 
     // Connection Manager
-    bind<ConnectionManager>(SYMBOLS.ORM_CONNECTION)
-      .toDynamicValue(() => {
-        // TODO create connection in here
-        return new OrmConnection(
+    bind<Promise<ConnectionManager>>(SYMBOLS.ORM_CONNECTION).toProvider(
+      ctx => async () => {
+        let c = new OrmConnection(
           typeormCreateConnection,
-          typeormGetConnectionOptions
+          typeormGetConnectionOptions,
+          ctx.container.get<Config>(Config).database
         );
-      })
-      .inSingletonScope();
+        await c.createConnection("app");
+        return c;
+      }
+    );
 
     // Linq Service
     bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)
@@ -59,6 +62,9 @@ const databaseBindings = (config?: Config) =>
     bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
       .toDynamicValue(ctx => {
         // TODO get OrmConnection from container
+        const connection = ctx.container.get<ConnectionManager>(
+          SYMBOLS.ORM_CONNECTION
+        );
         return new OrmRepository<UserEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           getConnection("app").getRepository(UserEntity)
@@ -70,6 +76,9 @@ const databaseBindings = (config?: Config) =>
     bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
       .toDynamicValue(ctx => {
         // TODO get OrmConnection from container
+        // TODO ORM_REPOSITORY_DEVICE should be ORM_PROVIDER_DEVICE
+        // TODO async container module will convert PROVIDER to SERVICE
+        //      with load routine
         return new OrmRepository<DeviceEntity>(
           ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
           getConnection("app").getRepository(DeviceEntity)
