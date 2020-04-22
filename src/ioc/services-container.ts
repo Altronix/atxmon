@@ -38,24 +38,22 @@ const databaseBindings = (config?: Config) =>
 
     // Create a Users Repository
     bind<Repository<UserEntity>>(SYMBOLS.ORM_REPOSITORY_USER)
-      .toDynamicValue(
-        ctx =>
-          new OrmRepository<UserEntity>(
-            ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-            getConnection("app").getRepository(UserEntity)
-          )
-      )
+      .toDynamicValue(ctx => {
+        return new OrmRepository<UserEntity>(
+          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
+          getConnection("app").getRepository(UserEntity)
+        );
+      })
       .inSingletonScope();
 
     // Create a Devices Repository
     bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
-      .toDynamicValue(
-        ctx =>
-          new OrmRepository<DeviceEntity>(
-            ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
-            getConnection("app").getRepository(DeviceEntity)
-          )
-      )
+      .toDynamicValue(ctx => {
+        return new OrmRepository<DeviceEntity>(
+          ctx.container.get<UtilRoutines>(SYMBOLS.UTIL_ROUTINES),
+          getConnection("app").getRepository(DeviceEntity)
+        );
+      })
       .inSingletonScope();
 
     // Create a Users Database (manages repository)
