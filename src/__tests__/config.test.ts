@@ -1,14 +1,9 @@
-import load, { root } from "../config";
-import {
-  Config,
-  DatabaseConfig,
-  LinqConfig,
-  Environment
-} from "../common/types";
+import Config from "../config";
+import { DatabaseConfig, LinqConfig, Environment } from "../common/types";
 
 test("Should load config", () => {
   let env: Environment = { ATXMON_PATH: "/foo" } as Environment;
-  let config = load([], env);
+  let config = new Config([], env);
   expect(config.http.certFile).toBe("./unsafe-cert.pem");
   expect(config.http.keyFile).toBe("./unsafe-key.pem");
   expect(config.http.http).toBe(3000);
@@ -41,7 +36,7 @@ test("Should load config from enviorment", () => {
     ZMTPS_PORT: "6",
     WWW: "./test-www-path"
   };
-  let config = load([], env);
+  let config = new Config([], env);
   expect(config.http.certFile).toBe("./foo-cert.pem");
   expect(config.http.keyFile).toBe("./foo-key.pem");
   expect(config.http.http).toBe(1234);
@@ -87,7 +82,7 @@ test("Should load config from command line", () => {
     `--zmtpsPort 999 ` +
     `--zmtpIpc crackle jingle jam ` +
     `--www foohaha`;
-  let config = load(args.split(" "), env);
+  let config = new Config(args.split(" "), env);
   expect(config.http.certFile).toBe("./arg-cert.pem");
   expect(config.http.keyFile).toBe("./arg-key.pem");
   expect(config.http.http).toBe(900);

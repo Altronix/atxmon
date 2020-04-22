@@ -1,7 +1,7 @@
 import {
   createConnection as typeormCreateConnection,
   Connection,
-  getConnectionOptions,
+  getConnectionOptions as typeormGetConnectionOptions,
   ConnectionOptions,
   Repository as TypeormRepository
 } from "typeorm";
@@ -9,7 +9,8 @@ import {
   DatabaseDeepPartialEntity,
   Repository,
   IdCriteria,
-  FindCriteria
+  FindCriteria,
+  ConnectionManager
 } from "./types";
 import { UtilRoutines, DatabaseConfig } from "../common/types";
 import { injectable } from "inversify";
@@ -22,7 +23,7 @@ export async function createConnection(
   additionalOptions: Partial<DatabaseConfig>
 ): Promise<Connection> {
   if (!connections[name]) {
-    const opts = await getConnectionOptions();
+    const opts = await typeormGetConnectionOptions();
     if (additionalOptions) Object.assign(opts, additionalOptions);
     connections[name] = await typeormCreateConnection(opts);
     await (connections[name] as Connection).synchronize();
@@ -37,6 +38,37 @@ export async function closeConnection(name: string): Promise<void> {
 
 export function getConnection(name: string): Connection {
   return connections[name] as Connection;
+}
+
+@injectable()
+export class OrmConnection implements ConnectionManager {
+  private connections: { [key: string]: Connection | undefined } = {};
+  constructor(
+    private _createConnection: typeof typeormCreateConnection,
+    private _getConnectionOptions: typeof typeormGetConnectionOptions
+  ) {}
+
+  async createConnection(
+    name: string,
+    additionalOptions: Partial<DatabaseConfig>
+  ): Promise<Connection> {
+    if (!connections[name]) {
+      const opts = await this._getConnectionOptions();
+      if (additionalOptions) Object.assign(opts, additionalOptions);
+      connections[name] = await this._createConnection(opts);
+      await (connections[name] as Connection).synchronize();
+    }
+    return connections[name] as Connection;
+  }
+
+  async closeConnection(name: string): Promise<void> {
+    await (connections[name] as Connection).close();
+    connections[name] = undefined;
+  }
+
+  getConnection(name: string): Connection {
+    return connections[name] as Connection;
+  }
 }
 
 @injectable()

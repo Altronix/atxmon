@@ -3,17 +3,13 @@ import { Container, AsyncContainerModule } from "inversify";
 import { SYMBOLS } from "./constants.root";
 
 import { DatabaseService } from "./types";
-import {
-  LoggerRoutines,
-  CryptoRoutines,
-  UtilRoutines,
-  Config
-} from "../common/types";
+import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
 import controllerContainer from "./controllers-container";
 import { Server } from "../server";
+import Config from "../config";
 
 // Combine containers
 export const createContainerContext = (config?: Config) => {
@@ -21,6 +17,9 @@ export const createContainerContext = (config?: Config) => {
 
   // Load app containers
   container.bind(Server).toSelf();
+  container
+    .bind(Config)
+    .toDynamicValue(() => new Config(process.argv, process.env));
 
   // Load syncronous containers
   container.load(commonContainerModule(config));

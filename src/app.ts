@@ -1,5 +1,5 @@
 import createServer from "./server";
-import load from "./config";
+import Config from "./config";
 
 (async () => {
   // Check environment (required for reading typeorm entities)
@@ -10,7 +10,7 @@ import load from "./config";
   }
 
   // Start application
-  let server = await createServer(load(process.argv, process.env));
+  let server = await createServer(new Config());
   server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
   let sock = server.app.listen(server.config.http.http);

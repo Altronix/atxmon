@@ -9,7 +9,7 @@ import { DatabaseService, Repository } from "../../ioc/types";
 import { UtilRoutines } from "../types";
 import { MockUtils } from "./__mocks__/utils.mock";
 import getMockUtils from "./__mocks__/utils.mock";
-import load from "../../config";
+import Config from "../../config";
 import * as fs from "fs";
 
 // Remove a database from the host file system (integration test)
@@ -45,7 +45,7 @@ export async function setup<Entity, Model, Entry = Model>(
   // All tests start with an empty database
   await unlinkDatabase(file);
   let utils = getMockUtils();
-  let opts = Object.assign(load([], process.env).database, {
+  let opts = Object.assign(new Config().database, {
     database: file,
     name: "default"
   });

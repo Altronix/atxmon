@@ -1,7 +1,8 @@
 import { LinqEventHandler } from "@altronix/linq-network";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
-import { FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
+import { DatabaseConfig } from "../common/types";
+import { Connection, FindOptionsWhere, QueryDeepPartialEntity } from "typeorm";
 
 export interface Newable<T> {
   new (...args: any[]): T;
@@ -27,6 +28,16 @@ export interface DatabaseService<Model, Entry = Model> {
     next: DatabaseDeepPartialEntity<Model>
   ): Promise<number>;
   count(key?: FindCriteria<Model>): Promise<number>;
+}
+
+// Connection manager
+export interface ConnectionManager {
+  createConnection: (
+    name: string,
+    opts: Partial<DatabaseConfig>
+  ) => Promise<Connection>;
+  closeConnection: (name: string) => Promise<void>;
+  getConnection: (name: string) => Connection;
 }
 
 // Repository

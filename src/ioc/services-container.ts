@@ -16,7 +16,10 @@ import { DeviceEntity } from "../device/device.entity";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
 import { OrmRepository, createConnection, getConnection } from "./orm.service";
+import { OrmConnection } from "./orm.service"; // TODO move to orm.connection
 import { UtilRoutines, Config } from "../common/types";
+import { ConnectionManager } from "./types";
+// import { createConnection, getConnection } from "typeorm";
 import { LinqNetwork } from "@altronix/linq-network";
 
 decorate(injectable(), LinqNetwork);
@@ -28,6 +31,11 @@ const databaseBindings = (config?: Config) =>
     // Initialize database
     // TODO createConnection() should resolve entities from env
     const c = await createConnection("app", (config && config.database) || {});
+
+    // Connection Manager
+    bind<ConnectionManager>(SYMBOLS.ORM_CONNECTION)
+      .to(OrmConnection)
+      .inSingletonScope();
 
     // Linq Service
     bind<AltronixLinqNetworkService>(SYMBOLS.ATX_LINQ_SERVICE)

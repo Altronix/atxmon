@@ -6,7 +6,8 @@ import { DeviceController } from "./device/device.controller";
 import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";
 import { UserModel, UserEntry } from "./user/user.model";
-import { UtilRoutines, Config } from "./common/types";
+import { UtilRoutines } from "./common/types";
+import Config from "./config";
 import {
   createRouter,
   getControllerMiddleware,
@@ -27,7 +28,7 @@ export class Server {
   users: DatabaseService<UserModel, UserEntry>;
   app: express.Application;
   constructor(
-    @inject(SYMBOLS.CONFIG) config: Config,
+    @inject(Config) config: Config,
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER) users: DatabaseService<UserModel, UserEntry>,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
