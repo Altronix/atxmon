@@ -9,11 +9,7 @@ import { LoginController } from "./login/login.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UtilRoutines } from "./common/types";
 import Config from "./config";
-import {
-  createRouter,
-  getControllerMiddleware,
-  loadMiddleware
-} from "./common/decorators";
+import { createRouter, loadMiddleware } from "./common/decorators";
 import { Container, injectable, inject } from "inversify";
 
 import * as bodyParser from "body-parser";
