@@ -27,12 +27,11 @@ export function App(params: AppParams) {
     decorate(injectable(), target);
     target.prototype.controllers = [] as any[];
     target.prototype.load = function(container: Container) {
-      let self = this;
       params.controllers.forEach(controller => {
         container.bind(controller).toSelf();
         let c = container.get(controller);
-        self.app.use(createRouter(container, c));
-        self.controllers.push(c);
+        this.app.use(createRouter(container, c));
+        this.controllers.push(c);
       });
     };
     return target as new (...args: Args) => T & AppRoutines;

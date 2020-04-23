@@ -3,6 +3,7 @@ import { LoginController } from "../login.controller";
 import makeMockUtils from "../../common/__tests__/__mocks__/utils.mock";
 import makeMockLinqService from "../../device/__tests__/__mocks__/linq.service.mock";
 import makeMockUserService from "../../user/__tests__/__mocks__/user.service.mock";
+import constants from "../constants";
 
 const asResponse = (res: any): Response => res as Response;
 const asRequest = (req: any): Request => req as Request;
@@ -30,7 +31,11 @@ function setup() {
 test("login.controller should provided valid tokens", async () => {
   let { utils, users, controller, res } = setup();
   let req = { body: testLogin };
-  let expectToken = { role: testUser.role, email: testUser.email };
+  let expectToken = {
+    id: testUser.id,
+    role: testUser.role,
+    email: testUser.email
+  };
   let expectResponse = { accessToken: "access-token" };
   users.findByEmail.mockReturnValue(new Promise(resolve => resolve(testUser)));
   utils.crypto.validate.mockReturnValue(new Promise(resolve => resolve(true)));
@@ -44,10 +49,14 @@ test("login.controller should provided valid tokens", async () => {
 
   expect(utils.crypto.createAccessToken).toBeCalledWith(expectToken);
   expect(utils.crypto.createRefreshToken).toBeCalledWith(expectToken);
-  expect(res.cookie).toHaveBeenCalledWith("mondle", "refresh-token", {
-    httpOnly: true,
-    path: "/login/refresh"
-  });
+  expect(res.cookie).toHaveBeenCalledWith(
+    constants.REFRESH_TOKEN_ID,
+    "refresh-token",
+    {
+      httpOnly: true,
+      path: "/login/refresh"
+    }
+  );
   expect(res.status).toHaveBeenCalledWith(200);
   expect(res.send).toHaveBeenCalledWith(expectResponse);
 });

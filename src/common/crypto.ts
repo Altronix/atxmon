@@ -10,16 +10,41 @@ export class Crypto implements CryptoRoutines {
     private bcrypt: BcryptRoutines,
     private config: Config
   ) {}
+
   hash(data: string, salt: string): Promise<string> {
-    return this.bcrypt.hash(data, salt);
+    return new Promise((resolve, reject) => {
+      this.bcrypt.hash(data, salt, (err, enc) => {
+        if (!err) {
+          resolve(enc);
+        } else {
+          reject(err);
+        }
+      });
+    });
   }
 
   validate(tpass: string, hash: string): Promise<boolean> {
-    return this.bcrypt.compare(tpass, hash);
+    return new Promise((resolve, reject) => {
+      this.bcrypt.compare(tpass, hash, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          reject(err);
+        }
+      });
+    });
   }
 
   salt(): Promise<string> {
-    return this.bcrypt.genSalt();
+    return new Promise((resolve, reject) => {
+      this.bcrypt.genSalt((err, salt) => {
+        if (!err) {
+          resolve(salt);
+        } else {
+          reject(err);
+        }
+      });
+    });
   }
 
   sign(json: object | string, key: string): Promise<string> {

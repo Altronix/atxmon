@@ -19,7 +19,6 @@ import express from "express";
 export class Server {
   config: Config;
   utils: UtilRoutines;
-  container!: Container;
   linq: LinqNetworkService;
   devices: DatabaseService<DeviceModel>;
   users: DatabaseService<UserModel, UserEntry>;
@@ -37,11 +36,6 @@ export class Server {
     this.users = users;
     this.devices = devices;
     this.app = express();
-  }
-
-  use(...args: any[]): Server {
-    this.app.use(...args);
-    return this;
   }
 }
 

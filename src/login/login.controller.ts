@@ -6,6 +6,8 @@ import { UserService } from "../user/user.service";
 import { SYMBOLS } from "../ioc/constants.root";
 import { LoginModel } from "./login.model";
 import { injectable, inject } from "inversify";
+import { Token } from "./token";
+import constants from "./constants";
 
 @controller("/login", ...StandardMiddleware)
 export class LoginController {
@@ -28,10 +30,10 @@ export class LoginController {
     if (!valid) return res.status(403).send("Forbidden");
 
     // Send tokens // TODO add iat etc
-    let token = { role: user.role, email: user.email };
+    let token: Token = { id: user.id, role: user.role, email: user.email };
     let accessToken = await this.utils.crypto.createAccessToken(token);
     let refreshToken = await this.utils.crypto.createRefreshToken(token);
-    res.cookie("mondle", refreshToken, {
+    res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
       httpOnly: true,
       path: "/login/refresh"
     });
@@ -40,12 +42,17 @@ export class LoginController {
 
   @httpPost("/refresh")
   async refresh(req: Request, res: Response) {
-    // TODO - parse cookie, if valid send new access token
-    // token = req.cookies.mondle
-    // if(!token) return ....
-    //
-    // let decoded = decodeAndValidate(token)
-    // if(!decoded) return ...
+    const t = req.cookies[constants.REFRESH_TOKEN_ID];
+    if (!t) return res.status(403).send("Forbidden");
+
+    let decoded: Token | unknown = undefined;
+    try {
+      decoded = this.utils.crypto.decodeAndValidateRefreshToken(t);
+    } catch {}
+    if (!decoded) return res.status(403).send("Forbidden");
+
+    // let user = this.users.findById(decoded.id);
+
     //
     // user = findById(decoded.id)
     // if(!user) return ...
@@ -60,6 +67,6 @@ export class LoginController {
   // @httpPost("/logout")
   // async logout(req: Request, res: Response) {
   //   // Simply remove cookie
-  //   // res.cookie("mondle","",{httpOnly:true,path:"/login/refresh"});...
+  //   // res.cookie(constants.REFRESH_TOKEN_ID,"",{httpOnly:true,path:"/login/refresh"});...
   // }
 }
