@@ -10,13 +10,9 @@ export class LoginModel {
     this.password = password;
   }
 
-  static async fromUntrusted(data: any): Promise<LoginModel | undefined> {
+  static async fromUntrusted(data: any): Promise<LoginModel> {
     let login = new LoginModel(data.email, data.password);
-    return (await validate(login)).length ? undefined : login;
-  }
-  static async fromUntrustedThrowable(d: any): Promise<LoginModel> {
-    let login = new LoginModel(d.email, d.password);
-    if ((await validate(login)).length) throw new Error("Bad login format");
+    if ((await validate(login)).length) throw new Error("Bad login");
     return login;
   }
 }

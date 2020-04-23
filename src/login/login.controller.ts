@@ -20,7 +20,7 @@ export class LoginController {
 
   @httpPost("/")
   async login(req: Request, res: Response) {
-    let login = await LoginModel.fromUntrusted(req.body);
+    let login = await LoginModel.fromUntrusted(req.body).catch(() => undefined);
     if (!login) return res.status(403).send("Forbidden");
 
     let user = await this.users.findByEmail(login.email);
