@@ -45,8 +45,6 @@ export class LoginController {
     const t = req.cookies[constants.REFRESH_TOKEN_ID];
     if (!t) return res.status(403).send("Forbidden");
 
-    this.utils.logger.info(t);
-
     let decoded = await this.utils.crypto
       .decodeAndValidateRefreshToken<Token>(t)
       .catch(() => undefined);
