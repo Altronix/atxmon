@@ -45,28 +45,24 @@ export class LoginController {
     const t = req.cookies[constants.REFRESH_TOKEN_ID];
     if (!t) return res.status(403).send("Forbidden");
 
-    let decoded: Token | unknown = undefined;
-    try {
-      decoded = this.utils.crypto.decodeAndValidateRefreshToken(t);
-    } catch {}
+    this.utils.logger.info(t);
+
+    let decoded = await this.utils.crypto
+      .decodeAndValidateRefreshToken<Token>(t)
+      .catch(() => undefined);
     if (!decoded) return res.status(403).send("Forbidden");
 
-    // let user = this.users.findById(decoded.id);
+    let user = await this.users.findById(decoded.id);
+    if (!user) return res.status(403).send("Forbidden");
 
-    //
-    // user = findById(decoded.id)
-    // if(!user) return ...
-    //
-    // createAccessToken()
-    // createRefreshToken()
-    // res.cooke(...
-    // send.status(200).send({accessToken});
+    let token: Token = { id: user.id, role: user.role, email: user.email };
+    let accessToken = await this.utils.crypto.createAccessToken(token);
+    let refreshToken = await this.utils.crypto.createRefreshToken(token);
+
+    res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
+      httpOnly: true,
+      path: "/login/refresh"
+    });
+    res.status(200).send({ accessToken });
   }
-
-  // signout can be it's own controller to avoid url of /login/logout
-  // @httpPost("/logout")
-  // async logout(req: Request, res: Response) {
-  //   // Simply remove cookie
-  //   // res.cookie(constants.REFRESH_TOKEN_ID,"",{httpOnly:true,path:"/login/refresh"});...
-  // }
 }

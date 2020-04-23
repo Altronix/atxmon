@@ -106,3 +106,39 @@ test("login.controller should deny access if password is invalid", async () => {
   expect(res.status).toHaveBeenCalledWith(403);
   expect(res.send).toHaveBeenCalledWith("Forbidden");
 });
+
+test("login.controller refresh should provide access token", async () => {
+  let { utils, users, controller, res } = setup();
+  let req = { cookies: { [constants.REFRESH_TOKEN_ID]: "token" } };
+  let expectToken = {
+    id: testUser.id,
+    role: testUser.role,
+    email: testUser.email
+  };
+  let expectResponse = { accessToken: "access-token" };
+  utils.crypto.decodeAndValidateRefreshToken.mockReturnValue(
+    new Promise(resolve => resolve(true))
+  );
+  users.findByEmail.mockReturnValue(new Promise(resolve => resolve(testUser)));
+  utils.crypto.createAccessToken.mockReturnValue(
+    new Promise(resolve => resolve("access-token"))
+  );
+  utils.crypto.createRefreshToken.mockReturnValue(
+    new Promise(resolve => resolve("refresh-token"))
+  );
+  await controller.refresh(asRequest(req), asResponse(res));
+
+  expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
+  expect(utils.crypto.createAccessToken).toBeCalledWith(expectToken);
+  expect(utils.crypto.createRefreshToken).toBeCalledWith(expectToken);
+  expect(res.cookie).toHaveBeenCalledWith(
+    constants.REFRESH_TOKEN_ID,
+    "refresh-token",
+    {
+      httpOnly: true,
+      path: "/login/refresh"
+    }
+  );
+  expect(res.status).toHaveBeenCalledWith(200);
+  expect(res.send).toHaveBeenCalledWith(expectResponse);
+});
