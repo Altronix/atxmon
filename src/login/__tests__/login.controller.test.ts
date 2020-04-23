@@ -162,9 +162,7 @@ test("login.controller refresh should send error if no token", async () => {
 test("login.controller refresh should send error if bad token", async () => {
   let { utils, users, controller, res } = setup();
   let req = { cookies: { [constants.REFRESH_TOKEN_ID]: "token" } };
-  utils.crypto.decodeAndValidateRefreshToken.mockReturnValue(
-    new Promise(resolve => resolve(false))
-  );
+  utils.crypto.decodeAndValidateRefreshToken.mockRejectedValue(false);
   await controller.refresh(asRequest(req), asResponse(res));
 
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
