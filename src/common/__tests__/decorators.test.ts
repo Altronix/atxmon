@@ -6,7 +6,11 @@ import {
   createRouter,
   getControllerMiddlewareMetadata,
   getControllerMiddleware,
-  ControllerMiddlewareMetadata
+  ControllerMiddlewareMetadata,
+  AppRoutines,
+  AppAnd,
+  AppConstructorAnd,
+  App
 } from "../decorators";
 import { ControllerMetadata, MethodMetadata } from "../types";
 import { Newable } from "../../ioc/types";
@@ -14,6 +18,20 @@ import { METADATA_KEY } from "../../ioc/constants.root";
 import { MiddlewareHandler } from "../types";
 import { Request, Response, NextFunction, Router } from "express";
 import { Container } from "inversify";
+
+test("app should add metadata", () => {
+  @App({ controllers: [] })
+  class Foo {
+    hello(): string {
+      return "hello";
+    }
+  }
+  let container = new Container();
+  container.bind<AppAnd<Foo>>(Foo as AppConstructorAnd<Foo>).toSelf();
+  let foo = container.get<AppAnd<Foo>>(Foo as AppConstructorAnd<Foo>);
+  expect(foo.load).toBeDefined();
+  expect(foo.hello()).toBe("hello");
+});
 
 test("Controller should add metadata", () => {
   @controller("/users")

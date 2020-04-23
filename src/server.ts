@@ -10,12 +10,13 @@ import { UserModel, UserEntry } from "./user/user.model";
 import { UtilRoutines } from "./common/types";
 import Config from "./config";
 import { createRouter, loadMiddleware } from "./common/decorators";
+import { App, AppAnd, AppConstructorAnd } from "./common/decorators";
 import { Container, injectable, inject } from "inversify";
 
 import * as bodyParser from "body-parser";
 import express from "express";
 
-@injectable()
+@App({ controllers: [UserController, DeviceController, LoginController] })
 export class Server {
   config: Config;
   utils: UtilRoutines;
@@ -29,10 +30,7 @@ export class Server {
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER) users: DatabaseService<UserModel, UserEntry>,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
-    @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
-    @inject(UserController) private user: UserController,
-    @inject(DeviceController) private device: DeviceController,
-    @inject(LoginController) private login: LoginController
+    @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService
   ) {
     this.config = config;
     this.utils = utils;
@@ -46,22 +44,13 @@ export class Server {
     this.app.use(...args);
     return this;
   }
-
-  load(): Server {
-    let controllers = [this.user, this.device, this.login];
-
-    controllers.forEach(controller =>
-      this.app.use(createRouter(this.container, controller))
-    );
-    return this;
-  }
 }
 
 export default async () => {
   let container = await createContainer();
   loadMiddleware(container);
-  let app = container.get<Server>(Server);
-  app.container = container;
-  app.load();
+  container.bind<AppAnd<Server>>(Server as AppConstructorAnd<Server>).toSelf();
+  let app = container.get<AppAnd<Server>>(Server as AppConstructorAnd<Server>);
+  app.load(container);
   return app;
 };

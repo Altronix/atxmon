@@ -11,6 +11,37 @@ import { ServiceIdentifier } from "../ioc/types";
 import { Container, injectable, decorate } from "inversify";
 import { Router } from "express";
 
+export interface AppRoutines {
+  load: (c: Container) => void;
+  controllers: any[];
+}
+
+export interface AppParams {
+  controllers: any[];
+}
+
+export function App(params: AppParams) {
+  return function<Args extends any[], T extends {}>(
+    target: new (...args: Args) => T
+  ): new (...args: Args) => T & AppRoutines {
+    decorate(injectable(), target);
+    target.prototype.controllers = [] as any[];
+    target.prototype.load = function(container: Container) {
+      let self = this;
+      params.controllers.forEach(controller => {
+        container.bind(controller).toSelf();
+        let c = container.get(controller);
+        self.app.use(createRouter(container, c));
+        self.controllers.push(c);
+      });
+    };
+    return target as new (...args: Args) => T & AppRoutines;
+  };
+}
+
+export type AppAnd<T> = T & AppRoutines;
+export type AppConstructorAnd<T> = new (...args: any[]) => T & AppRoutines;
+
 // Copied from inversify-express-utils. We like decorators for initialization
 // but not excessive use during runtime See inversify-express-utils performance
 // issues https://github.com/inversify/inversify-express-utils/issues/1046

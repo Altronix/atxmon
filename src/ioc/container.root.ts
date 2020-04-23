@@ -10,7 +10,6 @@ import { DeviceEntity } from "../device/device.entity";
 
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
-import controllerContainer from "./controllers-container";
 import appContainerModule from "./app-container";
 
 // Combine containers
@@ -21,7 +20,6 @@ export const createContainerContext = () => {
   container.load(appContainerModule);
   container.load(commonContainerModule);
   container.load(serviceContainerModule);
-  container.load(controllerContainer);
 
   // Resolve providers
   const loading: Promise<void> = (async () => {
