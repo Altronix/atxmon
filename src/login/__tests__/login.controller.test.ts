@@ -46,7 +46,7 @@ test("login.controller should provided valid tokens", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledWith(expectToken);
   expect(res.cookie).toHaveBeenCalledWith("mondle", "refresh-token", {
     httpOnly: true,
-    path: "/login/refresh_token"
+    path: "/login/refresh"
   });
   expect(res.status).toHaveBeenCalledWith(200);
   expect(res.send).toHaveBeenCalledWith(expectResponse);

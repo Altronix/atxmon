@@ -33,13 +33,33 @@ export class LoginController {
     let refreshToken = await this.utils.crypto.createRefreshToken(token);
     res.cookie("mondle", refreshToken, {
       httpOnly: true,
-      path: "/login/refresh_token"
+      path: "/login/refresh"
     });
     res.status(200).send({ accessToken });
   }
 
-  @httpPost("/")
+  @httpPost("/refresh")
   async refresh(req: Request, res: Response) {
     // TODO - parse cookie, if valid send new access token
+    // token = req.cookies.mondle
+    // if(!token) return ....
+    //
+    // let decoded = decodeAndValidate(token)
+    // if(!decoded) return ...
+    //
+    // user = findById(decoded.id)
+    // if(!user) return ...
+    //
+    // createAccessToken()
+    // createRefreshToken()
+    // res.cooke(...
+    // send.status(200).send({accessToken});
   }
+
+  // signout can be it's own controller to avoid url of /login/logout
+  // @httpPost("/logout")
+  // async logout(req: Request, res: Response) {
+  //   // Simply remove cookie
+  //   // res.cookie("mondle","",{httpOnly:true,path:"/login/refresh"});...
+  // }
 }
