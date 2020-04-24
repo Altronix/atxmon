@@ -19,9 +19,16 @@ import { MiddlewareHandler } from "../types";
 import { Request, Response, NextFunction, Router } from "express";
 import { Container } from "inversify";
 
-test("app should add metadata", () => {
-  @App({ controllers: [] })
+test("app should bind controllers and extend class", () => {
+  @controller("/hello")
+  class ControllerA {
+    @httpGet("/")
+    index(req: Request, res: Response) {}
+  }
+
+  @App({ controllers: [ControllerA] })
   class Foo {
+    app: any = { use: jest.fn() };
     hello(): string {
       return "hello";
     }
@@ -31,6 +38,8 @@ test("app should add metadata", () => {
   let foo = container.get<AppAnd<Foo>>(Foo as AppConstructorAnd<Foo>);
   expect(foo.load).toBeDefined();
   expect(foo.hello()).toBe("hello");
+  foo.load(container);
+  expect(container.get<ControllerA>(ControllerA)).toBeTruthy();
 });
 
 test("Controller should add metadata", () => {

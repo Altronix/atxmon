@@ -35,7 +35,7 @@ export class Server {
     this.linq = linq;
     this.users = users;
     this.devices = devices;
-    this.app = express();
+    this.app = express(); // Inject?
   }
 }
 
