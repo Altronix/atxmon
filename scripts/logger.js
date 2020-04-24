@@ -54,7 +54,7 @@ const colorMap = {
 exports = module.exports;
 
 exports.log = function(channel, message) {
-  const now = `${CYAN}|Build LinQ|`;
+  const now = `${CYAN}|ATXMON|`;
   const arrow = `${WHITE}=>`;
   const level = `${colorMap[channel]}${channel.slice(-5).toUpperCase()}`;
   const m = `${LIGHT_BLUE}${message}${RESET}`;

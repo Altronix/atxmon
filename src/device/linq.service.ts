@@ -16,6 +16,10 @@ export class LinqService implements LinqNetworkService {
     return this.atx.version();
   }
 
+  shutdown(): void {
+    return this.atx.shutdown();
+  }
+
   registerEventHandler(eh: LinqEventHandler): LinqNetworkService {
     this.atx.registerEventHandler(eh);
     return this;

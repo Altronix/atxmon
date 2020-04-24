@@ -16,14 +16,16 @@ import {
 } from "./types";
 import { UserModel, UserEntry } from "../user/user.model";
 import { UserEntity } from "../user/user.entity";
-import { UserService } from "../user/user.service";
-import { DeviceModel } from "../device/device.model";
 import { DeviceEntity } from "../device/device.entity";
+import { DeviceModel } from "../device/device.model";
+import { UserService } from "../user/user.service";
 import { DeviceService } from "../device/device.service";
 import { LinqService } from "../device/linq.service";
+import { ShutdownService } from "../shutdown/shutdown.service";
 import { OrmRepository } from "./orm.service";
 import { OrmConnection } from "./orm.connection";
 import { UtilRoutines } from "../common/types";
+import { ShutdownManager } from "../shutdown/types";
 import Config from "../config";
 import { ConnectionManager } from "./types";
 import {
@@ -103,6 +105,10 @@ const serviceContainerModule = new ContainerModule(bind => {
   // Create a Devices Database (manages repository)
   bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
     .to(DeviceService)
+    .inSingletonScope();
+
+  bind<ShutdownManager>(SYMBOLS.SHUTDOWN_SERVICE)
+    .to(ShutdownService)
     .inSingletonScope();
 });
 

@@ -67,6 +67,7 @@ export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 export interface LinqNetworkService extends AltronixLinqNetworkService {
   registerEventHandler(eh: LinqEventHandler): LinqNetworkService;
   listen(port: string | number): LinqNetworkService;
+  shutdown: () => void;
   on: (ev: string, handler: (...args: any[]) => void) => LinqNetworkService;
   connect(port: string | number): LinqNetworkService;
   close(idx: number): LinqNetworkService;
@@ -75,6 +76,7 @@ export interface LinqNetworkService extends AltronixLinqNetworkService {
 // @altronix/linq-network interface
 export interface AltronixLinqNetworkService {
   version(): string;
+  shutdown: () => void;
   listen(port: string | number): AltronixLinqNetworkService;
   connect(port: string | number): AltronixLinqNetworkService;
   close(idx: number): AltronixLinqNetworkService;

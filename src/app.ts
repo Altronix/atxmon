@@ -21,7 +21,7 @@ import createServer from "./server";
   server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
   let sock = server.app.listen(server.config.http.http);
-  await server.linq
+  let linq = server.linq
     .listen(server.config.linq.zmtp[0])
     .on("heartbeat", async serial => {
       server.utils.logger.info(`${serial}`);
@@ -34,7 +34,11 @@ import createServer from "./server";
     })
     .on("ctrlc", async serial => {
       server.utils.logger.info("Shutting down...");
-      await sock.close();
     })
     .run(500);
+  await Promise.race([linq, server.shutdown.shutdownPromise]);
+  server.utils.logger.info("Shutdown detected...");
+  server.linq.shutdown();
+  await sock.close();
+  server.utils.logger.info("Shutting down...");
 })();

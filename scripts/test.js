@@ -6,7 +6,7 @@ let path = require("path"),
 
 (async () => {
   try {
-    let root = await utils.seekRoot(),
+    let { root } = await utils.seekRoot("atxmon"),
       args = process.argv.slice(2),
       env = Object.assign({}, process.env, { ATXMON_PATH: root }),
       shell = process.platform === "win32" ? true : false;
