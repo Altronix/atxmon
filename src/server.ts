@@ -41,7 +41,6 @@ export class Server {
 
 export default async () => {
   let container = await createContainer();
-  loadMiddleware(container);
   let app = container.get<AppAnd<Server>>(SYMBOLS.APP_SERVER);
   app.load(container);
   return app;

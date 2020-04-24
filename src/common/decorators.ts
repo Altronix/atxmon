@@ -229,25 +229,31 @@ export function getControllerMiddleware(
   service: ControllerMiddlewareMetadata
 ): Middleware {
   let controller = Object.assign({}, service.controller, {
-    middleware: service.controller.middleware.map(i =>
-      c.get<MiddlewareHandler>(i)
-    )
+    middleware: service.controller.middleware.map(i => {
+      return loadMiddleware(c, i);
+    })
   });
   let methods: { [key: string]: MethodMetadataResolved } = {};
   Object.keys(service.methods).forEach(key => {
     methods[key] = Object.assign({}, service.methods[key], {
-      middleware: service.methods[key].middleware.map(i =>
-        c.get<MiddlewareHandler>(i)
-      )
+      middleware: service.methods[key].middleware.map(i => {
+        return loadMiddleware(c, i);
+      })
     });
   });
   return { controller, methods };
 }
 
-export function loadMiddleware(container: Container) {
-  const meta: MiddlewareMetadata[] =
-    Reflect.getMetadata(METADATA_KEY.middlware, Reflect) || [];
-  meta.forEach(m => container.bind(m.target).toSelf());
+export function loadMiddleware(
+  container: Container,
+  middleware: ServiceIdentifier<any>
+): MiddlewareHandler {
+  try {
+    return container.get<MiddlewareHandler>(middleware);
+  } catch {
+    container.bind<MiddlewareHandler>(middleware).toSelf();
+    return container.get<MiddlewareHandler>(middleware);
+  }
 }
 
 export function createRouter(container: Container, controller: any) {
