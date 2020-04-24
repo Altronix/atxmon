@@ -45,26 +45,26 @@ exports.startAtxmonContainer = async function(userConfig = {}) {
     {},
     {
       name: "atxmon",
-      http: 8000,
-      https: 8001,
-      zmtp: 33455,
-      zmtps: 33456
+      httpPort: 8000,
+      httpsPort: 8001,
+      zmtpPort: 33455,
+      zmtpsPort: 33456
     },
     userConfig
   );
   let args = (
     `run -d --name=${config.name} ` +
-    `-p ${config.http}:8000 ` +
-    `-p ${config.https}:8001 ` +
-    `-p ${config.zmtp}:33455 ` +
-    `-p ${config.zmtps}:33456 ` +
+    `-p ${config.httpPort}:8000 ` +
+    `-p ${config.httpsPort}:8001 ` +
+    `-p ${config.zmtpPort}:33455 ` +
+    `-p ${config.zmtpsPort}:33456 ` +
     `altronix/atxmon ` +
     `--httpPort 8000 ` +
     `--httpsPort 8001 ` +
     `--zmtpPort 33455 ` +
     `--zmtpsPort 33456}`
   ).split(" ");
-  logger.info(`Booting container: HTTP=${config.http} ZMTP=${config.zmtp}`);
+  logger.info(`Container... HTTP=${config.httpPort} ZMTP=${config.zmtpPort}`);
   let shell = process.platform === "win32" ? true : false;
   return cp.spawn("docker", args, {
     stdio: ["inherit", "ignore", "inherit"],
