@@ -16,35 +16,23 @@ exports.moduleLocation = async function() {
 };
 
 // Find our package.json
-exports.seekRoot = async function() {
-  let count = 5,
-    start = await exports.moduleLocation();
-  return new Promise((resolve, reject) => {
-    (async function seek(p, n) {
-      try {
-        let json = await exports.parseJsonPackage(
-          p + "/package.json",
-          "atxmon"
-        );
-        resolve(p);
-      } catch {
-        if (n) {
-          p += "/..";
-          await seek(p, --n);
-        } else {
-          reject(new Error("Could not find package.json"));
-        }
+exports.seekRoot = async function(name = "") {
+  const filename =
+      (require.main && require.main.filename) ||
+      (process.mainModule && process.mainModule.filename),
+    start = path.join(path.dirname(filename), ".."),
+    count = 10;
+  let json = await (async function seek(start, count) {
+    try {
+      let file = await fs.promises.readFile(path.join(start, "package.json"));
+      let test = JSON.parse(file);
+      if (name.length && test.name === name) {
+        return test;
+      } else {
+        return count ? seek(path.join(start, ".."), --count) : undefined;
       }
-    })(start, count);
-  });
-};
-
-// Get package.json
-exports.parseJsonPackage = async function(file, name = "atxmon") {
-  file = file ? file : (await exports.root()) + "/../package.json";
-  let pack = JSON.parse(await fs.promises.readFile(file));
-  if (!(pack.name === name)) {
-    throw new Error("Correct package.json not found!");
-  }
-  return pack;
+    } catch {
+      return count ? seek(path.join(start, ".."), --count) : undefined;
+    }
+  })();
 };
