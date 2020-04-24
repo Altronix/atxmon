@@ -2,9 +2,11 @@
 // -p ${httpPort}:8000 -p ${httpsPort}:8001
 // -p ${zmtpPort}:33455 -p ${zmtpsPort}:33456
 
-let utils = require("./utils");
+let utils = require("./utils"),
+  yargs = require("yargs").argv;
 
 (async () => {
-  let child = utils.startAtxmonContainer();
+  let config = { ...yargs };
+  let child = utils.startAtxmonContainer(config);
   await child;
 })();

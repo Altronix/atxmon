@@ -7,7 +7,10 @@
     "test": "node ./scripts/test.js",
     "coverage": "node ./scripts/test.js --collect-coverage",
     "build": "tsc",
-    "start": "node ./scripts/start.js"
+    "build:docker": "docker build -t altronix/atxmon -f ./docker/Dockerfile .",
+    "start": "node ./scripts/start.js",
+    "start:docker": "node ./scripts/docker-start.js",
+    "stop:docker": "node ./scripts/docker-stop.js"
   },
   "linq-network": {
     "prebuilt": true

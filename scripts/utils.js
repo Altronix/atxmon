@@ -43,22 +43,50 @@ exports.seekRoot = async function(name = "") {
 exports.startAtxmonContainer = async function(userConfig = {}) {
   let config = Object.assign(
     {},
-    { httpPort: 8000, httpsPort: 8001, zmtpPort: 33455, zmtpsPort: 33456 },
+    {
+      name: "atxmon",
+      http: 8000,
+      https: 8001,
+      zmtp: 33455,
+      zmtps: 33456
+    },
     userConfig
   );
   let args = (
-    `run -d --name=atxmon-${config.httpPort} ` +
-    `-p ${config.httpPort}:8000 ` +
-    `-p ${config.httpsPort}:8001 ` +
-    `-p ${config.zmtpPort}:33455 ` +
-    `-p ${config.zmtpsPort}:33456 ` +
+    `run -d --name=${config.name} ` +
+    `-p ${config.http}:8000 ` +
+    `-p ${config.https}:8001 ` +
+    `-p ${config.zmtp}:33455 ` +
+    `-p ${config.zmtps}:33456 ` +
     `altronix/atxmon ` +
-    `--httpPort ${config.httpPort} ` +
-    `--httpsPort ${config.httpsPort} ` +
-    `--zmtpPort ${config.zmtpPort} ` +
-    `--zmtpsPort ${config.zmtpsPort}`
+    `--httpPort 8000 ` +
+    `--httpsPort 8001 ` +
+    `--zmtpPort 33455 ` +
+    `--zmtpsPort 33456}`
   ).split(" ");
-  logger.info(`Booting container: HTTP=${args.httpPort} ZMTP=${args.zmtpPort}`);
+  logger.info(`Booting container: HTTP=${config.http} ZMTP=${config.zmtp}`);
   let shell = process.platform === "win32" ? true : false;
-  return cp.spawn("docker", args, { stdio: "inherit", shell });
+  return cp.spawn("docker", args, {
+    stdio: ["inherit", "ignore", "inherit"],
+    shell
+  });
+};
+
+exports.stopDockerContainer = async function(name) {
+  let kill = `kill ${name}`.split(" ");
+  let rm = `rm ${name}`.split(" ");
+  let shell = process.platform === "win32" ? true : false;
+  return new Promise(resolve => {
+    logger.info(`Killing container ${name}`);
+    cp.spawn("docker", kill, {
+      stdio: ["inherit", "ignore", "inherit"],
+      shell
+    }).on("exit", () => {
+      logger.info(`Removing container ${name}`);
+      cp.spawn("docker", rm, {
+        stdio: ["inherit", "ignore", "inherit"],
+        shell
+      }).on("exit", () => resolve());
+    });
+  });
 };

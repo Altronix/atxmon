@@ -16,3 +16,19 @@ npm run test
 
 npm run coverage
 ```
+
+### Build docker container ###
+
+```
+npm run build:docker
+```
+
+
+### Run docker container ###
+
+```
+npm run start:docker  -- --name=foobar --httpPort=9000 --zmtpPort=8444
+
+npm run stop:docker -- --name=foobar
+
+```

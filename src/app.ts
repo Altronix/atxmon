@@ -1,7 +1,7 @@
 import "dotenv/config";
 import createServer from "./server";
 
-(async () => {
+async function start() {
   // Check environment (required for reading typeorm entities)
   if (!process.env.ATXMON_PATH) {
     console.error("[ \x1b[35mFATAL\x1b[0m ] atxmon startup error...");
@@ -36,9 +36,13 @@ import createServer from "./server";
       server.utils.logger.info("Shutting down...");
     })
     .run(500);
+
+  // Wait for shutdown signal from any sources
   await Promise.race([linq, server.shutdown.shutdownPromise]);
-  server.utils.logger.info("Shutdown detected...");
-  server.linq.shutdown();
   await sock.close();
   server.utils.logger.info("Shutting down...");
+}
+
+(async () => {
+  await start();
 })();
