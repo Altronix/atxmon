@@ -108,7 +108,8 @@ const serviceContainerModule = new ContainerModule(bind => {
     .inSingletonScope();
 
   // Shutdown Service (https://github.com/inversify/inversifyjs/issues/997)
-  // workaround - toDynamicValue()
+  // (Note - need toDynamicValue() for jest runtime because jest can't handle
+  // decorating EventEmitter with injectable()...)
   bind<ShutdownManager>(SYMBOLS.SHUTDOWN_SERVICE)
     .toDynamicValue(() => new ShutdownService())
     .inSingletonScope();
