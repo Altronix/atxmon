@@ -107,8 +107,10 @@ const serviceContainerModule = new ContainerModule(bind => {
     .to(DeviceService)
     .inSingletonScope();
 
+  // Shutdown Service (https://github.com/inversify/inversifyjs/issues/997)
+  // workaround - toDynamicValue()
   bind<ShutdownManager>(SYMBOLS.SHUTDOWN_SERVICE)
-    .to(ShutdownService)
+    .toDynamicValue(() => new ShutdownService())
     .inSingletonScope();
 });
 
