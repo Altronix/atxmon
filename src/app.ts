@@ -20,6 +20,7 @@ async function start() {
   let server = await createServer();
   server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
+
   let sock = server.app.listen(server.config.http.http);
   let linq = server.linq
     .listen(server.config.linq.zmtp[0])
@@ -33,16 +34,18 @@ async function start() {
       server.utils.logger.info(`${error} ${what}`);
     })
     .on("ctrlc", async serial => {
-      server.utils.logger.info("Shutting down...");
+      server.shutdown.shutdown();
     })
     .run(500);
 
-  // Wait for shutdown signal from any sources
-  await Promise.race([linq, server.shutdown.shutdownPromise]);
-  await sock.close();
-  server.utils.logger.info("Shutting down...");
+  server.shutdown.on("shutdown", async () => server.linq.shutdown());
+  await Promise.race([server.shutdown.shutdownPromise, linq]);
+
+  server.utils.logger.info("Shutting down. Please wait...");
+  await Promise.all([server.shutdown.shutdownPromise, linq, sock.close()]);
+  return 0;
 }
 
 (async () => {
-  await start();
+  return await start();
 })();

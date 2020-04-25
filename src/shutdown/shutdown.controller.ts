@@ -9,15 +9,13 @@ import { inject } from "inversify";
 @controller("/shutdown", ...StandardMiddleware)
 export class ShutdownController {
   constructor(
-    @inject(SYMBOLS.SHUTDOWN_SERVICE) private shutdownService: ShutdownManager,
-    @inject(SYMBOLS.LINQ_SERVICE) private linq: LinqNetworkService
+    @inject(SYMBOLS.SHUTDOWN_SERVICE) private shutdownService: ShutdownManager
   ) {}
 
   @httpGet("/")
   @httpPost("/")
   shutdown(req: Request, res: Response) {
     this.shutdownService.shutdown();
-    this.linq.shutdown();
     res.status(200).send("Shutting down...");
   }
 }

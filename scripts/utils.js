@@ -90,3 +90,9 @@ exports.stopDockerContainer = async function(name) {
     });
   });
 };
+
+exports.spawn = async function(...args) {
+  return new Promise((resolve, reject) => {
+    cp.spawn(...args).on("exit", () => resolve(0));
+  });
+};
