@@ -18,7 +18,6 @@ async function start() {
       process.env.ADMIN_LASTNAME &&
       process.env.ADMIN_PHONE &&
       process.env.ADMIN_EMAIL &&
-      process.env.ADMIN_ROLE &&
       process.env.ADMIN_PASSWORD
     )
   ) {
@@ -40,7 +39,7 @@ async function start() {
       lastName: process.env.ADMIN_LASTNAME,
       phone: process.env.ADMIN_PHONE,
       email: process.env.ADMIN_EMAIL,
-      role: parseInt(process.env.ADMIN_ROLE),
+      role: 0,
       pass: process.env.ADMIN_PASSWORD
     });
     server.utils.logger.warn(`Admin account created`);
