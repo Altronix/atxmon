@@ -7,7 +7,7 @@ import { SYMBOLS } from "../ioc/constants.root";
 import { httpGet, httpPost, controller } from "../common/decorators";
 import { injectable, inject } from "inversify";
 
-@controller("/users", ...StandardMiddleware)
+@controller("/api/v1/users", ...StandardMiddleware)
 export class UserController implements Controller<UserModel, UserEntry> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)

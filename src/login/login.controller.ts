@@ -9,7 +9,7 @@ import { injectable, inject } from "inversify";
 import { Token } from "./token";
 import constants from "./constants";
 
-@controller("/login", ...StandardMiddleware)
+@controller("/api/v1/login", ...StandardMiddleware)
 export class LoginController {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)

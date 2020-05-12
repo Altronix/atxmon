@@ -3,6 +3,18 @@ import { DeviceModel } from "../device/device.model";
 
 import { validate, Length, IsEmail, IsInt, Min } from "class-validator";
 
+/* TODO
+export interface User {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  devices: any[];
+  role: number;
+  accessToken: string;
+}
+*/
+
 // UserModel
 export interface UserModel {
   id: number;
