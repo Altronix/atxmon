@@ -37,7 +37,8 @@ export class LoginController {
       httpOnly: true,
       path: "/login/refresh"
     });
-    res.status(200).send({ accessToken });
+    delete user.hash;
+    res.status(200).send({ accessToken, user });
   }
 
   @httpPost("/refresh")

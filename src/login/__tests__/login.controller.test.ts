@@ -38,7 +38,9 @@ test("login.controller should provided valid tokens", async () => {
     role: testUser.role,
     email: testUser.email
   };
-  let expectResponse = { accessToken: "access-token" };
+  let expectUser = { ...testUser };
+  delete expectUser.hash;
+  let expectResponse = { accessToken: "access-token", user: expectUser };
   users.findByEmail.mockReturnValue(new Promise(resolve => resolve(testUser)));
   utils.crypto.validate.mockReturnValue(new Promise(resolve => resolve(true)));
   utils.crypto.createAccessToken.mockReturnValue(
