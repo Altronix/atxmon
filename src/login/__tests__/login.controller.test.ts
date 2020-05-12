@@ -10,7 +10,9 @@ const asRequest = (req: any): Request => req as Request;
 const testLogin = { email: "foo@gmail.com", password: "abcdefghijkl" };
 const testUser = {
   id: 3,
-  name: "foo",
+  firstName: "foo",
+  lastName: "foo",
+  phone: "1 518 333 3432",
   email: "foo@gmail.com",
   hash: "foo",
   role: 3,

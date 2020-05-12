@@ -20,7 +20,13 @@ export class UserEntity implements UserModel {
   id!: number;
 
   @Column()
-  name!: string;
+  firstName!: string;
+
+  @Column()
+  lastName!: string;
+
+  @Column()
+  phone!: string;
 
   @Column()
   email!: string;

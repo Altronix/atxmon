@@ -15,7 +15,9 @@ function setup() {
 }
 
 const goodUser = {
-  name: "Tom",
+  firstName: "Tom",
+  lastName: "Foo",
+  phone: "1 516 333 4598",
   email: "tom@gmail.com",
   pass: "111111111111",
   role: 0

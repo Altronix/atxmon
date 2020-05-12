@@ -1,24 +1,21 @@
 import { WithOptional } from "../common/utils";
 import { DeviceModel } from "../device/device.model";
 
-import { validate, Length, IsEmail, IsInt, Min } from "class-validator";
-
-/* TODO
-export interface User {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  devices: any[];
-  role: number;
-  accessToken: string;
-}
-*/
+import {
+  validate,
+  Length,
+  IsMobilePhone,
+  IsEmail,
+  IsInt,
+  Min
+} from "class-validator";
 
 // UserModel
 export interface UserModel {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
   email: string;
   hash: string;
   role: number;
@@ -32,8 +29,14 @@ export type UserEntry = WithOptional<
 > & { pass: string };
 
 export class User implements UserEntry {
-  @Length(3, 64)
-  name!: string;
+  @Length(3, 128)
+  firstName!: string;
+
+  @Length(3, 128)
+  lastName!: string;
+
+  @IsMobilePhone("en-US")
+  phone!: string;
 
   @IsEmail()
   email!: string;
