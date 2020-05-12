@@ -8,6 +8,7 @@ import { UserController } from "./user/user.controller";
 import { LoginController } from "./login/login.controller";
 import { ShutdownController } from "./shutdown/shutdown.controller";
 import { UserModel, UserEntry } from "./user/user.model";
+import { UserService } from "./user/user.service";
 import { UtilRoutines } from "./common/types";
 import { createRouter, loadMiddleware } from "./common/decorators";
 import { App, AppAnd, AppConstructorAnd } from "./common/decorators";
@@ -30,13 +31,13 @@ export class Server {
   utils: UtilRoutines;
   linq: LinqNetworkService;
   devices: DatabaseService<DeviceModel>;
-  users: DatabaseService<UserModel, UserEntry>;
+  users: UserService;
   shutdown: ShutdownManager;
   app: express.Application;
   constructor(
     @inject(Config) config: Config,
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.DATABASE_USER) users: DatabaseService<UserModel, UserEntry>,
+    @inject(SYMBOLS.DATABASE_USER) users: UserService,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DatabaseService<DeviceModel>,
     @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
     @inject(SYMBOLS.SHUTDOWN_SERVICE) shutdown: ShutdownManager

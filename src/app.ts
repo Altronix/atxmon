@@ -10,7 +10,18 @@ async function start() {
   }
 
   // Make sure environment is secure
-  if (!(process.env.ACCESS_TOKEN_SECRET && process.env.REFRESH_TOKEN_SECRET)) {
+  if (
+    !(
+      process.env.ACCESS_TOKEN_SECRET &&
+      process.env.REFRESH_TOKEN_SECRET &&
+      process.env.ADMIN_FIRSTNAME &&
+      process.env.ADMIN_LASTNAME &&
+      process.env.ADMIN_PHONE &&
+      process.env.ADMIN_EMAIL &&
+      process.env.ADMIN_ROLE &&
+      process.env.ADMIN_PASSWORD
+    )
+  ) {
     console.error("[ \x1b[35mFATAL\x1b[0m ] Warning UNSAFE instance!");
     console.error("[ \x1b[35mFATAL\x1b[0m ] Security environment invalid");
     process.exit(-1);
@@ -20,6 +31,20 @@ async function start() {
   let server = await createServer();
   server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
   server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
+
+  if (!(await server.users.findByEmail(process.env.ADMIN_EMAIL))) {
+    server.utils.logger.warn(`Admin account not found!!`);
+    server.utils.logger.warn(`Creating admin account...`);
+    await server.users.create({
+      firstName: process.env.ADMIN_FIRSTNAME,
+      lastName: process.env.ADMIN_LASTNAME,
+      phone: process.env.ADMIN_PHONE,
+      email: process.env.ADMIN_EMAIL,
+      role: parseInt(process.env.ADMIN_ROLE),
+      pass: process.env.ADMIN_PASSWORD
+    });
+    server.utils.logger.warn(`Admin account created`);
+  }
 
   let sock = server.app.listen(server.config.http.http);
   let linq = server.linq
