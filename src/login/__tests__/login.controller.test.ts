@@ -34,11 +34,12 @@ function setup() {
 test("login.controller should provided valid tokens", async () => {
   let { utils, users, controller, res } = setup();
   let req = { body: testLogin };
-  let expectToken = {
+  let expectAccess = {
     id: testUser.id,
     role: testUser.role,
     email: testUser.email
   };
+  let expectRefresh = { ...expectAccess, tokenVersion: testUser.tokenVersion };
   let expectUser = { ...testUser };
   delete expectUser.hash;
   let expectResponse = { accessToken: "access-token", user: expectUser };
@@ -52,14 +53,14 @@ test("login.controller should provided valid tokens", async () => {
   );
   await controller.login(asRequest(req), asResponse(res));
 
-  expect(utils.crypto.createAccessToken).toBeCalledWith(expectToken);
-  expect(utils.crypto.createRefreshToken).toBeCalledWith(expectToken);
+  expect(utils.crypto.createAccessToken).toBeCalledWith(expectAccess);
+  expect(utils.crypto.createRefreshToken).toBeCalledWith(expectRefresh);
   expect(res.cookie).toHaveBeenCalledWith(
     constants.REFRESH_TOKEN_ID,
     "refresh-token",
     {
       httpOnly: true,
-      path: "/api/v1/login/refresh"
+      path: "/api/v1/"
     }
   );
   expect(res.status).toHaveBeenCalledWith(200);
@@ -145,7 +146,7 @@ test("login.controller refresh should provide access token", async () => {
     "refresh-token",
     {
       httpOnly: true,
-      path: "/api/v1/login/refresh"
+      path: "/api/v1/"
     }
   );
   expect(res.status).toHaveBeenCalledWith(200);

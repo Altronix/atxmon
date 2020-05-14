@@ -39,6 +39,6 @@ export class LogoutController {
     let email = user.email;
     await this.users.update({ email }, { tokenVersion });
 
-    res.status(200).send("Success");
+    res.status(200).send({ message: "Success" });
   }
 }

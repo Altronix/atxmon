@@ -56,7 +56,7 @@ test("logout.controller should logout user", async () => {
     { tokenVersion: 1 }
   );
   expect(res.status).toHaveBeenCalledWith(200);
-  expect(res.send).toHaveBeenCalledWith("Success");
+  expect(res.send).toHaveBeenCalledWith({ message: "Success" });
 });
 
 test("logout.controller should not logout user with bad cookie", async () => {

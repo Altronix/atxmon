@@ -30,12 +30,13 @@ export class LoginController {
     if (!valid) return res.status(403).send("Forbidden");
 
     // Send tokens // TODO add iat etc
-    let token: Token = { id: user.id, role: user.role, email: user.email };
-    let accessToken = await this.utils.crypto.createAccessToken(token);
-    let refreshToken = await this.utils.crypto.createRefreshToken(token);
+    let access: Token = { id: user.id, role: user.role, email: user.email };
+    let refresh: RefreshToken = { ...access, tokenVersion: user.tokenVersion };
+    let accessToken = await this.utils.crypto.createAccessToken(access);
+    let refreshToken = await this.utils.crypto.createRefreshToken(refresh);
     res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
       httpOnly: true,
-      path: "/api/v1/login/refresh"
+      path: "/api/v1/"
     });
     delete user.hash;
     res.status(200).send({ accessToken, user });
@@ -70,7 +71,7 @@ export class LoginController {
 
     res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
       httpOnly: true,
-      path: "/api/v1/login/refresh"
+      path: "/api/v1/"
     });
     delete user.hash;
     res.status(200).send({ accessToken, user });
