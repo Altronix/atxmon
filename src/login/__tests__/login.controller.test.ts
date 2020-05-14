@@ -97,7 +97,6 @@ test("login.controller should deny access if user  doesn't exists", async () => 
 test("login.controller should deny access if password is invalid", async () => {
   let { utils, users, controller, res } = setup();
   let req = { body: testLogin };
-  let expectToken = { role: testUser.role, email: testUser.email };
   let expectResponse = { accessToken: "access-token" };
   users.findByEmail.mockReturnValue(new Promise(resolve => resolve(testUser)));
   utils.crypto.validate.mockReturnValue(new Promise(resolve => resolve(false)));
@@ -115,11 +114,12 @@ test("login.controller should deny access if password is invalid", async () => {
 test("login.controller refresh should provide access token", async () => {
   let { utils, users, controller, res } = setup();
   let req = { cookies: { [constants.REFRESH_TOKEN_ID]: "token" } };
-  let decoded = { id: 33 };
+  let decoded = { id: 33, tokenVersion: 0 };
   let expectToken = {
     id: testUser.id,
     role: testUser.role,
-    email: testUser.email
+    email: testUser.email,
+    tokenVersion: 0
   };
   let expectUser = { ...testUser };
   delete expectUser.hash;
@@ -185,16 +185,42 @@ test("login.controller refresh should send error if no user ", async () => {
   let { utils, users, controller, res } = setup();
   let req = { cookies: { [constants.REFRESH_TOKEN_ID]: "token" } };
   let decoded = { id: 33 };
-  let expectToken = {
-    id: testUser.id,
-    role: testUser.role,
-    email: testUser.email
-  };
   utils.crypto.decodeAndValidateRefreshToken.mockReturnValue(
     new Promise(resolve => resolve(decoded))
   );
   users.findById.mockReturnValue(new Promise(resolve => resolve(undefined)));
 
+  await controller.refresh(asRequest(req), asResponse(res));
+
+  expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
+  expect(users.findById).toBeCalledWith(decoded.id);
+  expect(utils.crypto.createAccessToken).toBeCalledTimes(0);
+  expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
+  expect(res.cookie).toHaveBeenCalledTimes(0);
+  expect(res.status).toHaveBeenCalledWith(403);
+  expect(res.send).toHaveBeenCalledWith("Forbidden");
+});
+
+test("login.controller refresh should send error if !version", async () => {
+  let { utils, users, controller, res } = setup();
+  let req = { cookies: { [constants.REFRESH_TOKEN_ID]: "token" } };
+  let decoded = { id: 33, tokenVersion: 2 };
+  let expectToken = {
+    id: testUser.id,
+    role: testUser.role,
+    email: testUser.email,
+    tokenVersion: 0
+  };
+  utils.crypto.decodeAndValidateRefreshToken.mockReturnValue(
+    new Promise(resolve => resolve(decoded))
+  );
+  users.findById.mockReturnValue(new Promise(resolve => resolve(testUser)));
+  utils.crypto.createAccessToken.mockReturnValue(
+    new Promise(resolve => resolve("access-token"))
+  );
+  utils.crypto.createRefreshToken.mockReturnValue(
+    new Promise(resolve => resolve("refresh-token"))
+  );
   await controller.refresh(asRequest(req), asResponse(res));
 
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");

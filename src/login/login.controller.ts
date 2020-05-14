@@ -6,7 +6,7 @@ import { UserService } from "../user/user.service";
 import { SYMBOLS } from "../ioc/constants.root";
 import { LoginModel } from "./login.model";
 import { injectable, inject } from "inversify";
-import { Token } from "./token";
+import { Token, RefreshToken } from "./token";
 import constants from "./constants";
 
 @controller("/api/v1/login", ...StandardMiddleware)
@@ -48,14 +48,23 @@ export class LoginController {
     if (!t) return res.status(403).send("Forbidden");
 
     let decoded = await this.utils.crypto
-      .decodeAndValidateRefreshToken<Token>(t)
+      .decodeAndValidateRefreshToken<RefreshToken>(t)
       .catch(() => undefined);
     if (!decoded) return res.status(403).send("Forbidden");
 
     let user = await this.users.findById(decoded.id);
     if (!user) return res.status(403).send("Forbidden");
 
-    let token: Token = { id: user.id, role: user.role, email: user.email };
+    if (!(user.tokenVersion === decoded.tokenVersion)) {
+      return res.status(403).send("Forbidden");
+    }
+
+    let token: RefreshToken = {
+      id: user.id,
+      role: user.role,
+      email: user.email,
+      tokenVersion: user.tokenVersion
+    };
     let accessToken = await this.utils.crypto.createAccessToken(token);
     let refreshToken = await this.utils.crypto.createRefreshToken(token);
 

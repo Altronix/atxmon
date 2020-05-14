@@ -3,3 +3,7 @@ export interface Token {
   role: number;
   email: string;
 }
+
+export interface RefreshToken extends Token {
+  tokenVersion: number;
+}
