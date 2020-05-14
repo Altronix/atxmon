@@ -60,7 +60,7 @@ async function start() {
     .on("ctrlc", async serial => {
       server.shutdown.shutdown();
     })
-    .run(500);
+    .run(100);
 
   server.shutdown.on("shutdown", async () => server.linq.shutdown());
   await Promise.race([server.shutdown.shutdownPromise, linq]);

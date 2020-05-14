@@ -37,6 +37,9 @@ export class UserEntity implements UserModel {
   @Column()
   role!: number;
 
+  @Column("int", { default: 0 })
+  tokenVersion: number = 0;
+
   @ManyToOne(type => DeviceEntity)
   @JoinTable()
   devices!: DeviceEntity[];

@@ -35,12 +35,13 @@ export class LoginController {
     let refreshToken = await this.utils.crypto.createRefreshToken(token);
     res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
       httpOnly: true,
-      path: "/login/refresh"
+      path: "/api/v1/login/refresh"
     });
     delete user.hash;
     res.status(200).send({ accessToken, user });
   }
 
+  @httpGet("/refresh")
   @httpPost("/refresh")
   async refresh(req: Request, res: Response) {
     const t = req.cookies[constants.REFRESH_TOKEN_ID];
@@ -60,8 +61,9 @@ export class LoginController {
 
     res.cookie(constants.REFRESH_TOKEN_ID, refreshToken, {
       httpOnly: true,
-      path: "/login/refresh"
+      path: "/api/v1/login/refresh"
     });
-    res.status(200).send({ accessToken });
+    delete user.hash;
+    res.status(200).send({ accessToken, user });
   }
 }

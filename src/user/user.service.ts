@@ -28,7 +28,7 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     // TODO call validate
     const salt = await this.utils.crypto.salt();
     const hash = await this.utils.crypto.hash(u.pass, salt);
-    const user = Object.assign({ hash, devices: [] }, u);
+    const user = Object.assign({ tokenVersion: 0, hash, devices: [] }, u);
     user.email = user.email.toLowerCase();
     return (await this.findByEmail(u.email))
       ? false

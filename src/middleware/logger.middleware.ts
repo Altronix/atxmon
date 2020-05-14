@@ -12,7 +12,7 @@ export class LoggerMiddleware implements MiddlewareHandler {
     res: express.Response,
     next: express.NextFunction
   ) {
-    this.utils.logger.info("ROUTE HIT");
+    this.utils.logger.info(`REQ: ${req.originalUrl}`);
     next();
   }
 }

@@ -38,6 +38,7 @@ test("Should add a user", async () => {
     expect(read.firstName).toBe(user.firstName);
     expect(read.email).toBe(user.email);
     expect(read.role).toBe(user.role);
+    expect(read.tokenVersion).toBe(0);
     expect(read.devices).toBeFalsy();
   }
   await cleanup(test);

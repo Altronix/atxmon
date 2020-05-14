@@ -16,6 +16,7 @@ const testUser = {
   email: "foo@gmail.com",
   hash: "foo",
   role: 3,
+  tokenVersion: 0,
   devices: []
 };
 function setup() {
@@ -58,7 +59,7 @@ test("login.controller should provided valid tokens", async () => {
     "refresh-token",
     {
       httpOnly: true,
-      path: "/login/refresh"
+      path: "/api/v1/login/refresh"
     }
   );
   expect(res.status).toHaveBeenCalledWith(200);
@@ -120,7 +121,9 @@ test("login.controller refresh should provide access token", async () => {
     role: testUser.role,
     email: testUser.email
   };
-  let expectResponse = { accessToken: "access-token" };
+  let expectUser = { ...testUser };
+  delete expectUser.hash;
+  let expectResponse = { accessToken: "access-token", user: expectUser };
   utils.crypto.decodeAndValidateRefreshToken.mockReturnValue(
     new Promise(resolve => resolve(decoded))
   );
@@ -142,7 +145,7 @@ test("login.controller refresh should provide access token", async () => {
     "refresh-token",
     {
       httpOnly: true,
-      path: "/login/refresh"
+      path: "/api/v1/login/refresh"
     }
   );
   expect(res.status).toHaveBeenCalledWith(200);

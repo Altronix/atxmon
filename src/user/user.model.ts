@@ -19,16 +19,19 @@ export interface UserModel {
   email: string;
   hash: string;
   role: number;
+  tokenVersion: number;
   devices: DeviceModel[]; //?
 }
 
 // UserEntry
 export type UserEntry = WithOptional<
-  Omit<UserModel, "id" | "hash">,
+  Omit<UserModel, "id" | "hash" | "tokenVersion">,
   "devices"
 > & { pass: string };
 
-export class User implements UserEntry {
+export class User implements UserModel {
+  id!: number;
+
   @Length(3, 128)
   firstName!: string;
 
@@ -47,6 +50,11 @@ export class User implements UserEntry {
 
   @Length(12, 64)
   pass!: string;
+
+  tokenVersion!: number;
+
+  hash!: string;
+
   devices: DeviceModel[] = [];
 
   static async from(user: UserEntry): Promise<UserEntry> {

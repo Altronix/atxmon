@@ -4,7 +4,7 @@
   "description": "Light Weight Device Management Demo",
   "main": "index.js",
   "scripts": {
-    "test": "node ./scripts/test.js",
+    "test": "node ./scripts/test.js --no-cache",
     "coverage": "node ./scripts/test.js --collect-coverage",
     "build": "tsc",
     "build:docker": "docker build -t altronix/atxmon -f ./docker/Dockerfile .",
