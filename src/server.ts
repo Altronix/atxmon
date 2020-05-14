@@ -6,6 +6,7 @@ import { DeviceController } from "./device/device.controller";
 import { DeviceModel } from "./device/device.model";
 import { UserController } from "./user/user.controller";
 import { LoginController } from "./login/login.controller";
+import { LogoutController } from "./logout/logout.controller";
 import { ShutdownController } from "./shutdown/shutdown.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UserService } from "./user/user.service";
@@ -23,6 +24,7 @@ import express from "express";
     UserController,
     DeviceController,
     LoginController,
+    LogoutController,
     ShutdownController
   ]
 })
