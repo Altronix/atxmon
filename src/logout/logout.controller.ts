@@ -21,18 +21,18 @@ export class LogoutController {
   @httpPost("/")
   async refresh(req: Request, res: Response) {
     const t = req.cookies[constants.REFRESH_TOKEN_ID];
-    if (!t) return res.status(403).send("Forbidden");
+    if (!t) return res.status(403).send({ message: "Forbidden" });
 
     let decoded = await this.utils.crypto
       .decodeAndValidateRefreshToken<RefreshToken>(t)
       .catch(() => undefined);
-    if (!decoded) return res.status(403).send("Forbidden");
+    if (!decoded) return res.status(403).send({ message: "Forbidden" });
 
     let user = await this.users.findById(decoded.id);
-    if (!user) return res.status(403).send("Forbidden");
+    if (!user) return res.status(403).send({ message: "Forbidden" });
 
     if (!(user.tokenVersion === decoded.tokenVersion)) {
-      return res.status(403).send("Forbidden");
+      return res.status(403).send({ message: "Forbidden" });
     }
 
     let tokenVersion = user.tokenVersion + 1;

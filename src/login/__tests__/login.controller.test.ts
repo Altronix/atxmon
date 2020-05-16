@@ -78,7 +78,7 @@ test("login.controller should deny access payload bad format", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toHaveBeenCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller should deny access if user  doesn't exists", async () => {
@@ -92,7 +92,7 @@ test("login.controller should deny access if user  doesn't exists", async () => 
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toHaveBeenCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller should deny access if password is invalid", async () => {
@@ -109,7 +109,7 @@ test("login.controller should deny access if password is invalid", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toHaveBeenCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller refresh should provide access token", async () => {
@@ -164,7 +164,7 @@ test("login.controller refresh should send error if no token", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toBeCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller refresh should send error if bad token", async () => {
@@ -179,7 +179,7 @@ test("login.controller refresh should send error if bad token", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toBeCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller refresh should send error if no user ", async () => {
@@ -199,7 +199,7 @@ test("login.controller refresh should send error if no user ", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toHaveBeenCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("login.controller refresh should send error if !version", async () => {
@@ -230,5 +230,5 @@ test("login.controller refresh should send error if !version", async () => {
   expect(utils.crypto.createRefreshToken).toBeCalledTimes(0);
   expect(res.cookie).toHaveBeenCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });

@@ -66,7 +66,7 @@ test("logout.controller should not logout user with bad cookie", async () => {
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledTimes(0);
   expect(users.findById).toBeCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("logout.controller should not logout user with bad token", async () => {
@@ -77,7 +77,7 @@ test("logout.controller should not logout user with bad token", async () => {
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
   expect(users.findById).toBeCalledTimes(0);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("logout.controller should not logout user with no user", async () => {
@@ -94,7 +94,7 @@ test("logout.controller should not logout user with no user", async () => {
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
   expect(users.findById).toBeCalledWith(decoded.id);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
 
 test("logout.controller should not logout user with bad version", async () => {
@@ -117,5 +117,5 @@ test("logout.controller should not logout user with bad version", async () => {
   expect(utils.crypto.decodeAndValidateRefreshToken).toBeCalledWith("token");
   expect(users.findById).toBeCalledWith(decoded.id);
   expect(res.status).toHaveBeenCalledWith(403);
-  expect(res.send).toHaveBeenCalledWith("Forbidden");
+  expect(res.send).toHaveBeenCalledWith({ message: "Forbidden" });
 });
