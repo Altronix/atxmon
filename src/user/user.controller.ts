@@ -2,9 +2,15 @@ import { Request, Response } from "express";
 import { UtilRoutines, Controller } from "../common/types";
 import { StandardMiddleware } from "../middleware/middleware";
 import { DatabaseService } from "../ioc/types";
+import { UserService } from "./user.service";
 import { User, UserModel, UserEntry } from "./user.model";
 import { SYMBOLS } from "../ioc/constants.root";
-import { httpGet, httpPost, controller } from "../common/decorators";
+import {
+  httpGet,
+  httpPost,
+  httpDelete,
+  controller
+} from "../common/decorators";
 import { injectable, inject } from "inversify";
 
 @controller("/api/v1/users", ...StandardMiddleware)
@@ -13,7 +19,7 @@ export class UserController implements Controller<UserModel, UserEntry> {
     @inject(SYMBOLS.UTIL_ROUTINES)
     private utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER)
-    private database: DatabaseService<UserModel, UserEntry>
+    private database: UserService
   ) {}
 
   @httpGet("/")
@@ -36,5 +42,19 @@ export class UserController implements Controller<UserModel, UserEntry> {
     } catch {
       res.status(400).send({ message: "Bad request" });
     }
+  }
+
+  @httpDelete("/")
+  async remove(req: Request, res: Response) {
+    const email = req.query["email"];
+    if (!(email && typeof email === "string")) {
+      return res.status(400).send({ message: "Invalid query" });
+    }
+
+    const user = await this.database.findByEmail(email);
+    if (!user) return res.status(404).send({ message: "User does not exist" });
+
+    await this.database.remove({ email });
+    return res.status(200).send({ message: "Success" });
   }
 }

@@ -66,3 +66,5 @@ test("UserController POST /users 403", async () => {
   expect(res.status).toBeCalledWith(403);
   expect(res.send).toBeCalledWith({ message: "User already exists" });
 });
+
+test("UserController DELETE /users 200", async () => {});
