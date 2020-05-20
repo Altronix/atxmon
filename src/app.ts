@@ -40,7 +40,7 @@ async function start() {
       phone: process.env.ADMIN_PHONE,
       email: process.env.ADMIN_EMAIL,
       role: 0,
-      pass: process.env.ADMIN_PASSWORD
+      password: process.env.ADMIN_PASSWORD
     });
     server.utils.logger.warn(`Admin account created`);
   }

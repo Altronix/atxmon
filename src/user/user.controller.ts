@@ -29,12 +29,12 @@ export class UserController implements Controller<UserModel, UserEntry> {
         (user = await User.fromUntrustedThrowable(req.body)) &&
         (result = await this.database.create(user))
       ) {
-        res.status(200).send("Success");
+        res.status(200).send({ message: "Success" });
       } else {
-        res.status(403).send("User already exists");
+        res.status(403).send({ message: "User already exists" });
       }
     } catch {
-      res.status(400).send("Bad request");
+      res.status(400).send({ message: "Bad request" });
     }
   }
 }
