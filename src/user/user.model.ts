@@ -27,7 +27,7 @@ export interface UserModel {
 export type UserEntry = WithOptional<
   Omit<UserModel, "id" | "hash" | "tokenVersion">,
   "devices"
-> & { pass: string };
+> & { password: string };
 
 export class User implements UserModel {
   id!: number;
@@ -49,7 +49,7 @@ export class User implements UserModel {
   role!: number;
 
   @Length(12, 64)
-  pass!: string;
+  password!: string;
 
   tokenVersion!: number;
 

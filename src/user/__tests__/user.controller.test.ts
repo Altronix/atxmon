@@ -19,10 +19,10 @@ const goodUser = {
   lastName: "Foo",
   phone: "1 516 333 4598",
   email: "tom@gmail.com",
-  pass: "111111111111",
+  password: "111111111111",
   role: 0
 };
-const badUser = Object.assign({}, goodUser, { pass: "foo" });
+const badUser = Object.assign({}, goodUser, { password: "foo" });
 
 test("UserController GET /users 200", async () => {
   let { utils, userService, controller, res } = setup();

@@ -11,7 +11,7 @@ const user0 = {
   lastName: "FOO0",
   phone: "5550000000",
   email: "tom0@gmail.com",
-  pass: "tom0secret123456",
+  password: "tom0secret123456",
   role: 0
 };
 const user1 = {
@@ -19,7 +19,7 @@ const user1 = {
   lastName: "FOO1",
   phone: "5551111111",
   email: "tom1@gmail.com",
-  pass: "tom1secret123456",
+  password: "tom1secret123456",
   role: 0
 };
 const user = user0;

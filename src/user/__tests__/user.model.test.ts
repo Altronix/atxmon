@@ -6,7 +6,7 @@ const validUser: UserEntry = {
   phone: "1 515 333 4444",
   email: "tom@gmail.com",
   role: 1,
-  pass: "01234567890ab",
+  password: "01234567890ab",
   devices: []
 };
 
@@ -47,7 +47,7 @@ test("User from should fail with invalid input", async () => {
       firstName: "",
       lastName: "",
       phone: "",
-      pass: "",
+      password: "",
       role: -1
     });
   } catch (e) {
