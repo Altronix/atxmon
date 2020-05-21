@@ -23,10 +23,4 @@ export class DeviceController implements Controller<DeviceModel> {
   async index(req: Request, res: Response) {
     res.send(await this.database.find());
   }
-
-  @httpGet("/:id", DeviceExistsMiddleware)
-  async id(req: Request, res: Response) {
-    this.utils.logger.trace(`Device ID Route ${req.params.id}`);
-    res.send("TODO");
-  }
 }
