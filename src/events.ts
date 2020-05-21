@@ -9,11 +9,6 @@ import {
 import { Observable, merge } from "rxjs";
 import { filter, map, bufferTime } from "rxjs/operators";
 
-export interface UnmappedEmailEvent {
-  type: "email";
-  alerts: AlertEvent[];
-}
-
 export interface EmailEvent {
   type: "email";
   alerts: { [x: string]: AlertEvent[] };
