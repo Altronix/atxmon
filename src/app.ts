@@ -1,7 +1,6 @@
 import "dotenv/config";
 import createServer from "./server";
 import { allEvents } from "./events";
-import { merge } from "rxjs";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -64,6 +63,12 @@ async function start() {
           server.utils.logger.info(JSON.stringify(ev));
           break;
         case "email":
+          Object.keys(ev.alerts).forEach(key => {
+            // TODO we collected an interval of emails per each device
+            // alerts is keyed with the serial number of the device and the
+            // keyed value is an array of events 
+            // ie: ev.alerts[key]:Event[]
+          });
           break;
         case "error":
           server.utils.logger.info(JSON.stringify(ev));

@@ -9,9 +9,14 @@ import {
 import { Observable, merge } from "rxjs";
 import { filter, map, bufferTime } from "rxjs/operators";
 
-interface EmailEvent {
+export interface UnmappedEmailEvent {
   type: "email";
   alerts: AlertEvent[];
+}
+
+export interface EmailEvent {
+  type: "email";
+  alerts: { [x: string]: AlertEvent[] };
 }
 
 export interface EventsConfig {
@@ -49,10 +54,21 @@ export const emails = (config?: EventsConfig) => (
   s.pipe(
     alerts(),
     bufferTime((config && config.emailBufferInterval) || 60000),
-    map(e => ({
-      type: "email",
-      alerts: e
-    }))
+    mapEmails()
+  );
+
+export const mapEmails = () => (
+  s: Observable<AlertEvent[]>
+): Observable<EmailEvent> =>
+  s.pipe(
+    map(ev => {
+      let ret: EmailEvent = { type: "email", alerts: {} };
+      ev.forEach(a => {
+        if (!ret.alerts[a.serial]) ret.alerts[a.serial] = [];
+        ret.alerts[a.serial].push({ ...a });
+      });
+      return ret;
+    })
   );
 
 export const allEvents = (config?: EventsConfig) => (s: Observable<Events>) =>
