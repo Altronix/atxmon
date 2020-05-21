@@ -67,4 +67,35 @@ test("UserController POST /users 403", async () => {
   expect(res.send).toBeCalledWith({ message: "User already exists" });
 });
 
-test("UserController DELETE /users 200", async () => {});
+test("UserController DELETE /users 200", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { query: { email: "foo@email.com" } };
+  userService.findByEmail.mockReturnValue(
+    new Promise(resolve => resolve(true as any))
+  );
+  await controller.remove(asRequest(req), asResponse(res));
+  expect(userService.findByEmail).toBeCalledWith("foo@email.com");
+  expect(res.status).toBeCalledWith(200);
+  expect(res.send).toBeCalledWith({ message: "Success" });
+});
+
+test("UserController DELETE /users 400", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { query: { emailxx: "foo@email.com" } };
+  await controller.remove(asRequest(req), asResponse(res));
+  expect(userService.findByEmail).toHaveBeenCalledTimes(0);
+  expect(res.status).toBeCalledWith(400);
+  expect(res.send).toBeCalledWith({ message: "Invalid query" });
+});
+
+test("UserController DELETE /users 404", async () => {
+  let { utils, userService, controller, res } = setup();
+  let req = { query: { email: "foo@email.com" } };
+  userService.findByEmail.mockReturnValue(
+    new Promise(resolve => resolve(undefined))
+  );
+  await controller.remove(asRequest(req), asResponse(res));
+  expect(userService.findByEmail).toBeCalledWith("foo@email.com");
+  expect(res.status).toBeCalledWith(404);
+  expect(res.send).toBeCalledWith({ message: "User does not exist" });
+});
