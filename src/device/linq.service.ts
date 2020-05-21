@@ -81,11 +81,11 @@ export class LinqService implements LinqNetworkService {
 
   init(): LinqNetworkService {
     this.atx
-      .on("new", (ev: FromNode<NewEvent>) => {
+      .on("new", (id: string, ev: FromNode<NewEvent>) => {
         this.events$.next({ type: "new", ...ev });
       })
-      .on("heartbeat", (ev: FromNode<HeartbeatEvent>) => {
-        this.events$.next({ type: "heartbeat", ...ev });
+      .on("heartbeat", (serial: string) => {
+        this.events$.next({ type: "heartbeat", serial });
       })
       .on("alert", (ev: FromNode<AlertEvent>) => {
         this.events$.next({ type: "alert", ...ev });
