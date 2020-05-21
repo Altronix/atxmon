@@ -10,7 +10,6 @@ import {
 import { Observable, merge } from "rxjs";
 import { filter, map, bufferTime, mergeMap } from "rxjs/operators";
 
-type APP_EVENTS = EVENTS | "email";
 interface EmailEvent {
   type: "email";
   alerts: AlertEvent[];
