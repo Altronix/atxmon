@@ -33,7 +33,7 @@ interface AlertData {
   port: number;
 }
 
-type EVENTS = "new" | "heartbeat" | "alert" | "error" | "ctrlc";
+export type EVENTS = "new" | "heartbeat" | "alert" | "error" | "ctrlc";
 export type Events =
   | NewEvent
   | HeartbeatEvent
@@ -41,31 +41,31 @@ export type Events =
   | ErrorEvent
   | CtrlcEvent;
 
-interface Event {
+export interface Event {
   type: EVENTS;
 }
 
-interface NewEvent extends AboutData {
+export interface NewEvent extends AboutData {
   type: "new";
 }
 
-interface HeartbeatEvent {
+export interface HeartbeatEvent {
   type: "heartbeat";
   serial: string;
 }
 
-interface AlertEvent extends AlertData {
+export interface AlertEvent extends AlertData {
   type: "alert";
 }
 
-interface ErrorEvent {
+export interface ErrorEvent {
   type: "error";
   serial: string;
   errorCode: number;
   errorMessage: string;
 }
 
-interface CtrlcEvent {
+export interface CtrlcEvent {
   type: "ctrlc";
 }
 

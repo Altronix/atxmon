@@ -1,5 +1,7 @@
 import "dotenv/config";
 import createServer from "./server";
+import { allEvents } from "./events";
+import { merge } from "rxjs";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -49,7 +51,8 @@ async function start() {
   let subscription = server.linq
     .init()
     .listen(server.config.linq.zmtp[0])
-    .events$.subscribe(ev => {
+    .events$.pipe(allEvents())
+    .subscribe(ev => {
       switch (ev.type) {
         case "new":
           server.utils.logger.info(JSON.stringify(ev));
@@ -60,6 +63,8 @@ async function start() {
         case "alert":
           server.utils.logger.info(JSON.stringify(ev));
           break;
+        case "email":
+          break;
         case "error":
           server.utils.logger.info(JSON.stringify(ev));
           break;
@@ -68,13 +73,17 @@ async function start() {
           break;
       }
     });
-  let linq = server.linq.run(100);
+  let whileRunning = server.linq.run(100);
 
   server.shutdown.on("shutdown", async () => server.linq.shutdown());
-  await Promise.race([server.shutdown.shutdownPromise, linq]);
+  await Promise.race([server.shutdown.shutdownPromise, whileRunning]);
 
   server.utils.logger.info("Shutting down. Please wait...");
-  await Promise.all([server.shutdown.shutdownPromise, linq, sock.close()]);
+  await Promise.all([
+    server.shutdown.shutdownPromise,
+    whileRunning,
+    sock.close()
+  ]);
 
   subscription.unsubscribe();
   return 0;
