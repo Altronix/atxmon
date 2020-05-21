@@ -1,5 +1,7 @@
 import { LinqEventHandler } from "@altronix/linq-network";
 import * as jwt from "jsonwebtoken";
+import { Subject } from "rxjs";
+import { Events } from "../device/linq.service";
 import * as bcrypt from "bcrypt";
 import { DatabaseConfig } from "../common/types";
 import {
@@ -65,7 +67,9 @@ export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
 // Our inversion interface (is the same)
 export interface LinqNetworkService extends AltronixLinqNetworkService {
+  events$: Subject<Events>;
   registerEventHandler(eh: LinqEventHandler): LinqNetworkService;
+  init(): LinqNetworkService;
   listen(port: string | number): LinqNetworkService;
   shutdown: () => void;
   on: (ev: string, handler: (...args: any[]) => void) => LinqNetworkService;
@@ -80,7 +84,7 @@ export interface AltronixLinqNetworkService {
   listen(port: string | number): AltronixLinqNetworkService;
   connect(port: string | number): AltronixLinqNetworkService;
   close(idx: number): AltronixLinqNetworkService;
-  on: (ev: string, handler: (...args: any[]) => void) => void;
+  on: (e: string, h: (...args: any[]) => void) => AltronixLinqNetworkService;
   registerEventHandler(eh: LinqEventHandler): AltronixLinqNetworkService;
   send<T>(
     serial: string,

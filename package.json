@@ -36,6 +36,7 @@
     "inversify": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.5",
     "sqlite3": "^4.1.1",
     "typeorm": "^0.3.0-alpha.24",
     "yargs": "^15.3.1"

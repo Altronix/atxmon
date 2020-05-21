@@ -8,10 +8,17 @@ type harness = {
 };
 
 function setup() {
-  let atx = new LinqNetwork();
+  let atx = new LinqNetwork() as jest.Mocked<LinqNetwork>;
+  atx.on.mockReturnThis();
   let service = new LinqService(atx);
-  return { atx: atx as jest.Mocked<LinqNetwork>, service };
+  return { atx, service };
 }
+
+test("linq should init", () => {
+  let { atx, service } = setup();
+  service.init();
+  expect(atx.on).toBeCalledTimes(5);
+});
 
 test("linq should close", () => {
   let { atx, service } = setup();

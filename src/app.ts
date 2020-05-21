@@ -46,27 +46,37 @@ async function start() {
   }
 
   let sock = server.app.listen(server.config.http.http);
-  let linq = server.linq
+  let subscription = server.linq
+    .init()
     .listen(server.config.linq.zmtp[0])
-    .on("heartbeat", async serial => {
-      server.utils.logger.info(`${serial}`);
-    })
-    .on("alert", async event => {
-      server.utils.logger.info(`${event}`);
-    })
-    .on("error", async (error, what) => {
-      server.utils.logger.info(`${error} ${what}`);
-    })
-    .on("ctrlc", async serial => {
-      server.shutdown.shutdown();
-    })
-    .run(100);
+    .events$.subscribe(e => {
+      switch (e.type) {
+        case "new":
+          server.utils.logger.info(JSON.stringify(e));
+          break;
+        case "heartbeat":
+          server.utils.logger.info(JSON.stringify(e));
+          break;
+        case "alert":
+          server.utils.logger.info(JSON.stringify(e));
+          break;
+        case "error":
+          server.utils.logger.info(JSON.stringify(e));
+          break;
+        case "ctrlc":
+          server.utils.logger.info(JSON.stringify(e));
+          break;
+      }
+    });
+  let linq = server.linq.run(100);
 
   server.shutdown.on("shutdown", async () => server.linq.shutdown());
   await Promise.race([server.shutdown.shutdownPromise, linq]);
 
   server.utils.logger.info("Shutting down. Please wait...");
   await Promise.all([server.shutdown.shutdownPromise, linq, sock.close()]);
+
+  subscription.unsubscribe();
   return 0;
 }
 
