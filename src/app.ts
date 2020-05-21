@@ -51,7 +51,7 @@ async function start() {
   let subscription = server.linq
     .init()
     .listen(server.config.linq.zmtp[0])
-    .events$.pipe(allEvents())
+    .events$.pipe(allEvents({ emailBufferInterval: 60000 }))
     .subscribe(ev => {
       switch (ev.type) {
         case "new":
