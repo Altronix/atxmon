@@ -49,29 +49,22 @@ async function start() {
   let subscription = server.linq
     .init()
     .listen(server.config.linq.zmtp[0])
-    .on("new", e => console.log(e))
-    .on("heartbeat", e => console.log(e))
-    .events$.subscribe(e => {
-      switch (e.type) {
+    .events$.subscribe(ev => {
+      switch (ev.type) {
         case "new":
-          // server.utils.logger.info(`new ${e.sid}`);
-          // console.log(e);
+          server.utils.logger.info(JSON.stringify(ev));
           break;
         case "heartbeat":
-          // server.utils.logger.info(`heartbeat ${e.serial}`);
-          // console.log(e);
+          server.utils.logger.info(JSON.stringify(ev));
           break;
         case "alert":
-          // server.utils.logger.info(`alert ${e.mesg}`);
-          // console.log(e);
+          server.utils.logger.info(JSON.stringify(ev));
           break;
         case "error":
-          // server.utils.logger.info(`error ${e.errorCode}`);
-          // console.log(e);
+          server.utils.logger.info(JSON.stringify(ev));
           break;
         case "ctrlc":
-          // server.utils.logger.info(`ctrlc`);
-          // console.log(e);
+          server.utils.logger.info(JSON.stringify(ev));
           break;
       }
     });

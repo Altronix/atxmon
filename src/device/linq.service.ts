@@ -1,4 +1,3 @@
-import { LinqEventHandler } from "@altronix/linq-network";
 import { AltronixLinqNetworkService, LinqNetworkService } from "../ioc/types";
 import { SYMBOLS } from "../ioc/constants.root";
 import { injectable, inject } from "inversify";
@@ -81,7 +80,7 @@ export class LinqService implements LinqNetworkService {
 
   init(): LinqNetworkService {
     this.atx
-      .on("new", (id: string, ev: FromNode<NewEvent>) => {
+      .on("new", (ev: FromNode<NewEvent>) => {
         this.events$.next({ type: "new", ...ev });
       })
       .on("heartbeat", (serial: string) => {
@@ -105,11 +104,6 @@ export class LinqService implements LinqNetworkService {
 
   shutdown(): void {
     return this.atx.shutdown();
-  }
-
-  registerEventHandler(eh: LinqEventHandler): LinqNetworkService {
-    this.atx.registerEventHandler(eh);
-    return this;
   }
 
   listen(arg: string | number): LinqService {
