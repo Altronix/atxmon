@@ -14,7 +14,7 @@ import {
   ConnectionManager
 } from "./types";
 import { SYMBOLS } from "../ioc/constants.root";
-import { UtilRoutines, DatabaseConfig } from "../common/types";
+import { DatabaseConfig } from "../common/types";
 import { injectable, inject } from "inversify";
 export { Connection } from "typeorm";
 
@@ -22,32 +22,28 @@ export { Connection } from "typeorm";
 export class OrmRepository<E> implements Repository<E> {
   repository!: TypeormRepository<E>;
   constructor(
-    @inject(SYMBOLS.UTIL_ROUTINES)
-    private utils: UtilRoutines,
     @inject(SYMBOLS.CONNECTION_PROVIDER)
     private connection: () => Promise<ConnectionManager>
-  ) {
-    this.utils = utils;
-  }
+  ) {}
 
   async load(name: string, e: EntityTarget<E>): Promise<void> {
     let c = await this.connection();
     this.repository = c.getConnection(name).getRepository(e);
   }
 
+  // TODO deprecate
   async insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
   ): Promise<boolean> {
-    this.utils.logger.info(JSON.stringify(entities));
     try {
       let ret = await this.repository.insert(entities);
       return true;
     } catch (err) {
-      this.utils.logger.error(err);
       return false;
     }
   }
 
+  // TODO deprecate
   async findById(key: IdCriteria): Promise<E | undefined> {
     let ret: E[] = [];
     try {
@@ -56,6 +52,7 @@ export class OrmRepository<E> implements Repository<E> {
     return ret.length ? ret[0] : undefined;
   }
 
+  // TODO deprecate
   async find(key?: FindCriteria<E>): Promise<E[]> {
     let ret: E[] = [];
     try {
@@ -64,6 +61,7 @@ export class OrmRepository<E> implements Repository<E> {
     return ret;
   }
 
+  // TODO deprecate
   async remove(key: FindCriteria<E> | IdCriteria): Promise<number> {
     // NOTE - TypeORM always returns undefined for "affected"
     // Should open up an issue however there are 1000+ issues already
@@ -72,6 +70,7 @@ export class OrmRepository<E> implements Repository<E> {
     return result.affected ? result.affected : 0;
   }
 
+  // TODO deprecate
   async update(
     key: FindCriteria<E> | IdCriteria,
     next: DatabaseDeepPartialEntity<E>
@@ -83,6 +82,7 @@ export class OrmRepository<E> implements Repository<E> {
     return result.affected ? result.affected : 0;
   }
 
+  // TODO deprecate
   async count(key?: FindCriteria<E>): Promise<number> {
     return this.repository.count(key);
   }

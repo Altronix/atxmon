@@ -44,36 +44,30 @@ decorate(injectable(), LinqNetwork);
 @injectable()
 class OrmRepositoryUser extends OrmRepository<UserEntity> {
   constructor(
-    @inject(SYMBOLS.UTIL_ROUTINES)
-    utils: UtilRoutines,
     @inject(SYMBOLS.CONNECTION_PROVIDER)
     connection: () => Promise<ConnectionManager>
   ) {
-    super(utils, connection);
+    super(connection);
   }
 }
 
 @injectable()
 class OrmRepositoryDevice extends OrmRepository<DeviceEntity> {
   constructor(
-    @inject(SYMBOLS.UTIL_ROUTINES)
-    utils: UtilRoutines,
     @inject(SYMBOLS.CONNECTION_PROVIDER)
     connection: () => Promise<ConnectionManager>
   ) {
-    super(utils, connection);
+    super(connection);
   }
 }
 
 @injectable()
 class OrmRepositoryAlert extends OrmRepository<AlertEntity> {
   constructor(
-    @inject(SYMBOLS.UTIL_ROUTINES)
-    utils: UtilRoutines,
     @inject(SYMBOLS.CONNECTION_PROVIDER)
     connection: () => Promise<ConnectionManager>
   ) {
-    super(utils, connection);
+    super(connection);
   }
 }
 

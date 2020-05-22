@@ -65,9 +65,9 @@ export async function setup(file: string): Promise<TestHarness> {
   );
   let connection = await connectionManager.createConnection(config.name);
   let provider = async () => connectionManager;
-  let alertRepository = new OrmRepository<AlertEntity>(utils, provider);
+  let alertRepository = new OrmRepository<AlertEntity>(provider);
   let alertDatabase = new AlertService(utils, alertRepository);
-  let deviceRepository = new OrmRepository<DeviceEntity>(utils, provider);
+  let deviceRepository = new OrmRepository<DeviceEntity>(provider);
   let deviceDatabase = new DeviceService(utils, deviceRepository);
 
   await alertRepository.load(config.name, AlertEntity);

@@ -1,10 +1,10 @@
 import {
   DatabaseDeepPartialEntity,
-  Repository,
   DatabaseService,
   FindCriteria,
   IdCriteria
 } from "../ioc/types";
+import { OrmRepository } from "../ioc/orm.service";
 import { SYMBOLS } from "../ioc/constants.root";
 import { DeviceModel } from "./device.model";
 import { DeviceEntity } from "./device.entity";
@@ -16,40 +16,52 @@ type DeviceModelCreate = Omit<DeviceModel, "last_seen">;
 @injectable()
 export class DeviceService implements DatabaseService<DeviceModel> {
   utils: UtilRoutines;
-  repository: Repository<DeviceModel>;
+  orm: OrmRepository<DeviceModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.ORM_REPOSITORY_DEVICE) repository: Repository<DeviceEntity>
+    @inject(SYMBOLS.ORM_REPOSITORY_DEVICE)
+    orm: OrmRepository<DeviceEntity>
   ) {
     this.utils = utils;
-    this.repository = repository;
+    this.orm = orm;
   }
 
   async create(d: DeviceModelCreate) {
     const last_seen = Math.floor(new Date().getTime() / 1000);
-    return this.repository.insert({ ...d, last_seen });
+    let ret = await this.orm.repository.insert({ ...d, last_seen });
+    return true;
   }
 
   async findById(key: IdCriteria): Promise<DeviceModel | undefined> {
-    return this.repository.findById(key);
+    let ret = await this.orm.repository.findByIds([key]);
+    return ret.length ? ret[0] : undefined;
   }
 
   async find(key?: FindCriteria<DeviceModel>): Promise<DeviceModel[]> {
-    return this.repository.find(key);
+    let ret = await this.orm.repository.find({ ...key }); // ie: take:10
+    return ret;
   }
 
   async remove(key: FindCriteria<DeviceModel> | IdCriteria): Promise<number> {
-    return this.repository.remove(key);
+    // NOTE - TypeORM always returns undefined for "affected"
+    // Should open up an issue however there are 1000+ issues already
+    // If need better return value, use "remove";
+    let ret = await this.orm.repository.delete(key);
+    return ret.affected ? ret.affected : 0;
   }
 
   async update(
     key: FindCriteria<DeviceModel> | IdCriteria,
     next: DatabaseDeepPartialEntity<DeviceModel>
   ): Promise<number> {
-    return this.repository.update(key, next);
+    // NOTE - TypeORM always returns undefined for "affected"
+    // Should open up an issue however there are 1000+ issues already
+    // If need better return value, use "remove";
+    let ret = await this.orm.repository.update(key, next);
+    return ret.affected ? ret.affected : 0;
   }
 
   async count(key?: FindCriteria<DeviceModel>): Promise<number> {
-    return this.repository.count(key);
+    return this.orm.repository.count(key);
   }
 }

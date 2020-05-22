@@ -43,19 +43,31 @@ export interface ConnectionManager {
   getConnection: (name: string) => Connection;
 }
 
-// Repository
+// Repository (interface OrmRepository)
 export interface Repository<E> {
   load: (name: string, e: EntityTarget<E>) => Promise<void>;
+
+  // TODO deprecate
   insert(
     entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
   ): Promise<boolean>;
+
+  // TODO deprecate
   findById(key: IdCriteria): Promise<E | undefined>;
+
+  // TODO deprecate
   find(criteria?: FindCriteria<E>): Promise<E[]>;
+
+  // TODO deprecate
   remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
+
+  // TODO deprecate
   update(
     key: FindCriteria<E> | IdCriteria,
     next: DatabaseDeepPartialEntity<E>
   ): Promise<number>;
+
+  // TODO deprecate
   count(key?: FindCriteria<E>): Promise<number>;
 }
 

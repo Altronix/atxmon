@@ -56,7 +56,7 @@ export async function setup<Entity, Model, Entry = Model>(
   );
   let connection = await connectionManager.createConnection(config.name);
   let provider = async () => connectionManager;
-  let repository = new OrmRepository<Entity>(utils, provider);
+  let repository = new OrmRepository<Entity>(provider);
   let database = new db(utils, repository);
   await repository.load(config.name, e);
   return { file, config, connection, connectionManager, utils, database };

@@ -53,9 +53,9 @@ test("Should fail if device already exist", async () => {
   );
   expect(result).toBe(true);
 
-  result = await test.database.create(
-    Object.assign({}, device1, { serial: "e" })
-  );
+  result = await test.database
+    .create(Object.assign({}, device1, { serial: "e" }))
+    .catch(e => false);
   expect(result).toBe(false);
 
   let read = await test.database.findById("e");
