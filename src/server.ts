@@ -8,6 +8,7 @@ import { UserController } from "./user/user.controller";
 import { LoginController } from "./login/login.controller";
 import { LogoutController } from "./logout/logout.controller";
 import { ShutdownController } from "./shutdown/shutdown.controller";
+import { AlertController } from "./alert/alert.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UserService } from "./user/user.service";
 import { DeviceService } from "./device/device.service";
@@ -26,7 +27,8 @@ import express from "express";
     DeviceController,
     LoginController,
     LogoutController,
-    ShutdownController
+    ShutdownController,
+    AlertController,
   ]
 })
 export class _Server {
