@@ -16,10 +16,13 @@ import {
 } from "./types";
 import { UserModel, UserEntry } from "../user/user.model";
 import { UserEntity } from "../user/user.entity";
+import { UserService } from "../user/user.service";
 import { DeviceEntity } from "../device/device.entity";
 import { DeviceModel } from "../device/device.model";
-import { UserService } from "../user/user.service";
 import { DeviceService } from "../device/device.service";
+import { AlertModel } from "../alert/alert.model";
+import { AlertEntity } from "../alert/alert.entity";
+import { AlertService } from "../alert/alert.service";
 import { LinqService } from "../device/linq.service";
 import { ShutdownService } from "../shutdown/shutdown.service";
 import { OrmRepository } from "./orm.service";
@@ -37,7 +40,7 @@ import { LinqNetwork } from "@altronix/linq-network";
 
 decorate(injectable(), LinqNetwork);
 
-// Instansiate generics
+// Instansiate generics for container
 @injectable()
 class OrmRepositoryUser extends OrmRepository<UserEntity> {
   constructor(
@@ -52,6 +55,18 @@ class OrmRepositoryUser extends OrmRepository<UserEntity> {
 
 @injectable()
 class OrmRepositoryDevice extends OrmRepository<DeviceEntity> {
+  constructor(
+    @inject(SYMBOLS.UTIL_ROUTINES)
+    utils: UtilRoutines,
+    @inject(SYMBOLS.CONNECTION_PROVIDER)
+    connection: () => Promise<ConnectionManager>
+  ) {
+    super(utils, connection);
+  }
+}
+
+@injectable()
+class OrmRepositoryAlert extends OrmRepository<AlertEntity> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)
     utils: UtilRoutines,
@@ -96,6 +111,9 @@ const serviceContainerModule = new ContainerModule(bind => {
   bind<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
     .to(OrmRepositoryDevice)
     .inSingletonScope();
+  bind<Repository<AlertEntity>>(SYMBOLS.ORM_REPOSITORY_ALERT)
+    .to(OrmRepositoryAlert)
+    .inSingletonScope();
 
   // Create a Users Database (manages repository)
   bind<DatabaseService<UserModel, UserEntry>>(SYMBOLS.DATABASE_USER)
@@ -105,6 +123,11 @@ const serviceContainerModule = new ContainerModule(bind => {
   // Create a Devices Database (manages repository)
   bind<DatabaseService<DeviceModel>>(SYMBOLS.DATABASE_DEVICE)
     .to(DeviceService)
+    .inSingletonScope();
+
+  // Create a Alerts Database (manages repository)
+  bind<DatabaseService<AlertModel>>(SYMBOLS.DATABASE_ALERT)
+    .to(AlertService)
     .inSingletonScope();
 
   // Shutdown Service (https://github.com/inversify/inversifyjs/issues/997)

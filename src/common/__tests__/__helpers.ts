@@ -11,7 +11,7 @@ import Config from "../../config";
 import * as fs from "fs";
 
 // Remove a database from the host file system (integration test)
-async function unlinkDatabase(db: string) {
+export async function unlinkDatabase(db: string) {
   let ret: void | null;
   try {
     ret = (await fs.promises.stat(db)) ? await fs.promises.unlink(db) : null;

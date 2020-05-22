@@ -7,6 +7,7 @@ import { LoggerRoutines, CryptoRoutines, UtilRoutines } from "../common/types";
 
 import { UserEntity } from "../user/user.entity";
 import { DeviceEntity } from "../device/device.entity";
+import { AlertEntity } from "../alert/alert.entity";
 
 import serviceContainerModule from "./services-container";
 import commonContainerModule from "./common-container";
@@ -30,6 +31,10 @@ export const createContainerContext = () => {
     await container
       .get<Repository<DeviceEntity>>(SYMBOLS.ORM_REPOSITORY_DEVICE)
       .load("app", DeviceEntity);
+
+    await container
+      .get<Repository<AlertEntity>>(SYMBOLS.ORM_REPOSITORY_ALERT)
+      .load("app", AlertEntity);
   })();
   const waitForContainer = async () => await loading;
   return { container, waitForContainer, loading };
