@@ -26,6 +26,9 @@ export class DeviceEntity implements DeviceModel {
 
   @Column()
   mac!: string;
+
+  @Column()
+  last_seen!: number;
 }
 
 export default DeviceEntity;

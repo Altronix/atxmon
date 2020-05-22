@@ -11,6 +11,8 @@ import { DeviceEntity } from "./device.entity";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
 
+type DeviceModelCreate = Omit<DeviceModel, "last_seen">;
+
 @injectable()
 export class DeviceService implements DatabaseService<DeviceModel> {
   utils: UtilRoutines;
@@ -23,8 +25,9 @@ export class DeviceService implements DatabaseService<DeviceModel> {
     this.repository = repository;
   }
 
-  async create(d: DeviceModel) {
-    return this.repository.insert(d);
+  async create(d: DeviceModelCreate) {
+    const last_seen = new Date().getTime() / 1000;
+    return this.repository.insert({ ...d, last_seen });
   }
 
   async findById(key: IdCriteria): Promise<DeviceModel | undefined> {

@@ -51,16 +51,31 @@ async function start() {
     .init()
     .listen(server.config.linq.zmtp[0])
     .events$.pipe(allEvents({ emailBatchInterval: 60000 }))
-    .subscribe(ev => {
+    .subscribe(async ev => {
       switch (ev.type) {
         case "new":
-          server.utils.logger.info(JSON.stringify(ev));
+          let device = await server.devices.findById(ev.sid);
+          if (!device) {
+            server.utils.logger.info(`[NEW] [${ev.sid}]`);
+            await server.devices.create({
+              serial: ev.sid,
+              prj_version: ev.prjVersion,
+              web_version: ev.webVersion,
+              atx_version: ev.atxVersion,
+              ...ev
+            });
+          }
           break;
         case "heartbeat":
-          server.utils.logger.info(JSON.stringify(ev));
+          server.utils.logger.info(`[HEARTBEAT] [${ev.serial}]`);
+          await server.devices.update(
+            { serial: ev.serial },
+            { last_seen: new Date().getTime() / 1000 }
+          );
           break;
         case "alert":
-          server.utils.logger.info(JSON.stringify(ev));
+          server.utils.logger.info(`[ALERT] [${ev.mesg}]`);
+          // TODO create an alert entity and stick in there
           break;
         case "email":
           Object.keys(ev.alerts).forEach(key => {
@@ -72,6 +87,7 @@ async function start() {
           break;
         case "error":
           server.utils.logger.info(JSON.stringify(ev));
+          // TODO create an error entity and stick in there
           break;
         case "ctrlc":
           server.utils.logger.info(JSON.stringify(ev));

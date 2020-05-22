@@ -11,7 +11,8 @@ const device0 = {
   prj_version: "2.2.1-0",
   atx_version: "2.2.2-0",
   web_version: "2.2.3-0",
-  mac: "00:00:00:00:00:00"
+  mac: "00:00:00:00:00:00",
+  last_seen: 0
 };
 
 const device1 = {
@@ -20,7 +21,8 @@ const device1 = {
   prj_version: "2.2.1-1",
   atx_version: "2.2.2-1",
   web_version: "2.2.3-1",
-  mac: "11:11:11:11:11:11"
+  mac: "11:11:11:11:11:11",
+  last_seen: 1
 };
 
 const device = device0;
