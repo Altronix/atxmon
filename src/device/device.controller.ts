@@ -8,7 +8,7 @@ import { Controller } from "../common/types";
 import { injectable, inject } from "inversify";
 import { httpGet, httpPost, controller } from "../common/decorators";
 
-@controller("/devices")
+@controller("/api/v1/devices")
 export class DeviceController implements Controller<DeviceModel> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)
