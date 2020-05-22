@@ -71,7 +71,7 @@ async function start() {
           server.utils.logger.info(`[HEARTBEAT] [${ev.serial}]`);
           await server.devices.update(
             { serial: ev.serial },
-            { last_seen: new Date().getTime() / 1000 }
+            { last_seen: Math.floor(new Date().getTime() / 1000) }
           );
           break;
         case "alert":

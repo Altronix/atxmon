@@ -26,7 +26,7 @@ export class DeviceService implements DatabaseService<DeviceModel> {
   }
 
   async create(d: DeviceModelCreate) {
-    const last_seen = new Date().getTime() / 1000;
+    const last_seen = Math.floor(new Date().getTime() / 1000);
     return this.repository.insert({ ...d, last_seen });
   }
 
