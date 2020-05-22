@@ -14,7 +14,6 @@ import { UtilRoutines } from "./common/types";
 import { createRouter, loadMiddleware } from "./common/decorators";
 import { App, AppAnd, AppConstructorAnd } from "./common/decorators";
 import { Container, injectable, inject } from "inversify";
-
 import Config from "./config";
 import * as bodyParser from "body-parser";
 import express from "express";
@@ -28,7 +27,7 @@ import express from "express";
     ShutdownController
   ]
 })
-export class Server {
+export class _Server {
   config: Config;
   utils: UtilRoutines;
   linq: LinqNetworkService;
@@ -54,9 +53,11 @@ export class Server {
   }
 }
 
-export default async () => {
+export type Server = AppAnd<_Server>;
+export async function createServer() {
   let container = await createContainer();
-  let app = container.get<AppAnd<Server>>(SYMBOLS.APP_SERVER);
+  let app = container.get<Server>(SYMBOLS.APP_SERVER);
   app.load(container);
   return app;
-};
+}
+export default createServer;

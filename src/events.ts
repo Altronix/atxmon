@@ -6,6 +6,7 @@ import {
   ErrorEvent,
   CtrlcEvent
 } from "./device/linq.service";
+import { Server } from "./server";
 import { Observable, merge } from "rxjs";
 import { filter, map, bufferTime } from "rxjs/operators";
 

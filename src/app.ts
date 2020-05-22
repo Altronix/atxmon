@@ -1,5 +1,5 @@
 import "dotenv/config";
-import createServer from "./server";
+import { createServer, Server } from "./server";
 import { allEvents } from "./events";
 
 async function start() {
