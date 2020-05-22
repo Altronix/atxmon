@@ -50,7 +50,7 @@ async function start() {
   let subscription = server.linq
     .init()
     .listen(server.config.linq.zmtp[0])
-    .events$.pipe(allEvents({ emailBufferInterval: 60000 }))
+    .events$.pipe(allEvents({ emailBatchInterval: 60000 }))
     .subscribe(ev => {
       switch (ev.type) {
         case "new":
@@ -66,7 +66,7 @@ async function start() {
           Object.keys(ev.alerts).forEach(key => {
             // TODO we collected an interval of emails per each device
             // alerts is keyed with the serial number of the device and the
-            // keyed value is an array of events 
+            // keyed value is an array of events
             // ie: ev.alerts[key]:Event[]
           });
           break;

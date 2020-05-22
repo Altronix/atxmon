@@ -15,7 +15,7 @@ export interface EmailEvent {
 }
 
 export interface EventsConfig {
-  emailBufferInterval?: number;
+  emailBatchInterval?: number;
 }
 
 export const heartbeats = (config?: EventsConfig) => (
@@ -48,7 +48,7 @@ export const emails = (config?: EventsConfig) => (
 ): Observable<EmailEvent> =>
   s.pipe(
     alerts(),
-    bufferTime((config && config.emailBufferInterval) || 60000),
+    bufferTime((config && config.emailBatchInterval) || 60000),
     mapEmails()
   );
 
