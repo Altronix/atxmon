@@ -69,10 +69,10 @@ async function start() {
           break;
         case "heartbeat":
           server.utils.logger.info(`[HEARTBEAT] [${ev.serial}]`);
-          await server.devices.update(
-            { serial: ev.serial },
-            { last_seen: Math.floor(new Date().getTime() / 1000) }
-          );
+          let d = await server.devices.findById(ev.serial);
+          await server.devices.update(ev.serial, {
+            last_seen: Math.floor(new Date().getTime() / 1000)
+          });
           break;
         case "alert":
           server.utils.logger.info(`[ALERT] [${ev.mesg}]`);
