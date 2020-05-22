@@ -22,7 +22,7 @@ interface AlertData {
   who: string;
   what: string;
   where: string;
-  when: Date;
+  when: number;
   mesg: string;
   serial: string;
   from: string;

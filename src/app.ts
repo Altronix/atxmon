@@ -75,7 +75,7 @@ async function start() {
           break;
         case "alert":
           server.utils.logger.info(`[ALERT] [${ev.mesg}]`);
-          // TODO create an alert entity and stick in there
+          await server.alerts.create(ev);
           break;
         case "email":
           Object.keys(ev.alerts).forEach(key => {

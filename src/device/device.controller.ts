@@ -21,6 +21,6 @@ export class DeviceController implements Controller<DeviceModel> {
 
   @httpGet("/")
   async index(req: Request, res: Response) {
-    res.send(await this.database.find());
+    res.status(200).send(await this.database.find());
   }
 }

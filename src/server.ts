@@ -11,6 +11,7 @@ import { ShutdownController } from "./shutdown/shutdown.controller";
 import { UserModel, UserEntry } from "./user/user.model";
 import { UserService } from "./user/user.service";
 import { DeviceService } from "./device/device.service";
+import { AlertService } from "./alert/alert.service";
 import { UtilRoutines } from "./common/types";
 import { createRouter, loadMiddleware } from "./common/decorators";
 import { App, AppAnd, AppConstructorAnd } from "./common/decorators";
@@ -34,6 +35,7 @@ export class _Server {
   linq: LinqNetworkService;
   devices: DeviceService;
   users: UserService;
+  alerts: AlertService;
   shutdown: ShutdownManager;
   app: express.Application;
   constructor(
@@ -41,6 +43,7 @@ export class _Server {
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
     @inject(SYMBOLS.DATABASE_USER) users: UserService,
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DeviceService,
+    @inject(SYMBOLS.DATABASE_ALERT) alerts: AlertService,
     @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
     @inject(SYMBOLS.SHUTDOWN_SERVICE) shutdown: ShutdownManager
   ) {
@@ -49,6 +52,7 @@ export class _Server {
     this.linq = linq;
     this.users = users;
     this.devices = devices;
+    this.alerts = alerts;
     this.shutdown = shutdown;
     this.app = express(); // Inject?
   }
