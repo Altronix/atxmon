@@ -7,6 +7,7 @@ const DATABASE = "device.integration.test.db";
 
 const device0 = {
   serial: "Serial ID 0",
+  site_id: "site 0",
   product: "LINQ2",
   prj_version: "2.2.1-0",
   atx_version: "2.2.2-0",
@@ -17,6 +18,7 @@ const device0 = {
 
 const device1 = {
   serial: "Serial ID 1",
+  site_id: "site 1",
   product: "LINQ2",
   prj_version: "2.2.1-1",
   atx_version: "2.2.2-1",

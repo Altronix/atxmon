@@ -59,6 +59,7 @@ async function start() {
             server.utils.logger.info(`[NEW] [${ev.sid}]`);
             await server.devices.create({
               serial: ev.sid,
+              site_id: ev.siteId,
               prj_version: ev.prjVersion,
               web_version: ev.webVersion,
               atx_version: ev.atxVersion,

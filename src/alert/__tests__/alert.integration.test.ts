@@ -39,6 +39,7 @@ const alert1 = {
 
 const device = {
   serial: "serial0",
+  site_id: "site 0",
   product: "LINQ2",
   prj_version: "2.2.1-0",
   atx_version: "2.2.2-0",

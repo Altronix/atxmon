@@ -13,6 +13,9 @@ export class DeviceEntity implements DeviceModel {
   serial!: string;
 
   @Column()
+  site_id!: string;
+
+  @Column()
   product!: string;
 
   @Column()
