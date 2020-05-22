@@ -28,7 +28,7 @@ import express from "express";
     LoginController,
     LogoutController,
     ShutdownController,
-    AlertController,
+    AlertController
   ]
 })
 export class _Server {
