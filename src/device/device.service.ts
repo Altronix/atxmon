@@ -38,7 +38,7 @@ export class DeviceService implements DatabaseService<DeviceModel> {
   }
 
   async find(key?: FindCriteria<DeviceModel>): Promise<DeviceModel[]> {
-    let ret = await this.orm.repository.find({ ...key }); // ie: take:10
+    let ret = await this.orm.repository.find(key as any); // ie: take:10
     return ret;
   }
 
@@ -46,7 +46,7 @@ export class DeviceService implements DatabaseService<DeviceModel> {
     // NOTE - TypeORM always returns undefined for "affected"
     // Should open up an issue however there are 1000+ issues already
     // If need better return value, use "remove";
-    let ret = await this.orm.repository.delete(key);
+    let ret = await this.orm.repository.delete(key as any);
     return ret.affected ? ret.affected : 0;
   }
 
@@ -57,11 +57,11 @@ export class DeviceService implements DatabaseService<DeviceModel> {
     // NOTE - TypeORM always returns undefined for "affected"
     // Should open up an issue however there are 1000+ issues already
     // If need better return value, use "remove";
-    let ret = await this.orm.repository.update(key, next);
+    let ret = await this.orm.repository.update(key as any, next);
     return ret.affected ? ret.affected : 0;
   }
 
   async count(key?: FindCriteria<DeviceModel>): Promise<number> {
-    return this.orm.repository.count(key);
+    return this.orm.repository.count(key as any);
   }
 }

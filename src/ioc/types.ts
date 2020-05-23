@@ -5,6 +5,7 @@ import * as bcrypt from "bcrypt";
 import { DatabaseConfig } from "../common/types";
 import {
   Connection,
+  FindOptions,
   FindOptionsWhere,
   QueryDeepPartialEntity,
   Repository as TypeormRepository,
@@ -51,7 +52,7 @@ export interface Repository<E> {
 }
 
 // Typeorm Types are libraries in themselves. We try to decouple here
-export type FindCriteria<E> = FindOptionsWhere<E>;
+export type FindCriteria<E> = FindOptions<E> | FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 

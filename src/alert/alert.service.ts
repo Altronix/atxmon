@@ -34,12 +34,12 @@ export class AlertService implements DatabaseService<AlertModel, AlertEntry> {
   }
 
   async find(key?: FindCriteria<AlertModel>): Promise<AlertModel[]> {
-    let ret = await this.orm.repository.find({ ...key }); // ie: take:10
+    let ret = await this.orm.repository.find(key as any); // ie: take:10
     return ret;
   }
 
   async remove(key: FindCriteria<AlertModel> | IdCriteria): Promise<number> {
-    let ret = await this.orm.repository.delete(key);
+    let ret = await this.orm.repository.delete(key as any);
     return ret.affected ? ret.affected : 0;
   }
 
@@ -47,11 +47,11 @@ export class AlertService implements DatabaseService<AlertModel, AlertEntry> {
     key: FindCriteria<AlertModel> | IdCriteria,
     next: DatabaseDeepPartialEntity<AlertModel>
   ): Promise<number> {
-    let ret = await this.orm.repository.update(key, next);
+    let ret = await this.orm.repository.update(key as any, next);
     return ret.affected ? ret.affected : 0;
   }
 
   async count(key?: FindCriteria<AlertModel>): Promise<number> {
-    return this.orm.repository.count(key);
+    return this.orm.repository.count(key as any);
   }
 }
