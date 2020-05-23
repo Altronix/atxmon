@@ -9,3 +9,5 @@ export interface DeviceModel {
   mac: string;
   last_seen: number;
 }
+
+export type DeviceModelEntry = Omit<DeviceModel, "last_seen">;

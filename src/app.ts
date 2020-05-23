@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { createServer, Server } from "./server";
 import { allEvents } from "./events";
+import { toSnakeCase } from "./common/case";
+import { DeviceModelEntry } from "./device/device.model";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -59,11 +61,7 @@ async function start() {
             server.utils.logger.info(`[NEW] [${ev.sid}]`);
             await server.devices.create({
               serial: ev.sid,
-              site_id: ev.siteId,
-              prj_version: ev.prjVersion,
-              web_version: ev.webVersion,
-              atx_version: ev.atxVersion,
-              ...ev
+              ...toSnakeCase<DeviceModelEntry>(ev)
             });
           }
           break;
