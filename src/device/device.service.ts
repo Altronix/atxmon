@@ -44,7 +44,7 @@ export class DeviceService implements DatabaseService<DeviceModel> {
   ): Promise<DeviceModel[]> {
     let config = {};
     if (where) Object.assign(config, { where: where });
-    if (sort) Object.assign(config, { order: { [`${sort}`]: "ASC" } });
+    if (sort) Object.assign(config, { order: { [`${sort}`]: "DESC" } });
     if (limit) Object.assign(config, { take: limit });
     let ret = await this.orm.repository.find(config); // ie: take:10
     return ret;
