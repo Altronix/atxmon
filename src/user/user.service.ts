@@ -1,11 +1,11 @@
 import { WithOptional } from "../common/utils";
 import {
   DatabaseDeepPartialEntity,
-  Repository,
   DatabaseService,
   FindCriteria,
   IdCriteria
 } from "../ioc/types";
+import { OrmRepository } from "../ioc/orm.service";
 import { User, UserModel, UserEntry } from "./user.model";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
@@ -15,28 +15,31 @@ import { UserEntity } from "./user.entity";
 @injectable()
 export class UserService implements DatabaseService<UserModel, UserEntry> {
   utils: UtilRoutines;
-  repository: Repository<UserModel>;
+  orm: OrmRepository<UserModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.ORM_REPOSITORY_USER) repository: Repository<UserEntity>
+    @inject(SYMBOLS.ORM_REPOSITORY_USER) orm: OrmRepository<UserEntity>
   ) {
     this.utils = utils;
-    this.repository = repository;
+    this.orm = orm;
   }
 
   async create(u: UserEntry): Promise<boolean> {
     // TODO call validate
     const salt = await this.utils.crypto.salt();
     const hash = await this.utils.crypto.hash(u.password, salt);
-    const user = Object.assign({ tokenVersion: 0, hash, devices: [] }, u);
+    const user = { tokenVersion: 0, hash, devices: [], ...u };
     user.email = user.email.toLowerCase();
     return (await this.findByEmail(u.email))
       ? false
-      : this.repository.insert(user);
+      : (await this.orm.insert(user))
+      ? true
+      : false;
   }
 
   async findById(key: IdCriteria): Promise<UserModel | undefined> {
-    return this.repository.findById(key);
+    let ret = await this.orm.repository.findByIds([key]);
+    return ret.length ? ret[0] : undefined;
   }
 
   async findByEmail(key: string): Promise<UserModel | undefined> {
@@ -45,11 +48,13 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
   }
 
   async find(key?: FindCriteria<UserModel>): Promise<UserModel[]> {
-    return this.repository.find(key);
+    let ret = await this.orm.repository.find(key);
+    return ret;
   }
 
   async remove(key: FindCriteria<UserModel>): Promise<number> {
-    return this.repository.remove(key);
+    let ret = await this.orm.repository.delete(key);
+    return ret.affected ? ret.affected : 0;
   }
 
   async update(
@@ -58,10 +63,15 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
   ): Promise<number> {
     if (next.email) next.email = next.email.toLowerCase();
     let insert = await User.fromPartial(next);
-    return insert ? this.repository.update(key, insert) : 0;
+    if (insert) {
+      let ret = await this.orm.repository.update(key, insert);
+      return ret.affected ? ret.affected : 0;
+    } else {
+      return 0;
+    }
   }
 
   async count(key?: FindCriteria<UserModel>): Promise<number> {
-    return this.repository.count(key);
+    return this.orm.repository.count(key);
   }
 }

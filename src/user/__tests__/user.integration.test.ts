@@ -51,7 +51,9 @@ test("Should fail if user already exist", async () => {
   result = await test.database.create(Object.assign({}, user0, { id: 0 }));
   expect(result).toBe(true);
 
-  result = await test.database.create(Object.assign({}, user1, { id: 0 }));
+  result = await test.database
+    .create(Object.assign({}, user1, { id: 0 }))
+    .catch(e => false);
   expect(result).toBe(false);
 
   let read = await test.database.findById(0);
@@ -259,3 +261,5 @@ test("Should update a user with valid properties", async () => {
 
   await cleanup(test);
 });
+/*
+ */
