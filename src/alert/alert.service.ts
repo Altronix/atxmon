@@ -6,12 +6,10 @@ import {
 } from "../ioc/types";
 import { OrmRepository } from "../ioc/orm.service";
 import { SYMBOLS } from "../ioc/constants.root";
-import { AlertModel } from "./alert.model";
+import { AlertModel, AlertEntry } from "./alert.model";
 import { AlertEntity } from "./alert.entity";
 import { UtilRoutines } from "../common/types";
 import { inject, injectable } from "inversify";
-
-type AlertEntry = Omit<AlertModel, "id" | "device">;
 
 @injectable()
 export class AlertService implements DatabaseService<AlertModel, AlertEntry> {

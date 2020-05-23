@@ -9,3 +9,5 @@ export interface AlertModel {
   serial: string;
   device: DeviceModel;
 }
+
+export type AlertEntry = Omit<AlertModel, "id" | "device">;
