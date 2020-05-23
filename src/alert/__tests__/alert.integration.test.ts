@@ -111,7 +111,9 @@ test("Should fail if alert already exist", async () => {
   let result = await test.database.create(Object.assign({}, alert0, { id: 0 }));
   expect(result).toBe(true);
 
-  result = await test.database.create(Object.assign({}, alert1, { id: 0 }));
+  result = await test.database
+    .create(Object.assign({}, alert1, { id: 0 }))
+    .catch(e => false);
   expect(result).toBe(false);
 
   let read = await test.database.findById(0);

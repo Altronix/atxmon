@@ -1,10 +1,10 @@
 import {
   DatabaseDeepPartialEntity,
-  Repository,
   DatabaseService,
   FindCriteria,
   IdCriteria
 } from "../ioc/types";
+import { OrmRepository } from "../ioc/orm.service";
 import { SYMBOLS } from "../ioc/constants.root";
 import { AlertModel } from "./alert.model";
 import { AlertEntity } from "./alert.entity";
@@ -16,39 +16,44 @@ type AlertEntry = Omit<AlertModel, "id" | "device">;
 @injectable()
 export class AlertService implements DatabaseService<AlertModel, AlertEntry> {
   utils: UtilRoutines;
-  repository: Repository<AlertModel>;
+  orm: OrmRepository<AlertModel>;
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES) utils: UtilRoutines,
-    @inject(SYMBOLS.ORM_REPOSITORY_ALERT) repository: Repository<AlertEntity>
+    @inject(SYMBOLS.ORM_REPOSITORY_ALERT) orm: OrmRepository<AlertEntity>
   ) {
     this.utils = utils;
-    this.repository = repository;
+    this.orm = orm;
   }
 
   async create(a: AlertEntry) {
-    return this.repository.insert({ ...a });
+    let ret = await this.orm.repository.insert({ ...a });
+    return true;
   }
 
   async findById(key: IdCriteria): Promise<AlertModel | undefined> {
-    return this.repository.findById(key);
+    let ret = await this.orm.repository.findByIds([key]);
+    return ret.length ? ret[0] : undefined;
   }
 
   async find(key?: FindCriteria<AlertModel>): Promise<AlertModel[]> {
-    return this.repository.find(key);
+    let ret = await this.orm.repository.find({ ...key }); // ie: take:10
+    return ret;
   }
 
   async remove(key: FindCriteria<AlertModel> | IdCriteria): Promise<number> {
-    return this.repository.remove(key);
+    let ret = await this.orm.repository.delete(key);
+    return ret.affected ? ret.affected : 0;
   }
 
   async update(
     key: FindCriteria<AlertModel> | IdCriteria,
     next: DatabaseDeepPartialEntity<AlertModel>
   ): Promise<number> {
-    return this.repository.update(key, next);
+    let ret = await this.orm.repository.update(key, next);
+    return ret.affected ? ret.affected : 0;
   }
 
   async count(key?: FindCriteria<AlertModel>): Promise<number> {
-    return this.repository.count(key);
+    return this.orm.repository.count(key);
   }
 }
