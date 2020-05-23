@@ -175,3 +175,7 @@ test("Should update a device by ID", async () => {
 
   await cleanup(test);
 });
+
+test("should findWhereSortArgs", async () => {
+  // TODO
+});

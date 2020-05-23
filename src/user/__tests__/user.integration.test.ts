@@ -261,5 +261,7 @@ test("Should update a user with valid properties", async () => {
 
   await cleanup(test);
 });
-/*
- */
+
+test("should findWhereSortArgs", async () => {
+  // TODO
+});

@@ -230,3 +230,7 @@ test("Should update a alert by ID", async () => {
 
   await cleanup(test);
 });
+
+test("should findWhereSortArgs", async () => {
+  // TODO
+});

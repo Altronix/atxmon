@@ -47,13 +47,21 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     return query.length ? query[0] : undefined;
   }
 
-  async find(key?: FindCriteria<UserModel>): Promise<UserModel[]> {
-    let ret = await this.orm.repository.find(key as any);
+  async find(
+    where?: FindCriteria<UserModel>,
+    sort?: keyof UserModel,
+    limit?: number
+  ): Promise<UserModel[]> {
+    let config = {};
+    if (where) Object.assign(config, { where: where });
+    if (sort) Object.assign(config, { order: { [`${sort}`]: "ASC" } });
+    if (limit) Object.assign(config, { take: limit });
+    let ret = await this.orm.repository.find(config); // ie: take:10
     return ret;
   }
 
   async remove(key: FindCriteria<UserModel>): Promise<number> {
-    let ret = await this.orm.repository.delete(key as any);
+    let ret = await this.orm.repository.delete(key);
     return ret.affected ? ret.affected : 0;
   }
 
@@ -64,7 +72,7 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     if (next.email) next.email = next.email.toLowerCase();
     let insert = await User.fromPartial(next);
     if (insert) {
-      let ret = await this.orm.repository.update(key as any, insert);
+      let ret = await this.orm.repository.update(key, insert);
       return ret.affected ? ret.affected : 0;
     } else {
       return 0;
@@ -72,6 +80,6 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
   }
 
   async count(key?: FindCriteria<UserModel>): Promise<number> {
-    return this.orm.repository.count(key as any);
+    return this.orm.repository.count(key);
   }
 }

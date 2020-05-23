@@ -29,7 +29,11 @@ export type BcryptRoutines = typeof bcrypt;
 export interface DatabaseService<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
   findById(key: IdCriteria): Promise<Model | undefined>;
-  find(criteria?: FindCriteria<Model>): Promise<Model[]>;
+  find(
+    criteria?: FindCriteria<Model>,
+    sort?: keyof Model,
+    limit?: number
+  ): Promise<Model[]>;
   remove(key: FindCriteria<Model> | IdCriteria): Promise<number>;
   update(
     key: FindCriteria<Model> | IdCriteria,
@@ -52,7 +56,7 @@ export interface Repository<E> {
 }
 
 // Typeorm Types are libraries in themselves. We try to decouple here
-export type FindCriteria<E> = FindOptions<E> | FindOptionsWhere<E>;
+export type FindCriteria<E> = FindOptionsWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
 
