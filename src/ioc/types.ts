@@ -7,6 +7,7 @@ import {
   Connection,
   FindOptionsWhere,
   QueryDeepPartialEntity,
+  Repository as TypeormRepository,
   EntityTarget
 } from "typeorm";
 
@@ -45,30 +46,8 @@ export interface ConnectionManager {
 
 // Repository (interface OrmRepository)
 export interface Repository<E> {
+  repository: TypeormRepository<E>;
   load: (name: string, e: EntityTarget<E>) => Promise<void>;
-
-  // TODO deprecate
-  insert(
-    entities: DatabaseDeepPartialEntity<E> | DatabaseDeepPartialEntity<E>[]
-  ): Promise<boolean>;
-
-  // TODO deprecate
-  findById(key: IdCriteria): Promise<E | undefined>;
-
-  // TODO deprecate
-  find(criteria?: FindCriteria<E>): Promise<E[]>;
-
-  // TODO deprecate
-  remove(key: FindCriteria<E> | IdCriteria): Promise<number>;
-
-  // TODO deprecate
-  update(
-    key: FindCriteria<E> | IdCriteria,
-    next: DatabaseDeepPartialEntity<E>
-  ): Promise<number>;
-
-  // TODO deprecate
-  count(key?: FindCriteria<E>): Promise<number>;
 }
 
 // Typeorm Types are libraries in themselves. We try to decouple here

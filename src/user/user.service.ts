@@ -32,7 +32,7 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
     user.email = user.email.toLowerCase();
     return (await this.findByEmail(u.email))
       ? false
-      : (await this.orm.insert(user))
+      : (await this.orm.repository.insert(user))
       ? true
       : false;
   }
