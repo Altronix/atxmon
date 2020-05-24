@@ -22,3 +22,5 @@ test("DeviceController GET /devices 200", async () => {
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledWith([]);
 });
+
+test("DeviceController GET /devices?query", async () => {});

@@ -3,6 +3,7 @@ import {
   DatabaseDeepPartialEntity,
   DatabaseService,
   FindCriteria,
+  FindOpts,
   IdCriteria
 } from "../ioc/types";
 import { OrmRepository } from "../ioc/orm.service";
@@ -43,19 +44,12 @@ export class UserService implements DatabaseService<UserModel, UserEntry> {
   }
 
   async findByEmail(key: string): Promise<UserModel | undefined> {
-    let query = await this.find({ email: key.toLowerCase() });
+    let query = await this.find({ where: { email: key.toLowerCase() } });
     return query.length ? query[0] : undefined;
   }
 
-  async find(
-    where?: FindCriteria<UserModel>,
-    sort?: keyof UserModel,
-    limit?: number
-  ): Promise<UserModel[]> {
-    let config = {};
-    if (where) Object.assign(config, { where: where });
-    if (sort) Object.assign(config, { order: { [`${sort}`]: "DESC" } });
-    if (limit) Object.assign(config, { take: limit });
+  async find(arg?: FindOpts<UserModel>): Promise<UserModel[]> {
+    let config = { ...arg };
     let ret = await this.orm.repository.find(config); // ie: take:10
     return ret;
   }

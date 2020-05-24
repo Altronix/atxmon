@@ -75,7 +75,7 @@ test("Should find many devices", async () => {
   let test = await setup(DeviceEntity, DeviceService, DATABASE);
   let serial1 = await test.database.create(device0);
   let serial2 = await test.database.create(device1);
-  let search = await test.database.find({ product: "LINQ2" });
+  let search = await test.database.find({ where: { product: "LINQ2" } });
   expect(search.length).toBe(2);
   expect(search[0].serial).toEqual(device0.serial);
   expect(search[1].serial).toEqual(device1.serial);
@@ -151,7 +151,7 @@ test("Should update a device", async () => {
     { product: device.product },
     { product: "Updated" }
   );
-  let search = await test.database.find({ product: "Updated" });
+  let search = await test.database.find({ where: { product: "Updated" } });
   expect(search.length).toBe(1);
   expect(search[0].product).toBe("Updated");
 
@@ -169,13 +169,9 @@ test("Should update a device by ID", async () => {
 
   // Check updated device
   await test.database.update(device.serial, { product: "Updated" });
-  let search = await test.database.find({ product: "Updated" });
+  let search = await test.database.find({ where: { product: "Updated" } });
   expect(search.length).toBe(1);
   expect(search[0].product).toBe("Updated");
 
   await cleanup(test);
-});
-
-test("should findWhereSortArgs", async () => {
-  // TODO
 });

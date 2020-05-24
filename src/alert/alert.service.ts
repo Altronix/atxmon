@@ -2,6 +2,7 @@ import {
   DatabaseDeepPartialEntity,
   DatabaseService,
   FindCriteria,
+  FindOpts,
   IdCriteria
 } from "../ioc/types";
 import { OrmRepository } from "../ioc/orm.service";
@@ -33,15 +34,8 @@ export class AlertService implements DatabaseService<AlertModel, AlertEntry> {
     return ret.length ? ret[0] : undefined;
   }
 
-  async find(
-    where?: FindCriteria<AlertModel>,
-    sort?: keyof AlertModel,
-    limit?: number
-  ): Promise<AlertModel[]> {
-    let config = {};
-    if (where) Object.assign(config, { where: where });
-    if (sort) Object.assign(config, { order: { [`${sort}`]: "DESC" } });
-    if (limit) Object.assign(config, { take: limit });
+  async find(arg?: FindOpts<AlertModel>): Promise<AlertModel[]> {
+    let config = { ...arg };
     let ret = await this.orm.repository.find(config); // ie: take:10
     return ret;
   }

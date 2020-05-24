@@ -2,6 +2,8 @@ import {
   DatabaseDeepPartialEntity,
   DatabaseService,
   FindCriteria,
+  FindOpts,
+  FindWhere,
   IdCriteria
 } from "../ioc/types";
 import { OrmRepository } from "../ioc/orm.service";
@@ -37,15 +39,8 @@ export class DeviceService implements DatabaseService<DeviceModel> {
     return ret.length ? ret[0] : undefined;
   }
 
-  async find(
-    where?: FindCriteria<DeviceModel>,
-    sort?: keyof DeviceModel,
-    limit?: number
-  ): Promise<DeviceModel[]> {
-    let config = {};
-    if (where) Object.assign(config, { where: where });
-    if (sort) Object.assign(config, { order: { [`${sort}`]: "DESC" } });
-    if (limit) Object.assign(config, { take: limit });
+  async find(arg?: FindOpts<DeviceModel>): Promise<DeviceModel[]> {
+    let config = { ...arg };
     let ret = await this.orm.repository.find(config); // ie: take:10
     return ret;
   }

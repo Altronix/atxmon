@@ -133,7 +133,7 @@ test("Should find many alerts", async () => {
   let test = await setup(DATABASE);
   let serial1 = await test.database.create(alert0);
   let serial2 = await test.database.create(alert1);
-  let search = await test.database.find({ what: "LINQ2" });
+  let search = await test.database.find({ where: { what: "LINQ2" } });
   expect(search.length).toBe(2);
   expect(search[0].serial).toEqual(alert0.serial);
   expect(search[1].serial).toEqual(alert1.serial);
@@ -206,7 +206,7 @@ test("Should update a alert", async () => {
 
   // Check updated alert
   await test.database.update({ when: alert.when }, { when: 100 });
-  let search = await test.database.find({ when: 100 });
+  let search = await test.database.find({ where: { when: 100 } });
   expect(search.length).toBe(1);
   expect(search[0].when).toBe(100);
 
@@ -224,13 +224,9 @@ test("Should update a alert by ID", async () => {
 
   // Check updated alert
   await test.database.update(1, { when: 100 });
-  let search = await test.database.find({ when: 100 });
+  let search = await test.database.find({ where: { when: 100 } });
   expect(search.length).toBe(1);
   expect(search[0].when).toBe(100);
 
   await cleanup(test);
-});
-
-test("should findWhereSortArgs", async () => {
-  // TODO
 });

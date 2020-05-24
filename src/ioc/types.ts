@@ -29,11 +29,7 @@ export type BcryptRoutines = typeof bcrypt;
 export interface DatabaseService<Model, Entry = Model> {
   create(e: Entry): Promise<boolean>;
   findById(key: IdCriteria): Promise<Model | undefined>;
-  find(
-    criteria?: FindCriteria<Model>,
-    sort?: keyof Model,
-    limit?: number
-  ): Promise<Model[]>;
+  find(arg?: FindOpts<Model>): Promise<Model[]>;
   remove(key: FindCriteria<Model> | IdCriteria): Promise<number>;
   update(
     key: FindCriteria<Model> | IdCriteria,
@@ -56,9 +52,22 @@ export interface Repository<E> {
 }
 
 // Typeorm Types are libraries in themselves. We try to decouple here
-export type FindCriteria<E> = FindOptionsWhere<E>;
+export type FindCriteria<E> = FindWhere<E>;
 export type IdCriteria = string | string[] | number | number[];
 export type DatabaseDeepPartialEntity<T> = QueryDeepPartialEntity<T>;
+export type FindWhere<E> =
+  | { [P in keyof E]?: E[P] }
+  | { [P in keyof E]?: E[P] }[];
+export type FindSort<E> =
+  | { [P in keyof E]?: "ASC" | "DESC" }
+  | { [P in keyof E]?: "ASC" | "DESC" }[];
+export interface FindOpts<E> {
+  select?: (keyof E)[];
+  order?: FindSort<E>;
+  where?: FindWhere<E>;
+  skip?: number;
+  take?: number;
+}
 
 // Our inversion interface (is the same)
 export interface LinqNetworkService extends AltronixLinqNetworkService {

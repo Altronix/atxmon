@@ -99,7 +99,7 @@ test("Should find many users", async () => {
   test.utils.crypto.hash.mockImplementation(async () => hash);
   let u0 = await test.database.create(user0);
   let u1 = await test.database.create(user1);
-  let search = await test.database.find({ role: 0 });
+  let search = await test.database.find({ where: { role: 0 } });
   expect(search.length).toBe(2);
   expect(search[0].firstName).toEqual(user0.firstName);
   expect(search[1].firstName).toEqual(user1.firstName);
@@ -205,7 +205,7 @@ test("Should update a user", async () => {
     { firstName: user.firstName },
     { firstName: "Updated" }
   );
-  let search = await test.database.find({ firstName: "Updated" });
+  let search = await test.database.find({ where: { firstName: "Updated" } });
   expect(search.length).toBe(1);
   expect(search[0].firstName).toBe("Updated");
 
@@ -225,7 +225,7 @@ test("Should update a user by ID", async () => {
     await test.database.update(u.id, { firstName: "Updated" });
   }
 
-  let search = await test.database.find({ firstName: "Updated" });
+  let search = await test.database.find({ where: { firstName: "Updated" } });
   expect(search.length).toBe(1);
   expect(search[0].firstName).toBe("Updated");
 
@@ -260,8 +260,4 @@ test("Should update a user with valid properties", async () => {
   if (u) expect(u.email).toBe("valid@gmail.com");
 
   await cleanup(test);
-});
-
-test("should findWhereSortArgs", async () => {
-  // TODO
 });
