@@ -18,9 +18,28 @@ function setup() {
 test("DeviceController GET /devices 200", async () => {
   let { utils, linqService, deviceService, controller, res } = setup();
   deviceService.find.mockReturnValue(new Promise(resolve => resolve([])));
-  await controller.index(asRequest({}), asResponse(res));
+  await controller.index(asRequest({ query: {} }), asResponse(res));
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledWith([]);
 });
 
-test("DeviceController GET /devices?query", async () => {});
+test("DeviceController GET /devices?search 200", async () => {
+  let { utils, linqService, deviceService, controller, res } = setup();
+  const req = {
+    query: {
+      search: '{"product":"Li"}',
+      sort: "product",
+      asc: false,
+      start: 10,
+      limit: 100
+    }
+  };
+  deviceService.find.mockReturnValue(new Promise(resolve => resolve([])));
+  await controller.index(asRequest(req), asResponse(res));
+  expect(deviceService.find).toBeCalledWith({
+    where: { product: "Li" },
+    order: { product: "DESC" },
+    skip: 10,
+    take: 100
+  });
+});
