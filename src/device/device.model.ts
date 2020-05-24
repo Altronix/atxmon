@@ -38,13 +38,16 @@ export class DeviceQuery implements DeviceModel {
   last_seen!: number;
 
   static async valid(obj: any): Promise<DeviceModel> {
-    if (typeof obj === "string") obj = JSON.parse(obj);
+    if (!(typeof obj === "string")) throw "invalid query";
+    obj = obj.split(":");
+    if (!(obj.length === 2)) throw "invalid query";
     let c = new DeviceQuery();
-    Object.assign(c, obj);
+    Object.assign(c, { [`${obj[0]}`]: obj[1] });
     let ret = await validate(c, {
       skipMissingProperties: true,
       whitelist: true
     });
+    if (!Object.keys(c).length) throw "invalid query";
     if (ret.length) throw ret;
     return c;
   }
