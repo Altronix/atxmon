@@ -27,7 +27,7 @@ export class DeviceController implements Controller<DeviceModel> {
     let start = req.query["start"] ? req.query["start"] : false;
     let limit = req.query["limit"] ? req.query["limit"] : false;
     let sort = req.query["sort"] ? req.query["sort"] : false;
-    let asc = req.query["asc"] ? req.query["asc"] : false;
+    let order = req.query["order"] ? req.query["order"] : "ASC";
     let search = await DeviceQuery.valid(req.query["search"]).catch(
       () => false
     );
@@ -35,9 +35,7 @@ export class DeviceController implements Controller<DeviceModel> {
     if (search) Object.assign(opts, { where: search });
     if (start) Object.assign(opts, { skip: start });
     if (limit) Object.assign(opts, { take: limit });
-    if (sort) {
-      Object.assign(opts, { order: { [`${sort}`]: asc ? "ASC" : "DESC" } });
-    }
+    if (sort) Object.assign(opts, { order: { [`${sort}`]: order } });
 
     // Parse start,limit
     res.status(200).send(await this.database.find(opts));

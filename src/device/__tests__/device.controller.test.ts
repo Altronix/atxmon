@@ -29,7 +29,7 @@ test("DeviceController GET /devices?search 200", async () => {
     query: {
       search: "product:Li",
       sort: "product",
-      asc: false,
+      order: "DESC",
       start: 10,
       limit: 100
     }
