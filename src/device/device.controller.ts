@@ -39,8 +39,6 @@ export class DeviceController implements Controller<DeviceModel> {
       Object.assign(opts, { order: { [`${sort}`]: asc ? "ASC" : "DESC" } });
     }
 
-    console.log(opts);
-
     // Parse start,limit
     res.status(200).send(await this.database.find(opts));
   }

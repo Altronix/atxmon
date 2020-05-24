@@ -27,7 +27,7 @@ test("DeviceController GET /devices?search 200", async () => {
   let { utils, linqService, deviceService, controller, res } = setup();
   const req = {
     query: {
-      search: '{"product":"Li"}',
+      search: "product:Li",
       sort: "product",
       asc: false,
       start: 10,
