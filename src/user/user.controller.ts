@@ -57,4 +57,9 @@ export class UserController implements Controller<UserModel, UserEntry> {
     await this.database.remove({ email });
     return res.status(200).send({ message: "Success" });
   }
+
+  @httpGet("/count")
+  async count(req: Request, res: Response) {
+    res.status(200).send({ count: await this.database.count() });
+  }
 }

@@ -43,3 +43,12 @@ test("DeviceController GET /devices?search 200", async () => {
     take: 100
   });
 });
+
+test("DeviceController GET /devices/count 200", async () => {
+  let { utils, linqService, deviceService, controller, res } = setup();
+  deviceService.count.mockReturnValue(new Promise(resolve => resolve(10)));
+  await controller.count(asRequest({}), asResponse(res));
+  expect(deviceService.count).toBeCalledWith();
+  expect(res.status).toBeCalledWith(200);
+  expect(res.send).toBeCalledWith({ count: 10 });
+});

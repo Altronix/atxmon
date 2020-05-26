@@ -40,4 +40,9 @@ export class DeviceController implements Controller<DeviceModel> {
     // Parse start,limit
     res.status(200).send(await this.database.find(opts));
   }
+
+  @httpGet("/count")
+  async count(req: Request, res: Response) {
+    res.status(200).send({ count: await this.database.count() });
+  }
 }

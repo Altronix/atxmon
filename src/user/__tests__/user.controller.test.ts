@@ -99,3 +99,12 @@ test("UserController DELETE /users 404", async () => {
   expect(res.status).toBeCalledWith(404);
   expect(res.send).toBeCalledWith({ message: "User does not exist" });
 });
+
+test("UserController GET /devices/count 200", async () => {
+  let { utils, userService, controller, res } = setup();
+  userService.count.mockReturnValue(new Promise(resolve => resolve(10)));
+  await controller.count(asRequest({}), asResponse(res));
+  expect(userService.count).toBeCalledWith();
+  expect(res.status).toBeCalledWith(200);
+  expect(res.send).toBeCalledWith({ count: 10 });
+});
