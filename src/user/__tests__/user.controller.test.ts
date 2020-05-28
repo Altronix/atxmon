@@ -20,7 +20,8 @@ const goodUser = {
   phone: "1 516 333 4598",
   email: "tom@gmail.com",
   password: "111111111111",
-  role: 0
+  role: 0,
+  notificationsServerMaintenance: false
 };
 const badUser = Object.assign({}, goodUser, { password: "foo" });
 

@@ -17,7 +17,8 @@ const testUser = {
   hash: "foo",
   role: 3,
   tokenVersion: 0,
-  devices: []
+  devices: [],
+  notificationsServerMaintenance: false
 };
 function setup() {
   let utils = makeMockUtils();

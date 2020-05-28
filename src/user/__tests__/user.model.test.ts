@@ -7,7 +7,8 @@ const validUser: UserEntry = {
   email: "tom@gmail.com",
   role: 1,
   password: "01234567890ab",
-  devices: []
+  devices: [],
+  notificationsServerMaintenance: false
 };
 
 test("User fromUntrustedThrowable should fail with invalid input", async () => {
@@ -48,7 +49,8 @@ test("User from should fail with invalid input", async () => {
       lastName: "",
       phone: "",
       password: "",
-      role: -1
+      role: -1,
+      notificationsServerMaintenance: false
     });
   } catch (e) {
     pass = true;

@@ -40,6 +40,9 @@ export class UserEntity implements UserModel {
   @Column("int", { default: 0 })
   tokenVersion: number = 0;
 
+  @Column({ default: false })
+  notificationsServerMaintenance!: boolean;
+
   @ManyToOne(type => DeviceEntity)
   @JoinTable()
   devices!: DeviceEntity[];

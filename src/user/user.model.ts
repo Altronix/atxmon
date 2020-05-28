@@ -5,6 +5,7 @@ import {
   validate,
   Length,
   IsMobilePhone,
+  IsBoolean,
   IsEmail,
   IsInt,
   Min
@@ -20,6 +21,7 @@ export interface UserModel {
   hash: string;
   role: number;
   tokenVersion: number;
+  notificationsServerMaintenance: boolean;
   devices: DeviceModel[]; //?
 }
 
@@ -50,6 +52,9 @@ export class User implements UserModel {
 
   @Length(12, 64)
   password!: string;
+
+  @IsBoolean()
+  notificationsServerMaintenance!: boolean;
 
   tokenVersion!: number;
 

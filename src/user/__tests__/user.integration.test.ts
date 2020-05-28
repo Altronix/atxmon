@@ -12,7 +12,8 @@ const user0 = {
   phone: "5550000000",
   email: "tom0@gmail.com",
   password: "tom0secret123456",
-  role: 0
+  role: 0,
+  notificationsServerMaintenance: false
 };
 const user1 = {
   firstName: "Thomas1",
@@ -20,7 +21,8 @@ const user1 = {
   phone: "5551111111",
   email: "tom1@gmail.com",
   password: "tom1secret123456",
-  role: 0
+  role: 0,
+  notificationsServerMaintenance: false
 };
 const user = user0;
 const hash = "development-unsafe-hash-for-test";
