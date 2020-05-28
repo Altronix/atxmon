@@ -43,7 +43,8 @@ async function start() {
       phone: process.env.ADMIN_PHONE,
       email: process.env.ADMIN_EMAIL,
       role: 0,
-      password: process.env.ADMIN_PASSWORD
+      password: process.env.ADMIN_PASSWORD,
+      notificationsServerMaintenance: true
     });
     server.utils.logger.warn(`Admin account created`);
   }
