@@ -92,6 +92,10 @@ async function start() {
         case "ctrlc":
           server.utils.logger.info(JSON.stringify(ev));
           break;
+        case "notificationServerMaintenance":
+          // TODO send an email notification to all users who are subscribed to
+          // maintenance events
+          break;
       }
     });
   let whileRunning = server.linq.run(100);

@@ -7,16 +7,21 @@ import {
   CtrlcEvent
 } from "./device/linq.service";
 import { Server } from "./server";
-import { Observable, merge } from "rxjs";
-import { filter, map, bufferTime } from "rxjs/operators";
+import { Observable, from, of, merge } from "rxjs";
+import { filter, map, repeat, bufferTime } from "rxjs/operators";
 
 export interface EmailEvent {
   type: "email";
   alerts: { [x: string]: AlertEvent[] };
 }
 
+export interface NotificationServerMaintenanceEvent {
+  type: "notificationServerMaintenance";
+}
+
 export interface EventsConfig {
   emailBatchInterval?: number;
+  notificationServerMaintenanceHour?: number;
 }
 
 export const heartbeats = (config?: EventsConfig) => (
@@ -67,12 +72,39 @@ export const mapEmails = () => (
     })
   );
 
-export const allEvents = (config?: EventsConfig) => (s: Observable<Events>) =>
+export const notificationServerMaintenance = (
+  config?: EventsConfig
+): Observable<NotificationServerMaintenanceEvent> =>
+  from(
+    new Promise(resolve => {
+      const hour = (config && config.notificationServerMaintenanceHour) || 5;
+      const date = new Date();
+      date.setDate(date.getDate() + 1);
+      date.setHours(hour, 0, 0);
+      const fire = date.getTime();
+      setTimeout(() => resolve(), fire - new Date().getTime());
+    })
+  ).pipe(
+    map(() => {
+      const ev: NotificationServerMaintenanceEvent = {
+        type: "notificationServerMaintenance"
+      };
+      return ev;
+    }),
+    repeat()
+  );
+
+type AppEvents = Events | EmailEvent | NotificationServerMaintenanceEvent;
+
+export const allEvents = (config?: EventsConfig) => (
+  s: Observable<Events>
+): Observable<AppEvents> =>
   merge(
     s.pipe(news(config)),
     s.pipe(heartbeats(config)),
     s.pipe(alerts(config)),
     s.pipe(emails(config)),
     s.pipe(errors(config)),
-    s.pipe(ctrlcs(config))
+    s.pipe(ctrlcs(config)),
+    notificationServerMaintenance(config)
   );
