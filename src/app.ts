@@ -3,6 +3,7 @@ import { createServer, Server } from "./server";
 import { allEvents } from "./events";
 import { toSnakeCase } from "./common/case";
 import { DeviceModelEntry } from "./device/device.model";
+import { notificationServerUp, alert } from "@altronix/email-templates";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -93,8 +94,9 @@ async function start() {
           server.utils.logger.info(JSON.stringify(ev));
           break;
         case "notificationServerMaintenance":
-          // TODO send an email notification to all users who are subscribed to
-          // maintenance events
+          (await server.users.find({
+            where: { notificationsServerMaintenance: true }
+          })).map(u => u.email); // TODO here array of emails to send
           break;
       }
     });

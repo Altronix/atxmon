@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/Altronix/atx-mon#readme",
   "dependencies": {
+    "@altronix/email-templates": "0.0.1-alpha.2",
     "@altronix/linq-network": "0.0.2-alpha.16",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",

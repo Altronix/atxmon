@@ -95,7 +95,6 @@ export const notificationServerMaintenance = (
   );
 
 type AppEvents = Events | EmailEvent | NotificationServerMaintenanceEvent;
-
 export const allEvents = (config?: EventsConfig) => (
   s: Observable<Events>
 ): Observable<AppEvents> =>
