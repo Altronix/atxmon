@@ -8,5 +8,7 @@ export const SYMBOLS = {
   DATABASE_USER: Symbol.for("Database<UserModel,UserEntry>"),
   DATABASE_DEVICE: Symbol.for("Database<DeviceModel,DeviceEntry>"),
   DATABASE_ALERT: Symbol.for("Database<AlertModel,AlertEntry>"),
-  SHUTDOWN_SERVICE: Symbol.for("ShutdownService")
+  SHUTDOWN_SERVICE: Symbol.for("ShutdownService"),
+  MAILER: Symbol.for("Mailer"),
+  MAILER_SERVICE: Symbol.for("MailerService")
 };

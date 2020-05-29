@@ -25,18 +25,19 @@ import { AlertEntity } from "../alert/alert.entity";
 import { AlertService } from "../alert/alert.service";
 import { LinqService } from "../device/linq.service";
 import { ShutdownService } from "../shutdown/shutdown.service";
+import { MailerService } from "../mailer/mailer.service";
 import { OrmRepository } from "./orm.service";
 import { OrmConnection } from "./orm.connection";
 import { UtilRoutines } from "../common/types";
 import { ShutdownManager } from "../shutdown/types";
 import Config from "../config";
-import { ConnectionManager } from "./types";
+import { ConnectionManager, Mailer } from "./types";
 import {
   createConnection as typeormCreateConnection,
   getConnectionOptions as typeormGetConnectionOptions
 } from "typeorm";
-// import { createConnection, getConnection } from "typeorm";
 import { LinqNetwork } from "@altronix/linq-network";
+import * as sg from "@sendgrid/mail";
 
 decorate(injectable(), LinqNetwork);
 
@@ -129,6 +130,16 @@ const serviceContainerModule = new ContainerModule(bind => {
   // decorating EventEmitter with injectable()...)
   bind<ShutdownManager>(SYMBOLS.SHUTDOWN_SERVICE)
     .toDynamicValue(() => new ShutdownService())
+    .inSingletonScope();
+
+  // Sendgrid
+  bind<Mailer>(SYMBOLS.MAILER)
+    .toDynamicValue(() => sg)
+    .inSingletonScope();
+
+  // Sendgrid Wrapper
+  bind<MailerService>(SYMBOLS.MAILER_SERVICE)
+    .to(MailerService)
     .inSingletonScope();
 });
 

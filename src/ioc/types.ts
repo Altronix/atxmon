@@ -3,6 +3,7 @@ import { Subject } from "rxjs";
 import { Events } from "../device/linq.service";
 import * as bcrypt from "bcrypt";
 import { DatabaseConfig } from "../common/types";
+import * as sg from "@sendgrid/mail";
 import {
   Connection,
   FindOptions,
@@ -98,3 +99,6 @@ export interface AltronixLinqNetworkService {
   nodeCount(): number;
   run(ms: number): Promise<unknown>;
 }
+
+// @sendgrid/mail
+export type Mailer = typeof sg;
