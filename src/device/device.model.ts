@@ -12,6 +12,17 @@ export interface DeviceModel {
   last_seen: number;
 }
 
+export interface DeviceModelCamel {
+  serial: string;
+  siteId: string;
+  product: string;
+  prjVersion: string;
+  atxVersion: string;
+  webVersion: string;
+  mac: string;
+  lastSeen: number;
+}
+
 export class DeviceQuery implements DeviceModel {
   @IsString()
   serial!: string;

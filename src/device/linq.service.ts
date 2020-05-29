@@ -31,6 +31,7 @@ interface AlertData {
   password: string;
   server: string;
   port: number;
+  to: string[];
 }
 
 export type EVENTS = "new" | "heartbeat" | "alert" | "error" | "ctrlc";

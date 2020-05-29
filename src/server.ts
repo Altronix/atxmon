@@ -13,6 +13,7 @@ import { UserModel, UserEntry } from "./user/user.model";
 import { UserService } from "./user/user.service";
 import { DeviceService } from "./device/device.service";
 import { AlertService } from "./alert/alert.service";
+import { MailerService } from "./mailer/mailer.service";
 import { UtilRoutines } from "./common/types";
 import { createRouter, loadMiddleware } from "./common/decorators";
 import { App, AppAnd, AppConstructorAnd } from "./common/decorators";
@@ -38,6 +39,7 @@ export class _Server {
   devices: DeviceService;
   users: UserService;
   alerts: AlertService;
+  mailer: MailerService;
   shutdown: ShutdownManager;
   app: express.Application;
   constructor(
@@ -47,6 +49,7 @@ export class _Server {
     @inject(SYMBOLS.DATABASE_DEVICE) devices: DeviceService,
     @inject(SYMBOLS.DATABASE_ALERT) alerts: AlertService,
     @inject(SYMBOLS.LINQ_SERVICE) linq: LinqNetworkService,
+    @inject(SYMBOLS.MAILER_SERVICE) mailer: MailerService,
     @inject(SYMBOLS.SHUTDOWN_SERVICE) shutdown: ShutdownManager
   ) {
     this.config = config;
@@ -55,6 +58,7 @@ export class _Server {
     this.users = users;
     this.devices = devices;
     this.alerts = alerts;
+    this.mailer = mailer;
     this.shutdown = shutdown;
     this.app = express(); // Inject?
   }

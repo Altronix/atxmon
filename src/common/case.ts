@@ -1,11 +1,12 @@
 import { snakeCase } from "snake-case";
+import { camelCase } from "camel-case";
 
-export function toSnakeCase<T>(obj: any): T {
+function transform<T>(obj: any, op: (s: string) => string) {
   let ret: any = {};
   Object.keys(obj).forEach(k => {
     const t = typeof obj[k];
     if (t === "string" || t === "number" || t === "boolean") {
-      ret[snakeCase(k)] = obj[k];
+      ret[op(k)] = obj[k];
     } else if (
       t === "object" ||
       t === "undefined" ||
@@ -16,4 +17,12 @@ export function toSnakeCase<T>(obj: any): T {
     }
   });
   return (ret as any) as T;
+}
+
+export function toSnakeCase<T>(obj: any): T {
+  return transform(obj, snakeCase);
+}
+
+export function toCamelCase<T>(obj: any): T {
+  return transform(obj, camelCase);
 }

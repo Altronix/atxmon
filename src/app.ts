@@ -1,9 +1,10 @@
 import "dotenv/config";
 import { createServer, Server } from "./server";
 import { allEvents } from "./events";
-import { toSnakeCase } from "./common/case";
-import { DeviceModelEntry } from "./device/device.model";
+import { toSnakeCase, toCamelCase } from "./common/case";
+import { DeviceModelEntry, DeviceModelCamel } from "./device/device.model";
 import { notificationServerUp, alert } from "@altronix/email-templates";
+import { Mail } from "./mailer/mailer.service";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -57,7 +58,7 @@ async function start() {
     .events$.pipe(allEvents({ emailBatchInterval: 60000 }))
     .subscribe(async ev => {
       switch (ev.type) {
-        case "new":
+        case "new": {
           let device = await server.devices.findById(ev.sid);
           if (!device) {
             server.utils.logger.info(`[NEW] [${ev.sid}]`);
@@ -67,37 +68,68 @@ async function start() {
             });
           }
           break;
-        case "heartbeat":
+        }
+        case "heartbeat": {
           server.utils.logger.info(`[HEARTBEAT] [${ev.serial}]`);
           let d = await server.devices.findById(ev.serial);
           await server.devices.update(ev.serial, {
             last_seen: Math.floor(new Date().getTime() / 1000)
           });
           break;
-        case "alert":
+        }
+        case "alert": {
           server.utils.logger.info(`[ALERT] [${ev.mesg}]`);
           await server.alerts.create(ev);
           break;
-        case "email":
-          Object.keys(ev.alerts).forEach(key => {
-            // TODO we collected an interval of emails per each device
-            // alerts is keyed with the serial number of the device and the
-            // keyed value is an array of events
-            // ie: ev.alerts[key]:Event[]
-          });
+        }
+        case "email": {
+          let mail: Mail[] = await Promise.all(
+            Object.keys(ev.alerts).map(async serial => {
+              let d = await server.devices.findById(serial);
+              let data = ev.alerts[serial].map(e => {
+                return {
+                  ...e,
+                  ...toCamelCase<DeviceModelCamel>(d)
+                };
+              });
+              let to: string[] = [];
+              data.forEach(d => (to = to.concat(d.to)));
+              return {
+                to: to.filter((val, idx, self) => self.indexOf(val) === idx),
+                from: "info@altronix.com",
+                subject: "Linq Alert Notification",
+                text: "",
+                html: alert(data)
+              };
+            })
+          );
+          let result = await server.mailer.send(mail).catch(e => e);
           break;
-        case "error":
+        }
+        case "error": {
           server.utils.logger.info(JSON.stringify(ev));
           // TODO create an error entity and stick in there
           break;
-        case "ctrlc":
+        }
+        case "ctrlc": {
           server.utils.logger.info(JSON.stringify(ev));
           break;
-        case "notificationServerMaintenance":
-          (await server.users.find({
+        }
+        case "notificationServerMaintenance": {
+          let mail: Mail[] = (await server.users.find({
             where: { notificationsServerMaintenance: true }
-          })).map(u => u.email); // TODO here array of emails to send
+          })).map(u => {
+            return {
+              to: u.email,
+              from: "",
+              subject: "",
+              text: "",
+              html: notificationServerUp()
+            };
+          });
+          let result = await server.mailer.send(mail).catch(e => e);
           break;
+        }
       }
     });
   let whileRunning = server.linq.run(100);
