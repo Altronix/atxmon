@@ -121,8 +121,8 @@ async function start() {
           })).map(u => {
             return {
               to: u.email,
-              from: "",
-              subject: "",
+              from: "info@altronix.com",
+              subject: "Linq Server Up Notification",
               text: "",
               html: notificationServerUp()
             };

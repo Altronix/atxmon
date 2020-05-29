@@ -16,3 +16,14 @@ let path = require("path"),
     logger.error(e);
   }
 })();
+
+let shuttingDown = false;
+["SIGINT", "SIGTERM"].forEach(function(sig) {
+  process.on(sig, async function() {
+    if (!shuttingDown) {
+      shuttingDown = true;
+      logger.info("Waiting for app to shutdown...");
+      logger.debug("TODO Press ctrlc again until we fix start script");
+    }
+  });
+});
