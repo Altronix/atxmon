@@ -23,7 +23,6 @@ let shuttingDown = false;
     if (!shuttingDown) {
       shuttingDown = true;
       logger.info("Waiting for app to shutdown...");
-      logger.debug("TODO Press ctrlc again until we fix start script");
     }
   });
 });

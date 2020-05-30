@@ -113,6 +113,7 @@ async function start() {
         }
         case "ctrlc": {
           server.utils.logger.info(JSON.stringify(ev));
+          server.shutdown.shutdown();
           break;
         }
         case "notificationServerMaintenance": {
@@ -145,9 +146,11 @@ async function start() {
   ]);
 
   subscription.unsubscribe();
+  server.utils.logger.info("Shutdown complete");
   return 0;
 }
 
 (async () => {
-  return await start();
+  let ret = await start();
+  process.exit(ret);
 })();
