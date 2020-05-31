@@ -90,8 +90,10 @@ async function start() {
     server.utils.logger.warn(`Admin account created`);
   }
 
-  server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
-  server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
+  server.utils.logger.info(`Listening [HTTP]  ${server.config.http.http}`);
+  server.utils.logger.info(`Listening [HTTPS] ${server.config.http.https}`);
+  server.utils.logger.info(`Listening [ZMTP]  ${server.config.linq.zmtp[0]}`);
+  server.utils.logger.info(`Listening [ZMTPS] ${server.config.linq.zmtps}`);
   let sock = server.app.listen(server.config.http.http);
   let subscription = server.linq
     .init()
