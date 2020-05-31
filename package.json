@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/Altronix/atx-mon#readme",
   "dependencies": {
-    "@altronix/email-templates": "0.0.1-alpha.11",
+    "@altronix/email-templates": "0.0.1-alpha.12",
     "@altronix/linq-network": "0.0.2-alpha.17",
     "@altronix/tls-terminate": "0.0.1",
     "@sendgrid/mail": "^7.1.1",
