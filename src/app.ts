@@ -1,4 +1,6 @@
 import "dotenv/config";
+import * as fs from "fs";
+import * as https from "https";
 import { createServer, Server } from "./server";
 import { allEvents } from "./events";
 import { toSnakeCase, toCamelCase } from "./common/case";
@@ -24,7 +26,9 @@ async function start() {
       process.env.ADMIN_LASTNAME &&
       process.env.ADMIN_PHONE &&
       process.env.ADMIN_EMAIL &&
-      process.env.ADMIN_PASSWORD
+      process.env.ADMIN_PASSWORD &&
+      process.env.TLS_CERT &&
+      process.env.TLS_KEY
     )
   ) {
     console.error("[ \x1b[35mFATAL\x1b[0m ] Warning UNSAFE instance!");
@@ -38,6 +42,29 @@ async function start() {
     server.mailer.init(process.env.SENDGRID_API_KEY);
     server.utils.logger.info(`SENDGRID API KEY INSTALLED`);
   }
+
+  // Read Certificate and Key
+  let cert, key;
+  try {
+    cert = (await fs.promises.readFile(process.env.TLS_CERT)).toString();
+    key = (await fs.promises.readFile(process.env.TLS_KEY)).toString();
+  } catch {
+    server.utils.logger.warn("Invalid .env!!!");
+    return server.utils.logger.fatal("TLS_CERT or TLS_KEY Not Found!!!", -1);
+  }
+
+  // Setup TLS Terminate for ZMTP
+  listen({
+    cert,
+    key,
+    tcp: server.config.linq.zmtp[0],
+    tcps: server.config.linq.zmtps
+  });
+
+  // Setup HTTPS
+  https
+    .createServer({ cert, key }, server.app)
+    .listen(server.config.http.https);
 
   await server.mailer
     .send({
@@ -163,6 +190,6 @@ async function start() {
 }
 
 (async () => {
-  let ret = await start();
-  process.exit(ret);
+  let ret: void | number = await start();
+  process.exit(typeof ret === "number" ? ret : -1);
 })();
