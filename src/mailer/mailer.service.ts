@@ -7,7 +7,14 @@ export interface Mail {
   to: string | string[];
   from: string;
   subject: string;
+  text?: string;
+  html?: string;
+}
+
+export interface MailText extends Mail {
   text: string;
+}
+export interface MailHtml extends Mail {
   html: string;
 }
 
@@ -20,12 +27,13 @@ export class MailerService {
   ) {}
 
   init(key: string): MailerService {
+    let mailer: any = this.mailer;
     this.mailer.setApiKey(key);
     this.valid = true;
     return this;
   }
 
-  async send(_m: Mail | Mail[]) {
+  async send(_m: MailText | MailText[] | MailHtml | MailHtml[]) {
     if (this.valid) {
       const m = Array.isArray(_m) ? _m : [_m];
       let ret = await this.mailer.send(m);

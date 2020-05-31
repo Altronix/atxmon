@@ -4,7 +4,7 @@ import { allEvents } from "./events";
 import { toSnakeCase, toCamelCase } from "./common/case";
 import { DeviceModelEntry, DeviceModelCamel } from "./device/device.model";
 import { notificationServerUp, alert } from "@altronix/email-templates";
-import { Mail } from "./mailer/mailer.service";
+import { MailHtml } from "./mailer/mailer.service";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -33,8 +33,19 @@ async function start() {
 
   // Start application
   let server = await createServer();
-  server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
-  server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
+  if (process.env.SENDGRID_API_KEY) {
+    server.mailer.init(process.env.SENDGRID_API_KEY);
+    server.utils.logger.info(`SENDGRID API KEY INSTALLED`);
+  }
+
+  await server.mailer
+    .send({
+      to: ["thomas.chiantia@gmail.com", "thomas@altronix.com"],
+      from: "info@altronix.com",
+      subject: "Linq Notification",
+      html: notificationServerUp()
+    })
+    .catch((e: any) => console.log(e.response.body.errors));
 
   if (!(await server.users.findByEmail(process.env.ADMIN_EMAIL))) {
     server.utils.logger.warn(`Admin account not found!!`);
@@ -51,6 +62,8 @@ async function start() {
     server.utils.logger.warn(`Admin account created`);
   }
 
+  server.utils.logger.info(`Listening [HTTP] ${server.config.http.http}`);
+  server.utils.logger.info(`Listening [ZMTP] ${server.config.linq.zmtp}`);
   let sock = server.app.listen(server.config.http.http);
   let subscription = server.linq
     .init()
@@ -83,7 +96,7 @@ async function start() {
           break;
         }
         case "email": {
-          let mail: Mail[] = await Promise.all(
+          let mail: MailHtml[] = await Promise.all(
             Object.keys(ev.alerts).map(async serial => {
               let d = await server.devices.findById(serial);
               let data = ev.alerts[serial].map(e => {
@@ -98,7 +111,6 @@ async function start() {
                 to: to.filter((val, idx, self) => self.indexOf(val) === idx),
                 from: "info@altronix.com",
                 subject: "Linq Alert Notification",
-                text: "",
                 html: alert(data)
               };
             })
@@ -117,14 +129,13 @@ async function start() {
           break;
         }
         case "notificationServerMaintenance": {
-          let mail: Mail[] = (await server.users.find({
+          let mail: MailHtml[] = (await server.users.find({
             where: { notificationsServerMaintenance: true }
           })).map(u => {
             return {
               to: u.email,
               from: "info@altronix.com",
               subject: "Linq Server Up Notification",
-              text: "",
               html: notificationServerUp()
             };
           });

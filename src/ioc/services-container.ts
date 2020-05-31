@@ -37,9 +37,11 @@ import {
   getConnectionOptions as typeormGetConnectionOptions
 } from "typeorm";
 import { LinqNetwork } from "@altronix/linq-network";
-import * as sg from "@sendgrid/mail";
+import { MailService } from "@sendgrid/mail";
 
 decorate(injectable(), LinqNetwork);
+
+const sg = new MailService();
 
 // Instansiate generics for container
 @injectable()
