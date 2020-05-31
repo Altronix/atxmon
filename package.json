@@ -28,6 +28,7 @@
   "dependencies": {
     "@altronix/email-templates": "0.0.1-alpha.11",
     "@altronix/linq-network": "0.0.2-alpha.17",
+    "@altronix/tls-terminate": "0.0.1",
     "@sendgrid/mail": "^7.1.1",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",

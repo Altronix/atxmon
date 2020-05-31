@@ -3,8 +3,9 @@ import { createServer, Server } from "./server";
 import { allEvents } from "./events";
 import { toSnakeCase, toCamelCase } from "./common/case";
 import { DeviceModelEntry, DeviceModelCamel } from "./device/device.model";
-import { notificationServerUp, alert } from "@altronix/email-templates";
 import { MailHtml } from "./mailer/mailer.service";
+import { notificationServerUp, alert } from "@altronix/email-templates";
+import { listen } from "@altronix/tls-terminate";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
