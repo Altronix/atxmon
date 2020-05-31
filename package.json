@@ -10,7 +10,8 @@
     "build:docker": "docker build -t altronix/atxmon -f ./docker/Dockerfile .",
     "start": "node ./scripts/start.js",
     "start:docker": "node ./scripts/docker-start.js",
-    "stop:docker": "node ./scripts/docker-stop.js"
+    "stop:docker": "node ./scripts/docker-stop.js",
+    "deploy": "ts-node ./src/app.ts"
   },
   "linq-network": {
     "prebuilt": true
