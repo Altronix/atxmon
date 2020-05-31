@@ -70,7 +70,7 @@ async function start() {
     .send({
       to: ["thomas.chiantia@gmail.com", "thomas@altronix.com"],
       from: "info@altronix.com",
-      subject: "Linq Notification",
+      subject: "Linq Server Up Notification",
       html: notificationServerUp()
     })
     .catch((e: any) => console.log(e.response.body.errors));
