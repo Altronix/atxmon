@@ -20,3 +20,5 @@ test("AlertController GET /alerts 200", async () => {
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledWith([]);
 });
+
+// TODO alert query tests (similar to device.controller.test.ts...
