@@ -36,4 +36,9 @@ export class AlertController implements Controller<AlertModel> {
     // Parse start,limit
     res.status(200).send(await this.database.find(opts));
   }
+
+  @httpGet("/count")
+  async count(req: Request, res: Response) {
+    res.status(200).send({ count: await this.database.count() });
+  }
 }
