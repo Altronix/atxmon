@@ -7,16 +7,16 @@ const asResponse = (res: any): Response => res as Response;
 const asRequest = (req: any): Request => req as Request;
 function setup() {
   let utils = makeMockUtils();
-  let deviceService = makeMockAlertService();
-  let controller = new AlertController(utils, deviceService);
+  let alertService = makeMockAlertService();
+  let controller = new AlertController(utils, alertService);
   let res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
-  return { utils, deviceService, controller, res };
+  return { utils, alertService, controller, res };
 }
 
 test("AlertController GET /alerts 200", async () => {
-  let { utils, deviceService, controller, res } = setup();
-  deviceService.find.mockReturnValue(new Promise(resolve => resolve([])));
-  await controller.index(asRequest({}), asResponse(res));
+  let { utils, alertService, controller, res } = setup();
+  alertService.find.mockReturnValue(new Promise(resolve => resolve([])));
+  await controller.index(asRequest({ query: {} }), asResponse(res));
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledWith([]);
 });
