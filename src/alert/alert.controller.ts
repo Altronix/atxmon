@@ -13,7 +13,7 @@ export class AlertController implements Controller<AlertModel> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)
     private utils: UtilRoutines,
-    @inject(SYMBOLS.DATABASE_DEVICE)
+    @inject(SYMBOLS.DATABASE_ALERT)
     private database: DatabaseService<AlertModel>
   ) {}
 
