@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { StandardMiddleware, IsAdmin } from "../middleware/middleware";
 import { UtilRoutines } from "../common/types";
 import { DeviceExistsMiddleware } from "../middleware/device-exists.middleware";
 import { DatabaseService, LinqNetworkService, FindOpts } from "../ioc/types";
@@ -8,7 +9,7 @@ import { Controller } from "../common/types";
 import { injectable, inject } from "inversify";
 import { httpGet, httpPost, controller } from "../common/decorators";
 
-@controller("/api/v1/devices")
+@controller("/api/v1/devices", ...StandardMiddleware, ...IsAdmin)
 export class DeviceController implements Controller<DeviceModel> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)

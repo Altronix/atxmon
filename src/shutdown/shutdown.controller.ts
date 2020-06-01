@@ -1,4 +1,4 @@
-import { StandardMiddleware } from "../middleware/middleware";
+import { StandardMiddleware, IsAdmin } from "../middleware/middleware";
 import { httpGet, httpPost, controller } from "../common/decorators";
 import { LinqNetworkService } from "../ioc/types";
 import { ShutdownManager } from "./types";
@@ -6,7 +6,7 @@ import { SYMBOLS } from "../ioc/constants.root";
 import { Request, Response } from "express";
 import { inject } from "inversify";
 
-@controller("/shutdown", ...StandardMiddleware)
+@controller("/shutdown", ...StandardMiddleware, ...IsAdmin)
 export class ShutdownController {
   constructor(
     @inject(SYMBOLS.SHUTDOWN_SERVICE) private shutdownService: ShutdownManager

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UtilRoutines, Controller } from "../common/types";
-import { StandardMiddleware } from "../middleware/middleware";
+import { StandardMiddleware, IsAdmin } from "../middleware/middleware";
 import { DatabaseService } from "../ioc/types";
 import { UserService } from "./user.service";
 import { User, UserModel, UserEntry } from "./user.model";
@@ -13,7 +13,7 @@ import {
 } from "../common/decorators";
 import { injectable, inject } from "inversify";
 
-@controller("/api/v1/users", ...StandardMiddleware)
+@controller("/api/v1/users", ...StandardMiddleware, ...IsAdmin)
 export class UserController implements Controller<UserModel, UserEntry> {
   constructor(
     @inject(SYMBOLS.UTIL_ROUTINES)
