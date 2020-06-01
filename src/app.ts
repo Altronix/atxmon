@@ -106,8 +106,8 @@ async function start() {
           if (!device) {
             server.utils.logger.info(`[NEW] [${ev.sid}]`);
             await server.devices.create({
-              serial: ev.sid,
-              ...toSnakeCase<DeviceModelEntry>(ev)
+              ...toSnakeCase<DeviceModelEntry>(ev),
+              serial: ev.sid
             });
           }
           break;
