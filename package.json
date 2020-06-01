@@ -11,7 +11,7 @@
     "start": "node ./scripts/start.js",
     "start:docker": "node ./scripts/docker-start.js",
     "stop:docker": "node ./scripts/docker-stop.js",
-    "deploy": "ts-node ./src/app.ts"
+    "deploy": "npm run build && node ./scripts/deploy.js"
   },
   "linq-network": {
     "prebuilt": true
