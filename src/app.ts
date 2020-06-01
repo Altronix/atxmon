@@ -8,6 +8,7 @@ import { DeviceModelEntry, DeviceModelCamel } from "./device/device.model";
 import { MailHtml } from "./mailer/mailer.service";
 import { notificationServerUp, alert } from "@altronix/email-templates";
 import { listen } from "@altronix/tls-terminate";
+import express from "express";
 
 async function start() {
   // Check environment (required for reading typeorm entities)
@@ -41,6 +42,12 @@ async function start() {
   if (process.env.SENDGRID_API_KEY) {
     server.mailer.init(process.env.SENDGRID_API_KEY);
     server.utils.logger.info(`SENDGRID API KEY INSTALLED`);
+  }
+
+  if (server.config.http.www) {
+    server.utils.logger.info(`Serving static files: ${server.config.http.www}`);
+    server.app.use(express.static(server.config.http.www));
+    server.app.all("*", (req, res) => res.redirect("/"));
   }
 
   // Read Certificate and Key
