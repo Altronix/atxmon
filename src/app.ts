@@ -73,15 +73,6 @@ async function start() {
     .createServer({ cert, key }, server.app)
     .listen(server.config.http.https);
 
-  await server.mailer
-    .send({
-      to: ["thomas.chiantia@gmail.com", "thomas@altronix.com"],
-      from: "info@altronix.com",
-      subject: "Linq Server Up Notification",
-      html: notificationServerUp()
-    })
-    .catch((e: any) => console.log(e.response.body.errors));
-
   if (!(await server.users.findByEmail(process.env.ADMIN_EMAIL))) {
     server.utils.logger.warn(`Admin account not found!!`);
     server.utils.logger.warn(`Creating admin account...`);
@@ -166,6 +157,7 @@ async function start() {
           break;
         }
         case "notificationServerMaintenance": {
+          server.utils.logger.info(`Sending server up notification`);
           let mail: MailHtml[] = (await server.users.find({
             where: { notificationsServerMaintenance: true }
           })).map(u => {

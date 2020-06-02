@@ -7,7 +7,7 @@ import {
   CtrlcEvent
 } from "./device/linq.service";
 import { Server } from "./server";
-import { Observable, from, of, merge } from "rxjs";
+import { Observable, timer, from, of, merge } from "rxjs";
 import { filter, map, repeat, bufferTime } from "rxjs/operators";
 
 export interface EmailEvent {
@@ -74,17 +74,12 @@ export const mapEmails = () => (
 
 export const notificationServerMaintenance = (
   config?: EventsConfig
-): Observable<NotificationServerMaintenanceEvent> =>
-  from(
-    new Promise(resolve => {
-      const hour = (config && config.notificationServerMaintenanceHour) || 5;
-      const date = new Date();
-      date.setDate(date.getDate() + 1);
-      date.setHours(hour, 0, 0);
-      const fire = date.getTime();
-      setTimeout(() => resolve(), fire - new Date().getTime());
-    })
-  ).pipe(
+): Observable<NotificationServerMaintenanceEvent> => {
+  const hour = (config && config.notificationServerMaintenanceHour) || 5;
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  date.setHours(hour, 0, 0);
+  return timer(1, 21600000).pipe(
     map(() => {
       const ev: NotificationServerMaintenanceEvent = {
         type: "notificationServerMaintenance"
@@ -93,6 +88,7 @@ export const notificationServerMaintenance = (
     }),
     repeat()
   );
+};
 
 type AppEvents = Events | EmailEvent | NotificationServerMaintenanceEvent;
 export const allEvents = (config?: EventsConfig) => (
